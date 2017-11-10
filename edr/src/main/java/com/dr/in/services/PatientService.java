@@ -1,5 +1,6 @@
 package com.dr.in.services;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,17 @@ public class PatientService {
 	
 	public FormResult patientSignup(Patient patient ){
 		
+		this.patient=this.patientRepository.findOne(patient.getPatientId());
+		
 		this.patient=this.patientRepository.save(patient);
 		if(this.patient!=null){
 			this.formResult.setResult(true);
-			this.formResult.setMessage("Patient Signup completed");
+			this.formResult.setError(false);
+			this.formResult.setMessage("Data is saved");
 		}
 		else{
 			this.formResult.setResult(false);
+			this.formResult.setError(true);
 			this.formResult.setMessage("Error while patient signup ");
 		}
 		return this.formResult;
@@ -44,6 +49,13 @@ public class PatientService {
 	public List<Patient> getAllPatient() {
 		// TODO Auto-generated method stub
 		return this.patientRepository.findAll();
+	}
+
+
+	public Patient getPatient(String patientId) {
+		this.patient= this.patientRepository.findOne(patientId);
+		
+		return this.patient;
 	}
 	
 	

@@ -36,7 +36,7 @@ public class PatientController {
 	
 	@PostMapping(path="/api/private/patient/signup")
 	public FormResult patientSignup(@RequestBody Patient patient){
-		
+		patient.setPatientId("patient@gmail.com");
 		return this.patientService.patientSignup(patient);
 	}
 	
@@ -44,6 +44,12 @@ public class PatientController {
 	public List<Patient> getAllPatient(){
 		return this.patientService.getAllPatient();
 		
+	}
+	
+	@GetMapping(path="/api/private/get/patient")
+	public Patient getPatient(){
+		String patientId="patient@gmail.com";
+		return this.patientService.getPatient(patientId);
 	}
 	
 	

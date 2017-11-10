@@ -1,5 +1,6 @@
 package com.dr.in.model;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -12,9 +13,9 @@ public class Doctor {
 	private String docId;
 	private String name;
 	private String about;
-	private List<String> qualifications;
-	private List<String> specialities;
-	
+	private List<Degree> degrees;
+	private List<Speciality> specialities;
+	private List<Integer> workingDays;
 	private String addrLineOne;
 	private String addrLineTwo;
 	private String state;
@@ -23,9 +24,17 @@ public class Doctor {
 	private String phoneno;
 	
 	private AppointmentInDoctor appointments;
+	private int appointmentFee;
 	private List<TimeSlot> timeSlots;
+	private List<Date> holidays;
 	
 	
+	public int getAppointmentFee() {
+		return appointmentFee;
+	}
+	public void setAppointmentFee(int appointmentFee) {
+		this.appointmentFee = appointmentFee;
+	}
 	public String getDocId() {
 		return docId;
 	}
@@ -44,18 +53,7 @@ public class Doctor {
 	public void setAbout(String about) {
 		this.about = about;
 	}
-	public List<String> getQualifications() {
-		return qualifications;
-	}
-	public void setQualifications(List<String> qualifications) {
-		this.qualifications = qualifications;
-	}
-	public List<String> getSpecialities() {
-		return specialities;
-	}
-	public void setSpecialities(List<String> specialities) {
-		this.specialities = specialities;
-	}
+	
 	public String getAddrLineOne() {
 		return addrLineOne;
 	}
@@ -98,6 +96,31 @@ public class Doctor {
 	public void setTimeSlots(List<TimeSlot> timeSlots) {
 		this.timeSlots = timeSlots;
 	}
+	public List<Degree> getDegrees() {
+		return degrees;
+	}
+	public void setDegrees(List<Degree> degrees) {
+		this.degrees = degrees;
+	}
+	public List<Speciality> getSpecialities() {
+		return specialities;
+	}
+	public void setSpecialities(List<Speciality> specialities) {
+		this.specialities = specialities;
+	}
+	public List<Date> getHolidays() {
+		return holidays;
+	}
+	public void setHolidays(List<Date> holidays) {
+		this.holidays = holidays;
+	}
+	public List<Integer> getWorkingDays() {
+		return workingDays;
+	}
+	public void setWorkingDays(List<Integer> workingDays) {
+		this.workingDays = workingDays;
+	}
+	
 	
 	
 	

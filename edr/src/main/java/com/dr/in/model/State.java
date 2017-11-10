@@ -11,9 +11,9 @@ public class State {
 	@Id
 	private String stateId;
 	private String stateName;
-	private List<String> cities;
+	private List<City> cities;
 	
-	public void addCity(String city){
+	public void addCity(City city){
 		this.cities.add(city);
 	}
 	
@@ -29,10 +29,10 @@ public class State {
 	public void setStateName(String stateName) {
 		this.stateName = stateName;
 	}
-	public List<String> getCities() {
+	public List<City> getCities() {
 		return cities;
 	}
-	public void setCities(List<String> cities) {
+	public void setCities(List<City> cities) {
 		this.cities = cities;
 	}
 	

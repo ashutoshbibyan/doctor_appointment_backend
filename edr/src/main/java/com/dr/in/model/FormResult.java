@@ -7,8 +7,21 @@ public class FormResult {
 	
 	private boolean result;
 	private String message;
+	private boolean error;
 	
 	
+	
+	
+	public boolean isError() {
+		return error;
+	}
+
+
+	public void setError(boolean error) {
+		this.error = error;
+	}
+
+
 	public boolean isResult() {
 		return result;
 	}

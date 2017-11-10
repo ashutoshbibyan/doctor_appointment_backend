@@ -2,6 +2,7 @@ package com.dr.in.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +22,7 @@ public class Patient {
 	@Id
 	private String patientId;
 	private String name;
-	private LocalDateTime dateOfBirth;
+	private Date dateOfBirth;
 	private String phoneNo;
 	
 	private List<AppointmentInPatient> appointments;
@@ -62,13 +63,12 @@ public class Patient {
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
-	public LocalDateTime getDateOfBirth() {
+	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
-	public void setDateOfBirth(LocalDateTime dateOfBirth) {
+	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-	
 	
 	
 
