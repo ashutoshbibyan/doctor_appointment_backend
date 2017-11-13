@@ -1,6 +1,8 @@
 package com.dr.in.model;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
@@ -14,7 +16,9 @@ public class Appointment {
 	
 	@Id
 	private String appointmentId;
-	private Date date;
+	
+
+	private Instant date;
 	private String doctorId;
 	private String patientId;
 	private String patientPhoneNo;
@@ -38,10 +42,10 @@ public class Appointment {
 	public void setTimeSlot(TimeSlot timeSlot) {
 		this.timeSlot = timeSlot;
 	}
-	public Date getDate() {
+	public Instant getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(Instant date) {
 		this.date = date;
 	}
 	public String getDoctorId() {

@@ -1,9 +1,13 @@
 package com.dr.in.model;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,7 +30,7 @@ public class Doctor {
 	private AppointmentInDoctor appointments;
 	private int appointmentFee;
 	private List<TimeSlot> timeSlots;
-	private List<Date> holidays;
+	private List<Instant> holidays;
 	
 	
 	public int getAppointmentFee() {
@@ -108,10 +112,10 @@ public class Doctor {
 	public void setSpecialities(List<Speciality> specialities) {
 		this.specialities = specialities;
 	}
-	public List<Date> getHolidays() {
+	public List<Instant> getHolidays() {
 		return holidays;
 	}
-	public void setHolidays(List<Date> holidays) {
+	public void setHolidays(List<Instant> holidays) {
 		this.holidays = holidays;
 	}
 	public List<Integer> getWorkingDays() {
