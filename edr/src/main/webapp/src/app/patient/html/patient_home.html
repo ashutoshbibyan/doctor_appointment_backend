@@ -1,0 +1,130 @@
+
+ <div class="col-sm-4">
+ 
+ 		<ul class="nav flex-column ">
+		  <li class="nav-item">
+		    <a class="nav-link active" href="#">Active</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" href="#">Link</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" href="#">Link</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link disabled" href="#">Disabled</a>
+		  </li>
+	</ul>
+ 
+ 
+ </div>  
+ 
+ 
+    
+    <div class="col-sm-8">
+    
+   
+    
+    <h3>Hello {{patient.name}}</h3>
+
+
+<mat-horizontal-stepper>
+ 
+ 	<mat-step>
+ 		<ng-template matStepLabel>Choose Doctor And Time</ng-template>
+ 		
+ 		
+<form [formGroup]="appointmentForm" (ngSubmit)="submit()">
+
+	<div class="form-group">
+	
+		<mat-form-field>
+		
+					<mat-select placeholder="Choose a Doctor" formControlName="selectedDoc" (focusout)="drSelected()">
+						<mat-option *ngFor="let dr of doctors" [value]="dr">{{dr.name}}</mat-option>
+					
+					</mat-select>
+					<mat-error *ngIf="selectedDoc.hasError('required')">Please Select A Dr</mat-error>
+				
+		</mat-form-field>
+		
+		
+	</div>
+	
+	<div class="form-group">
+	
+		<mat-form-field>
+		
+			<input matInput  [min]='currentDate'  [matDatepickerFilter]="holliday"  formControlName="appointmentDate"  [matDatepicker]="picker" placeholder="Select A day">
+			  
+			  
+			  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+			  
+			  <mat-datepicker touchUi='true' #picker></mat-datepicker>
+		
+		</mat-form-field>
+   <mat-hint> Enter Date in (MM/DD/YYYY)</mat-hint>
+	<mat-error *ngIf="appointmentDate.hasError('required')">Please Select A Date</mat-error>
+	<mat-error *ngIf="appointmentDate.hasError('matDatepickerFilter')"> This day is a holiday </mat-error>
+	
+	</div>
+
+
+	<div class="form-group">
+	
+		<mat-form-field>
+		
+			<mat-select placeholder="Choose a Time" formControlName="appointmentTime">
+				
+			<mat-option *ngFor="let time of timeSlots" [value]="time" >
+				{{time.start }} to {{time.end}}
+			</mat-option>
+				
+			</mat-select>
+			<mat-error *ngIf="appointmentTime.hasError('required')"> Please Select A Time</mat-error>
+		
+		</mat-form-field>
+	</div>	
+	
+	
+	<div class="form-group">
+ 			<button mat-raised-button matStepperNext color="primary">Next</button>
+ 		</div>
+
+</form>
+ 		
+ 	
+ 		
+ 	</mat-step>
+ 	
+ 	<mat-step>
+ 		<ng-template matStepLabel>Pay </ng-template>
+ 	
+ 		<div class="form-group">
+ 			<button mat-raised-button matStepperPrevious color="accent">Previous</button>
+ 			<button mat-raised-button matStepperNext color="primary">Next</button>
+ 		</div>
+ 	</mat-step>
+ 	
+ 	<mat-step>
+ 		<ng-template matStepLabel> Done </ng-template>
+ 	
+ 		<div class="form-group">
+ 		
+ 			<button mat-raised-button matStepperPrevious color="accent">Previous</button>
+ 			<button mat-raised-button matStepperNext color="primary">Next</button>
+ 		</div>
+ 	</mat-step>
+ 
+ </mat-horizontal-stepper>
+      
+
+
+
+
+    
+    
+    
+    
+  </div>
+

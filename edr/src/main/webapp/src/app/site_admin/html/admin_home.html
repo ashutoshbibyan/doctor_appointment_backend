@@ -1,0 +1,37 @@
+<h2>Site Admin Panel</h2>
+<div class="col-md-4">
+
+ <div class="list-group">
+ 		
+ 		<a class="list-group-item list-group-item-info" data-toggle="collapse" href="#add" >Add<i class="caret" ></i></a>
+ 		<div class="collapse" id="add">
+ 				
+ 				<li class="list-group-item" routerLink="admin/disease/add">Add Disease</li>
+				<li class="list-group-item" routerLink="admin/state/add">Add State</li>
+				<li class="list-group-item" routerLink="admin/city/add">Add City</li>
+				<li class="list-group-item" routerLink="admin/degree/add">Add Degree</li>
+				<li class="list-group-item" routerLink="admin/speciality/add">Add Speciality</li>
+ 		
+ 		</div>
+ 		<a class="list-group-item list-group-item-info" data-toggle="collapse" href="#show">Show<i class="caret"></i></a>
+ 		
+ 		<div class="collapse" id="show">
+ 				
+ 				<li class="list-group-item" routerLink="admin/state/all">State List</li>
+				<li class="list-group-item" routerLink="admin/degree/list">Degree List</li>
+				<li class="list-group-item" routerLink="admin/disease/list">Disease List</li>
+ 		
+ 		</div>
+ 	
+ </div>
+ 
+
+</div>
+
+
+<div class="col-md-8">
+
+	<router-outlet></router-outlet>
+
+
+</div>

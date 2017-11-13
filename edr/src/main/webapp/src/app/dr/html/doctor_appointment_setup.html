@@ -1,0 +1,95 @@
+
+
+
+<h4>Setup Your Profile For Online Appointment</h4>
+
+
+<form (ngSubmit)="submit()" [formGroup]="appointmentForm">
+
+	<h4 *ngIf="result.result" class="text-capitalize text-success">{{result.message}}</h4>
+	<h4 *ngIf="result.error" class="text-capitalize text-danger">{{result.message}}</h4>
+
+	<div class="form-group">
+	
+		<mat-form-field>
+			<input matInput  type="text" formControlName="feeAmount" placeholder="Enter Fee Amount" >
+			<p matSuffix>Rs</p>
+		</mat-form-field>
+	
+	</div>
+	
+	<div class="form-group">
+		<mat-form-field>
+			<mat-select formControlName="days" multiple="true" placeholder="Select Wroking Day">
+			
+				<mat-option value=1>Mon</mat-option>
+				<mat-option value=2>Tue</mat-option>
+				<mat-option value=3>Wed</mat-option>
+				<mat-option value=4>Thu</mat-option>
+				<mat-option value=5>Fri</mat-option>
+				<mat-option value=6>Sat</mat-option>
+				<mat-option value=0>Sun</mat-option>
+				
+			</mat-select>
+		
+		</mat-form-field>
+	
+	</div>
+	
+   
+	<div class="form-group col-md-6">
+		<mat-form-field>
+		
+			<input matInput type="time" formControlName="startingTime" placeholder="Opening Time" >
+			
+		</mat-form-field>
+		
+		
+	</div>
+	
+	<div class="form-group col-md-6">
+		<mat-form-field>
+		
+			<input matInput type="time" formControlName="closeingTime" placeholder="Closeing Time" >
+			
+		</mat-form-field>
+		
+		
+	</div>
+	
+	<div class="form-group">
+		<button mat-raised-button color="accent" (click)="addTimeSlot()" type="button">Add Time Slot</button>
+	
+	</div>
+	<table class="table">
+	
+		<thead>
+			<tr>
+				<th>Starting Time</th>
+				<th>Closeing Time</th>
+				<th>Delete</th>
+			</tr>
+			
+		</thead>
+		
+		
+		<tbody>
+			<tr *ngFor="let timeSlot of timeSlots;let i = index">
+			    
+				<td>{{timeSlot.start.hour+":"+timeSlot.start.minute+" "+timeSlot.start.meridien}}</td>
+				<td>{{timeSlot.end.hour+":"+timeSlot.end.minute+" "+timeSlot.end.meridien}}</td>
+				<td><button mat-raised-button color="warn" type="button" (click)="deleteTimeslot(i)">
+				
+				<i class="material-icons">delete</i></button></td>
+			
+			</tr>
+		
+		</tbody>
+	
+	</table>
+	
+	<button mat-raised-button color="primary" type="submit" >Submit</button>
+	
+
+
+</form>

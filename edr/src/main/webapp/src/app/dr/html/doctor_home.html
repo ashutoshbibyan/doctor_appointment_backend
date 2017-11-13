@@ -1,0 +1,39 @@
+<div class="col-sm-4">
+
+	<div class="list-group no-style">
+		    <div>
+		  	<a class="list-group-item" data-toggle="collapse" href="#appointmentMenu">
+		  	Appointment <i class="caret"></i></a>
+		    <div class="collapse" id="appointmentMenu">
+		    	 <a class="list-group-item"  routerLink="dr/appointment">Appointment Setup</a>
+		    	 <a class="list-group-item"  routerLink="dr/make/appointment" >Make An Appointment</a>
+		    	 <a class="list-group-item"  routerLink="dr/show/appointment">Show All Appointment</a>
+		    </div>
+		    
+		  </div>
+		  
+		  <div>
+		    <a class="list-group-item" data-toggle="collapse" href="#holidayMenu">
+		    Holiday <i class="caret"></i></a>
+		    
+		    <div class="collapse" id="holidayMenu">
+		    	<a class="list-group-item" routerLink="dr/holiday">Add Holiday</a>
+		    	<a class="list-group-item" routerLink="dr/show/holiday" >Show All Holiday</a>
+		    </div>
+		  </div>
+		  
+		  <div class="list-group-item">
+		    <a class="nav-link" routerLink="dr/panel">Information Panel</a>
+		  </div>
+		  
+	</div>
+
+</div>
+
+
+
+<div class="col-sm-8">
+		
+	<router-outlet></router-outlet>
+
+</div>

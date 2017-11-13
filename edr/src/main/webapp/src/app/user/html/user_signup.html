@@ -1,0 +1,53 @@
+   
+  <form [formGroup]="userSignupForm" (ngSubmit)="submit()">
+  
+  
+  
+  <div class="form-group">
+   
+      <mat-form-field>
+  			
+  			<input matInput required type ="text" placeholder="Email" name="username" formControlName="email" >
+  			<mat-error *ngIf="email.hasError('required')">
+  				Email is <strong>required</strong>
+  			</mat-error>
+  			<mat-error *ngIf="email.hasError('pattern')">
+  				Enter a valid Email
+  			</mat-error>
+  		</mat-form-field>
+  </div>
+  
+  <div class="form-group">
+    	<mat-form-field>
+  			<input matInput required type="password" placeholder="Password" name="password" formControlName="password">
+  		
+  			<mat-error *ngIf="password.hasError('required')">
+  				Password is <strong>required</strong>
+  			</mat-error>
+  		</mat-form-field>
+  
+  </div>
+  
+  <div class="form-group">
+  			
+  			
+  			<mat-radio-group formControlName="role" name="role" required=true>
+  				<mat-radio-button  value="ROLE_DOCTOR">I am Doctor</mat-radio-button>
+  				<mat-radio-button value="ROLE_PATIENT">I am Patient</mat-radio-button>
+  				
+  				<mat-error *ngIf="role.hasError('required')">Please select an option</mat-error>
+  			</mat-radio-group>
+  			
+  			
+  			
+  		
+  
+  </div>
+  
+  
+  
+    		
+  
+  		<button mat-raised-button color="primary" type="submit">Submit</button>
+  
+  </form>

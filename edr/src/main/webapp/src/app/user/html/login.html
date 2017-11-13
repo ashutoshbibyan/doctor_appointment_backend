@@ -1,0 +1,39 @@
+<form [formGroup]="loginForm">
+			<div class="form-group">
+			
+				<mat-form-field class="fullwidth">
+				
+					<input matInput required ="text" placeholder="Email" formControlName="email" name="email">
+					<mat-error *ngIf="email.hasError('required')">
+						Enter the Email
+					</mat-error>
+					
+					<mat-error *ngIf="email.hasError('pattern')">
+					
+						Enter a Valid Email
+					</mat-error>
+					
+				</mat-form-field>
+			
+			</div>
+			
+	        <div class="form-group">
+	        
+	        <mat-form-field class="fullwidth">
+				
+					<input matInput required type="password" placeholder="Password" formControlName="password" name="password">
+					<mat-error *ngIf="password.hasError('required')">
+						Enter the Password
+					
+					</mat-error>
+				</mat-form-field>
+	        
+	        </div>
+	        
+	        <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+				
+				
+				
+				
+</form>
+			

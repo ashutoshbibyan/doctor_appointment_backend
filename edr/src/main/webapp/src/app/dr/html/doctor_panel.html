@@ -1,0 +1,38 @@
+<h3>List of Today's Appointments</h3>
+
+
+
+
+<div  *ngFor="let appointment of appointments">
+
+
+	<div class="col-lg-6">
+	
+	<div class="panel panel-info">
+	   <div class="panel-heading">
+    <h5>Date:{{appointment.date*1000|date:'mediumDate'}}</h5>
+       </div>  
+       <div class="panel-body">
+             <h6>PatientId {{appointment.patientId}}</h6>
+	         <h6>Patient Name:{{appointment.patientName}}</h6>
+	         <h6>Patient PhoneNo:{{appointment.patientPhoneNo}}</h6>
+	
+       </div>
+      <div class="panel-footer">
+      <h5>Time: {{appointment.timeSlot.start.hour}}:{{appointment.timeSlot.start.minute}} 
+	{{appointment.timeSlot.start.meridien}}</h5>
+      
+      </div>
+   </div>
+	
+	
+	
+	
+	
+	
+	
+	</div>
+	
+
+
+</div>
