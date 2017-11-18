@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm">
+<form [formGroup]="loginForm" (ngSubmit)="submit()">
 			<div class="form-group">
 			
 				<mat-form-field class="fullwidth">
@@ -30,7 +30,7 @@
 	        
 	        </div>
 	        
-	        <button mat-raised-button color="primary" (click)="submit()">Submit</button>
+	        <button mat-raised-button color="primary" type="submit">Submit</button>
 				
 				
 				

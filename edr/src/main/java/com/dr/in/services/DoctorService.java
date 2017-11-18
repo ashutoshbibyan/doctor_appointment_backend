@@ -1,7 +1,9 @@
 package com.dr.in.services;
 
+
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -13,7 +15,9 @@ import org.springframework.stereotype.Service;
 import com.dr.in.model.Appointment;
 import com.dr.in.model.Doctor;
 import com.dr.in.model.FormResult;
+import com.dr.in.model.QDoctor;
 import com.dr.in.repository.DoctorRepository;
+import com.querydsl.core.types.Predicate;
 
 
 @Service
@@ -92,6 +96,7 @@ public class DoctorService {
 			this.doctor.setAppointmentFee(doctor.getAppointmentFee());
 			this.doctor.setTimeSlots(doctor.getTimeSlots());
 			this.doctor.setWorkingDays(doctor.getWorkingDays());
+			this.doctor.setMaxAppointments(doctor.getMaxAppointments());
 			this.saveDoctor(this.doctor);
 		}
 		// else send the appropriate error
@@ -193,6 +198,27 @@ public class DoctorService {
 		
 		this.doctor=this.doctorRepository.findOnePublicDoctorBydocId(docId);
 		
+		
+		List<Instant> holidays=this.doctor.getHolidays();
+		
+		List<Instant> sortedHoliday=new ArrayList<>();
+		
+		Iterator<Instant> iter= holidays.iterator();
+		
+		Instant today =Instant.now();
+		// we subtract one day from today so today is selected when checked with is after method 
+		today=today.minus(1,ChronoUnit.DAYS);
+		
+		while (iter.hasNext()){
+			Instant date=iter.next();
+			
+			if(date.isAfter(today)){
+				sortedHoliday.add(date);
+			}
+		}
+		// changed the holiday list removed all the holiday of past 
+		this.doctor.setHolidays(sortedHoliday);
+		
 		return this.doctor;
 	}
 
@@ -203,7 +229,29 @@ public class DoctorService {
 	 *  @return FormResult (object of the form result class)*/
 	public FormResult makeAppointment(Appointment appointment) {
 		
-		this.formResult=this.appointmentService.addAppointment(appointment);
+		this.doctor=this.doctorRepository.findOne(appointment.getDoctorId());
+		
+						
+		int noOfAppointments=this.getNoOfAppointments(appointment.getDate(), appointment.getDoctorId());
+		
+		int maxNoOfAppointment=this.doctor.getMaxAppointments();
+		
+		if(noOfAppointments<maxNoOfAppointment){
+			
+
+			this.formResult=this.appointmentService.addAppointment(appointment);
+			
+			
+		}
+		
+		else{
+			this.formResult.setError(true);
+			this.formResult.setResult(false);
+			this.formResult.setMessage(" Appointments Are Full For This Date ");
+		}
+		
+		
+		
 		
 		
 		return this.formResult;
@@ -280,7 +328,61 @@ public class DoctorService {
 		return result;
 	}
 
+	/** getHolidayOfFuture gives list of holiday of date and in upcomming days for the doctor id 
+	 *  provided it takes two parameter first is date and second is doctor id 
+	 *  @param Instant (date )
+	 *  @param String (doctor id )
+	 *  @return List<Instant> (list of holidays)*/
 
+	public List<Instant> getHolidayAfter(Instant after, String docId) {
+		this.doctor = this.doctorRepository.findOne(docId);
+		
+		List<Instant> result = new ArrayList<>();
+		
+		List<Instant> holiday=this.doctor.getHolidays();
+		
+		// we make today one day less so today is also added when compare using after method 
+		after=after.minus(1,ChronoUnit.DAYS);
+		
+		Iterator<Instant> iter= holiday.iterator();
+		
+		while(iter.hasNext()){
+			Instant date = iter.next();
+			
+			// if date is after we add it to result 
+			if(date.isAfter(after)){
+				result.add(date);
+			}
+		}
+		
+		
+		
+		
+		return result;
+	}
+
+
+	/** getNoOfAppointments takes two parameter first is the date and second is thte 
+	 *  doctor id and return the no of appointment for that doctor on that date 
+	 *  @param Instant (date)
+	 *  @param String (doctor id)
+	 *  @return int (no of appointments on that date )*/
+	
+	public int getNoOfAppointments(Instant date,String docId){
+		 
+		return this.appointmentService.getNoOfAppointments(date,docId);
+		
+	}
+
+
+	public List<Doctor> getDoctorForPatient(String state, String city) {
+		
+		
+	    return this.doctorRepository.findAllByStateAndCity(state, city);
+				
+	
+	}
+	
 	
 
 

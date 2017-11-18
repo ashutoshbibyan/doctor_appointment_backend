@@ -20,9 +20,11 @@ export class DoctorAppointmentSetup {
 
 
     feeAmount: FormControl = new FormControl( '', [] );
+    maxAppointments: FormControl = new FormControl( '', [] );
     days: FormControl = new FormControl( '', [] );
     startingTime: FormControl = new FormControl( '', [] );
     closeingTime: FormControl = new FormControl( '', [] );
+
 
     constructor( private formBuilder: FormBuilder, private doctorService: DoctorService ) {
 
@@ -34,6 +36,7 @@ export class DoctorAppointmentSetup {
 
         this.appointmentForm = this.formBuilder.group( {
             feeAmount: this.feeAmount,
+            maxAppointments: this.maxAppointments,
             days: this.days,
             startingTime: this.startingTime,
             closeingTime: this.closeingTime
@@ -54,6 +57,7 @@ export class DoctorAppointmentSetup {
 
         let doctor: Doctor = new Doctor();
         doctor.appointmentFee = this.appointmentForm.value.feeAmount;
+        doctor.maxAppointments = this.appointmentForm.value.maxAppointments;
         doctor.timeSlots = this.timeSlots;
         doctor.workingDays = this.appointmentForm.value.days;
 

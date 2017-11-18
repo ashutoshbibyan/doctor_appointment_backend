@@ -7,10 +7,14 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { PatientHome } from "./patient_home";
 import { PatientService } from "./patient_service";
 import { PatientProfile } from "./patient_profile";
+import { PatientMakeAppointment } from "./patient_make_appointment";
+import { PatientAddAddress } from "./patient_add_address";
+import { AppCommonModule } from "../common/common_module";
 
 @NgModule( {
-    imports: [PatientRoutingModule, MaterialModule, CommonModule, ReactiveFormsModule],
-    declarations: [PatientSignup, PatientHome, PatientProfile],
+    imports: [PatientRoutingModule, MaterialModule, CommonModule, ReactiveFormsModule, AppCommonModule],
+    declarations: [PatientSignup, PatientHome, PatientProfile, PatientMakeAppointment
+        , PatientAddAddress],
     providers: [PatientService],
     exports: []
 } )

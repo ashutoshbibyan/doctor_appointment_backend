@@ -13,6 +13,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,8 +25,10 @@ import com.dr.in.model.City;
 import com.dr.in.model.Degree;
 import com.dr.in.model.Doctor;
 import com.dr.in.model.FormResult;
+import com.dr.in.model.Principal;
 import com.dr.in.model.Speciality;
 import com.dr.in.model.State;
+import com.dr.in.model.User;
 import com.dr.in.repository.DoctorRepository;
 import com.dr.in.services.CommonServices;
 import com.dr.in.services.DoctorService;
@@ -34,7 +37,7 @@ import com.dr.in.services.DoctorService;
 public class DoctorController {
 	
 	
-	@Autowired
+	@Autowired 
 	private CommonServices commonService;
 	
 	
@@ -52,10 +55,10 @@ public class DoctorController {
 	*/
 	
 	@PostMapping(path="/api/private/dr/appointment/make")
-	public FormResult docMakeAppointment(@RequestBody Appointment appointment){
-		// doctor id is hardcoded right now will be removed by principal value
-		appointment.setDoctorId("doctor@gmail.com");
-		System.out.println(appointment.getDate());
+	public FormResult docMakeAppointment(@RequestBody Appointment appointment ,Principal currentUser){
+		
+		appointment.setDoctorId(currentUser.getName());
+		
 		return this.doctorService.makeAppointment(appointment);
 	}
 	
@@ -66,10 +69,10 @@ public class DoctorController {
 	 *  @return FormResult (object of the formresult class)*/
 	
 	@PostMapping(path="/api/private/dr/signup")
-	public FormResult docSignup(@RequestBody Doctor doctor){
+	public FormResult docSignup(@RequestBody Doctor doctor , Principal currentUser){
 		// hardcoded right now will be replaced by pricipal object 
 		
-		doctor.setDocId("doctor@gmail.com");
+		doctor.setDocId(currentUser.getName());
 		return this.doctorService.doctorSignup(doctor);
 	}
 
@@ -80,9 +83,9 @@ public class DoctorController {
 	 *  @param Doctor (object of the class doctor)
 	 *  @return FormResult(object of the class formresult)*/
 	@PostMapping(path="/api/private/dr/appointment/setup")
-	public FormResult docAppointmentSetup(@RequestBody Doctor doctor){
+	public FormResult docAppointmentSetup(@RequestBody Doctor doctor , Principal currentUser){
 		// hardcoded value will be changed 
-		doctor.setDocId("doctor@gmail.com");
+		doctor.setDocId(currentUser.getName());
 		return this.doctorService.docAppointmentSetup(doctor);
 	}
 	
@@ -95,9 +98,9 @@ public class DoctorController {
 	 *  @return FormResult(object of the formresult class)*/
 	
 	@PostMapping(path="/api/private/dr/holiday/add")
-	public FormResult docAddHoliday(@RequestBody Doctor doctor){
-		doctor.setDocId("doctor@gmail.com");
-		System.out.println(doctor.getHolidays().get(0));
+	public FormResult docAddHoliday(@RequestBody Doctor doctor ,Principal currentUser){
+		doctor.setDocId(currentUser.getName());
+		
 		return this.doctorService.addHolidays(doctor);
 	}
 	
@@ -107,9 +110,9 @@ public class DoctorController {
 	 * @return List<Appointment> (list of the appointment class objects)*/
 	
 	@GetMapping(path="/api/private/dr/get/appointment")
-	public List<Appointment> getDocAppointment(){
-		String docId="doctor@gmail.com";
-		return this.doctorService.getAppointment(docId);
+	public List<Appointment> getDocAppointment(Principal currentUser){
+		
+		return this.doctorService.getAppointment(currentUser.getName());
 	}
 	
 	
@@ -156,9 +159,9 @@ public class DoctorController {
 	 *  it takes no parameter and return list of holidays 
 	 *  @return List<Instant> (list of dates in the form of Instant )*/
 	@GetMapping(path="/api/public/dr/holiday/all")
-	public List<Instant> getAllHoliday(){
-		String docId="doctor@gmail.com";
-		return this.doctorService.getAllHoliday(docId);
+	public List<Instant> getAllHoliday(Principal currentUser){
+		
+		return this.doctorService.getAllHoliday(currentUser.getName());
 	}
 	
 	
@@ -166,11 +169,10 @@ public class DoctorController {
 	 * it takes no parameter and return the doctor object 
 	 * @return Doctor (object of the doctor class)*/
 	@GetMapping(path="/api/public/dr/get/doctor")
-	public Doctor getDotor(){
+	public Doctor getDotor(Principal currentUser){
 		
-		// doc id is hardcoded right now will be replaced by the principal value 
-		String docId="doctor@gmail.com";
-		return this.doctorService.getPublicDoctor(docId);
+		
+		return this.doctorService.getPublicDoctor(currentUser.getName());
 	}
 	
 	
@@ -192,12 +194,12 @@ public class DoctorController {
 	 *  @param Instant(to date instant )
 	 *  @return List<Appointment> (list of the object of the appointment class)*/
 	@GetMapping(path="/api/private/dr/get/appointment/period")
-	public List<Appointment> getAppointmentPeriod(@RequestParam("from")  String from , @RequestParam("to") String to){
+	public List<Appointment> getAppointmentPeriod(@RequestParam("from")  String from , @RequestParam("to") String to,Principal currentUser){
 		
-		String docId="doctor@gmail.com"; // logged in doctor
+		
 		Instant fromInstant =Instant.ofEpochMilli(Long.parseLong(from));
 		Instant toInstant =Instant.ofEpochMilli(Long.parseLong(to));
-		return this.doctorService.getAppointmentPeriod(fromInstant,toInstant,docId);
+		return this.doctorService.getAppointmentPeriod(fromInstant,toInstant,currentUser.getName());
 	}
 	
 	
@@ -206,9 +208,9 @@ public class DoctorController {
 	 * @return List<Appointment> (list of the appointment class object )*/
 	
 	@GetMapping(path="/api/private/dr/get/appointment/today")	
-	public List<Appointment> getTodayAppointment(){
+	public List<Appointment> getTodayAppointment(Principal currentUser){
 	    
-		String docId="doctor@gmail.com"; //logged in doctor 
+		
 	    
 	    Instant today= Instant.now();
 	    
@@ -216,7 +218,7 @@ public class DoctorController {
 	    
 	    
 	    
-		return this.doctorService.getAppointmentPeriod(yesterday, today,docId);
+		return this.doctorService.getAppointmentPeriod(yesterday, today,currentUser.getName());
 	}
 	
 	
@@ -227,12 +229,30 @@ public class DoctorController {
 	 * @return List<Instant> (list of the holiday date )
 	 *  */
 	@GetMapping(path="/api/private/dr/get/holiday/period")
-	public List<Instant> getHolidayPeriod(@RequestParam("from")  String from ,@RequestParam("to") String to ){
-		String docId="doctor@gmail.com";
+	public List<Instant> getHolidayPeriod(@RequestParam("from")  String from ,@RequestParam("to") String to,Principal currentUser ){
+		
 		Instant fromInstant=Instant.ofEpochMilli(Long.parseLong(from));
 		Instant toInstant=Instant.ofEpochMilli(Long.parseLong(to));
-		return this.doctorService.getHolidayPeriod(fromInstant,toInstant,docId);
+		return this.doctorService.getHolidayPeriod(fromInstant,toInstant,currentUser.getName());
 	}
+	
+	
+	/** getHolidayOfFuture takes no parameter and return the list of holidays after today and also include today 
+	 *  if today is an holiday 
+	 *  @return List<Instant> (list of holiday dates )*/
+	
+	@GetMapping(path="/api/public/get/holiday/")
+	public List<Instant> getHolidayOfFuture(Principal currentUser){
+		
+		
+		
+		Instant today= Instant.now();
+		
+		
+		
+		return this.doctorService.getHolidayAfter(today,currentUser.getName());
+	}
+	
 	
 	
 }

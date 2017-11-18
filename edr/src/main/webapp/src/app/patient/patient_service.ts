@@ -38,5 +38,11 @@ export class PatientService {
     }
 
 
+    public getDocForPatient() {
+        let url = "/api/private/patient/get/doctor";
+        return this.http.get( url, this.commOptions );
+    }
+
+
 
 }

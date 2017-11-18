@@ -7,10 +7,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import com.dr.in.services.CustomUserDetailsService;
+
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
+	@Autowired
+	CustomUserDetailsService userDetailService;
 	
+	@Autowired
+	MySuccessHandler mySuccessHandler;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -18,14 +24,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			
 			.authorizeRequests()
 			.antMatchers("/api/private/**").permitAll()
+			.antMatchers("/dr/signup").permitAll()
 				.antMatchers("/api/**").permitAll()
 				.antMatchers("/api/public/**").permitAll()
 				
 				.antMatchers("/user/signin").permitAll()
 				.and()
 				
-				.formLogin()
-				.loginPage("/user/signin")
+				.formLogin().successHandler(mySuccessHandler)
+				.loginPage("/user/login")
 				.usernameParameter("userName")
 				.passwordParameter("password")
 				.and()
@@ -36,6 +43,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	 public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {    
 		 //auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
-		// auth.userDetailsService(this.userDetailService);
+		 auth.userDetailsService(this.userDetailService);
 	 } 
 }

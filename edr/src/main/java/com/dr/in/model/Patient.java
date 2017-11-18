@@ -12,8 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
-import com.dr.in.common.LocalDateTimeDeserializer;
-import com.dr.in.common.LocalDateTimeSerializer;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -24,6 +23,7 @@ public class Patient {
 	private String name;
 	private Date dateOfBirth;
 	private String phoneNo;
+	private Address address;
 	
 	private List<AppointmentInPatient> appointments;
 	
@@ -39,6 +39,12 @@ public class Patient {
 	}
 	public String getName() {
 		return name;
+	}
+	public Address getAddress() {
+		return address;
+	}
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 	public void setName(String name) {
 		this.name = name;

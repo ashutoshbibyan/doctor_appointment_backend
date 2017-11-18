@@ -22,4 +22,19 @@ export class UserService {
         return this.http.post( url, user, this.commOptions );
 
     }
+
+    userLogin( user: User ) {
+        let url = "/user/login";
+
+        let body = new URLSearchParams();
+
+        body.set( "userName", user.email );
+        body.set( "password", user.password );
+
+        let headers = new Headers( { 'Content-Type': 'application/x-www-form-urlencoded' } );
+
+        let options = new RequestOptions( { headers: headers } );
+
+        return this.http.post( url, body.toString(), options );
+    }
 }

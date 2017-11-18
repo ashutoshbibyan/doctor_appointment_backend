@@ -21,6 +21,7 @@ export class DoctorSignup {
     personalForm: FormGroup;
     contactForm: FormGroup;
 
+
     result: FormResult = new FormResult();
 
     // doctor objcet to be forward to save 
@@ -65,7 +66,7 @@ export class DoctorSignup {
     ] );
 
     specialitiesControl: FormControl = new FormControl( "", [
-        Validators.required
+
     ] );
 
     address: FormControl = new FormControl( "", [

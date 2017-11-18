@@ -5,11 +5,20 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import com.dr.in.model.Degree;
+import com.dr.in.model.Speciality;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Component;
 
+import com.querydsl.core.annotations.QueryEntity;
+
+
+
+
+@QueryEntity
 @Component
 public class Doctor {
 	
@@ -24,7 +33,13 @@ public class Doctor {
 	private String addrLineTwo;
 	private String state;
 	private String city;
-	
+	private int maxAppointments;
+	public int getMaxAppointments() {
+		return maxAppointments;
+	}
+	public void setMaxAppointments(int maxAppointments) {
+		this.maxAppointments = maxAppointments;
+	}
 	private String phoneno;
 	
 	private AppointmentInDoctor appointments;

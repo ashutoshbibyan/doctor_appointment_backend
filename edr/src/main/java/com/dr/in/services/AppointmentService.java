@@ -69,6 +69,7 @@ public class AppointmentService {
 		
 		
 		return (List<Appointment>) this.appointmentRepository.findAll(predicate);
+		
 	}
 
 
@@ -92,11 +93,12 @@ public class AppointmentService {
 		QAppointment qappointment=new QAppointment("appointment");
 		Predicate betweendate=qappointment.date.after(from).and(qappointment.date.before(to));
 		Predicate predicate=qappointment.doctorId.eq(docId).and(betweendate);
-		
+
 		OrderSpecifier<Instant> order= qappointment.date.asc();
 		
 		
 		return (List<Appointment>) this.appointmentRepository.findAll(predicate,order);
+		
 	}
 	
 	
@@ -112,6 +114,21 @@ public class AppointmentService {
 		
 		
 	    return this.getDocAppointmentOfPeriod(from, to ,docId);
+	}
+
+
+	/** getNoOfAppointments takes two parameter first is the date and second is the doctor id 
+	 *  and return the no of appointments  that doctor have on that date 
+	 *  @param Instant (date )
+	 *  @param String  (doctor id )
+	 *  @return int    (no of appointments on that day by that doctor )*/
+
+	public int getNoOfAppointments(Instant date, String docId) {
+		QAppointment qappointment=new QAppointment("appointment");
+		Predicate predicate = qappointment.doctorId.eq(docId).and(qappointment.date.eq(date));
+		List<Appointment> appointments=(List<Appointment>) this.appointmentRepository.findAll(predicate);
+		return appointments.size();
+		
 	}
 	
 	

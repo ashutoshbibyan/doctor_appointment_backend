@@ -2,10 +2,10 @@
 
 export class Address {
 
-    public address: string;
-    public address2: string;
+    public addressLineOne: string;
+    public addressLineTwo: string;
     public state: string;
     public city: string;
-    public phoneno: string;
+    public phoneNo: string;
 
 }

@@ -6,15 +6,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dr.in.model.Doctor;
 import com.dr.in.model.FormResult;
 import com.dr.in.model.Patient;
 import com.dr.in.repository.PatientRepository;
+
 
 @Service
 public class PatientService {
 
 	@Autowired
 	private PatientRepository patientRepository;
+	
+	@Autowired 
+	private DoctorService doctorService;
 	
 	@Autowired
 	private Patient patient ;
@@ -56,6 +61,15 @@ public class PatientService {
 		this.patient= this.patientRepository.findOne(patientId);
 		
 		return this.patient;
+	}
+
+
+	public List<Doctor> getDoctorForPatient(String patientId) {
+		// TODO Auto-generated method stub
+		this.patient=this.getPatient(patientId);
+		String state=this.patient.getAddress().getState();
+		String city=this.patient.getAddress().getCity();
+		return this.doctorService.getDoctorForPatient(state,city);
 	}
 	
 	

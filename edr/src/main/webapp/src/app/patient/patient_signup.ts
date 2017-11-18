@@ -4,6 +4,7 @@ import { Patient } from "./patient";
 import { Disease } from "../model/disease";
 import { FormControl, FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FormResult } from "../model/formresult";
+import { Router } from "@angular/router";
 
 const REG_DATE = new RegExp( " /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/" );
 
@@ -15,6 +16,8 @@ export class PatientSignup {
 
     patientSignupForm: FormGroup;
 
+    addressForm: FormGroup;
+
     // used in the date picker to avoid user to choose future date as date of birth
     currentDate: Date = new Date();
     // used in the date picker to stop using date before 1900 
@@ -25,6 +28,7 @@ export class PatientSignup {
     // list of the medical conditions 
     medConditions: Disease[] = new Array();
 
+    patient: Patient = new Patient();
 
 
 
@@ -37,18 +41,22 @@ export class PatientSignup {
         Validators.required
     ] );
 
-    phoneno: FormControl = new FormControl( '', [
-        Validators.required,
-        Validators.minLength( 10 ),
-        Validators.maxLength( 10 )
-    ] );
+
 
     medcondition: FormControl = new FormControl( '', [
 
     ] );
 
+    addressLineOne: FormControl = new FormControl( "", [] );
 
-    constructor( private formBuilder: FormBuilder, private patientService: PatientService ) {
+    addressLineTwo: FormControl = new FormControl( "", [] );
+
+    state: FormControl = new FormControl( "", [] );
+
+    city: FormControl = new FormControl( "", [] );
+
+
+    constructor( private formBuilder: FormBuilder, private patientService: PatientService, private router: Router ) {
 
     }
 
@@ -64,10 +72,16 @@ export class PatientSignup {
         this.patientSignupForm = this.formBuilder.group( {
 
             'name': this.name,
-            'phoneno': this.phoneno,
+
             'dateOfBirth': this.dateOfBirth,
-            'medcondition': this.medcondition
+            'medcondition': this.medcondition,
+            'addressLineOne': this.addressLineOne,
+            'addressLineTwo': this.addressLineTwo,
+            'state': this.state,
+            'city': this.city
         } );
+
+
 
     }
 
@@ -83,22 +97,46 @@ export class PatientSignup {
 
     /* execute when user submit the form */
     submit() {
-        let patient: Patient = new Patient();
-        patient.name = this.patientSignupForm.value.name;
-        patient.phoneNo = this.patientSignupForm.value.phoneno;
-        patient.dateOfBirth = this.patientSignupForm.value.dateOfBirth;
 
 
-        patient.diseases = this.patientSignupForm.value.medcondition;
-        if ( patient.diseases.length == 0 ) {
-            patient.diseases = null;
-        }
-        console.log( patient );
-        this.patientService.patientSignup( patient ).subscribe(( data ) => {
+        console.log( this.patient );
+        this.patientService.patientSignup( this.patient ).subscribe(( data ) => {
             if ( data != undefined ) {
                 this.result = data.json();
+                if ( this.result.result ) {
+                    this.router.navigateByUrl( "/patient/home" );
+                }
             }
         } );
+
+    }
+
+
+    addressSubmited( event ) {
+
+        this.addressForm = event;
+
+
+        this.patient.name = this.patientSignupForm.value.name;
+
+        this.patient.dateOfBirth = this.patientSignupForm.value.dateOfBirth;
+
+        this.patient.address.addressLineOne = this.addressForm.value.addressLineOne;
+
+        this.patient.address.addressLineTwo = this.addressForm.value.addressLineTwo;
+
+        this.patient.address.state = this.addressForm.value.state;
+
+        this.patient.address.city = this.addressForm.value.city;
+
+        this.patient.address.phoneNo = this.addressForm.value.phoneNo;
+
+
+
+        this.patient.diseases = this.patientSignupForm.value.medcondition;
+        if ( this.patient.diseases.length == 0 ) {
+            this.patient.diseases = null;
+        }
 
     }
 

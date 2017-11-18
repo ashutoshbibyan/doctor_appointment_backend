@@ -7,9 +7,11 @@ import { Speciality } from "../model/speciality";
 
 export class Doctor {
 
+    public docId: string;
     public name: string;
     public about: string;
     public degrees: Degree[];
+    public maxAppointments: number;
     public specialities: Speciality[];
     public workingDays: number[];
     public addrLineOne: string;

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dr.in.model.Disease;
+import com.dr.in.model.Doctor;
 import com.dr.in.model.FormResult;
 import com.dr.in.model.Patient;
 import com.dr.in.services.CommonServices;
@@ -26,7 +27,7 @@ public class PatientController {
 	private PatientService patientService;
 	
 	
-	
+	/** */
 	@GetMapping(path="/api/public/disease/list")
 	
 	public List<Disease> getDiseaseList(){
@@ -52,6 +53,12 @@ public class PatientController {
 		return this.patientService.getPatient(patientId);
 	}
 	
+	
+	@GetMapping(path="/api/private/patient/get/doctor")
+	public List<Doctor> getDoctorForPatient(){
+		String patientId="patient@gmail.com";
+		return this.patientService.getDoctorForPatient(patientId);
+	}
 	
 	
 
