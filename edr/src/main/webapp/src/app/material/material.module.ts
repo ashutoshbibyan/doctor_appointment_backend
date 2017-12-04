@@ -4,7 +4,8 @@ import {
     , MatSidenavModule, MatListModule, MatProgressSpinnerModule, MatButtonModule
     , MatTabsModule, MatCheckboxModule, MatRadioModule, MatStepperModule,
     MatSelectModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE, NativeDateAdapter
-    , DateAdapter, MAT_DATE_FORMATS, MatSlideToggleModule, MatTableModule
+    , DateAdapter, MAT_DATE_FORMATS, MatSlideToggleModule, MatTableModule, MatTooltipModule,
+    MatAutocompleteModule
 
 } from "@angular/material";
 
@@ -13,7 +14,8 @@ import {
     imports: [MatInputModule, MatGridListModule, MatMenuModule, MatIconModule
         , MatSidenavModule, MatListModule, MatProgressSpinnerModule, MatButtonModule
         , MatTabsModule, MatCheckboxModule, MatRadioModule, MatStepperModule, MatSelectModule
-        , MatDatepickerModule, MatNativeDateModule, MatSlideToggleModule, MatTableModule
+        , MatDatepickerModule, MatNativeDateModule, MatSlideToggleModule, MatTableModule, MatTooltipModule
+        , MatAutocompleteModule
 
     ],
 
@@ -24,7 +26,8 @@ import {
     exports: [MatInputModule, MatGridListModule, MatMenuModule, MatIconModule
         , MatSidenavModule, MatListModule, MatProgressSpinnerModule, MatButtonModule
         , MatTabsModule, MatCheckboxModule, MatRadioModule, MatStepperModule, MatSelectModule
-        , MatDatepickerModule, MatNativeDateModule, MatSlideToggleModule, MatTableModule
+        , MatDatepickerModule, MatNativeDateModule, MatSlideToggleModule, MatTableModule, MatTooltipModule
+        , MatAutocompleteModule
     ]
 } )
 export class MaterialModule {

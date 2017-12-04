@@ -4,7 +4,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from "@angular/forms"
 import { User } from "./user";
 import { UserService } from "./user_service";
 
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
 
 
 @Component( {
@@ -22,7 +22,7 @@ export class UserSignup {
 
     email: FormControl = new FormControl( "", [
         Validators.required,
-        Validators.pattern( EMAIL_REGEX )
+        Validators.email
     ] );
     role: FormControl = new FormControl( "", [
         Validators.required

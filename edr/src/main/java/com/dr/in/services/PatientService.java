@@ -58,9 +58,8 @@ public class PatientService {
 
 
 	public Patient getPatient(String patientId) {
-		this.patient= this.patientRepository.findOne(patientId);
-		
-		return this.patient;
+		//this.patient= this.patientRepository.findOne(patientId);		
+		return this.patientRepository.findOne(patientId);
 	}
 
 

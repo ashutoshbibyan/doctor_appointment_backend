@@ -201,23 +201,29 @@ public class DoctorService {
 		
 		List<Instant> holidays=this.doctor.getHolidays();
 		
-		List<Instant> sortedHoliday=new ArrayList<>();
 		
-		Iterator<Instant> iter= holidays.iterator();
-		
-		Instant today =Instant.now();
-		// we subtract one day from today so today is selected when checked with is after method 
-		today=today.minus(1,ChronoUnit.DAYS);
-		
-		while (iter.hasNext()){
-			Instant date=iter.next();
+		// check if there is any holidays in database		
+		if(holidays!=null){
+			Iterator<Instant> iter= holidays.iterator();
 			
-			if(date.isAfter(today)){
-				sortedHoliday.add(date);
+			List<Instant> sortedHoliday=new ArrayList<>();
+			
+			Instant today =Instant.now();
+			// we subtract one day from today so today is selected when checked with is after method 
+			today=today.minus(1,ChronoUnit.DAYS);
+			
+			while (iter.hasNext()){
+				Instant date=iter.next();
+				
+				if(date.isAfter(today)){
+					sortedHoliday.add(date);
+				}
 			}
+			// changed the holiday list removed all the holiday of past 
+			this.doctor.setHolidays(sortedHoliday);
 		}
-		// changed the holiday list removed all the holiday of past 
-		this.doctor.setHolidays(sortedHoliday);
+		
+	
 		
 		return this.doctor;
 	}

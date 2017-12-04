@@ -14,9 +14,21 @@
 		<mat-form-field>
 		
 					<mat-select placeholder="Choose a Doctor" formControlName="selectedDoc" (change)="drSelected()">
-						<mat-option *ngFor="let dr of doctors" [value]="dr" (mouseenter)="docHover(dr)" >{{dr.name}}</mat-option>
+							<div *ngFor="let dr of doctors;let i = index" [matTooltip]="getDocDetail(i)" matTooltipPosition="right">
+							
+							<mat-option  [value]="dr">
+							
+							
+							{{dr.name}}
+						
+					
+						     </mat-option>
+						
+						
+						</div>
 					
 					</mat-select>
+					<mat-hint>List Of Doctor In Your city</mat-hint>
 					<mat-error *ngIf="selectedDoc.hasError('required')">Please Select A Dr</mat-error>
 				
 		</mat-form-field>
@@ -28,7 +40,7 @@
 	
 		<mat-form-field>
 		
-			<input matInput  [min]='currentDate'  [matDatepickerFilter]="holiday"  formControlName="appointmentDate"  [matDatepicker]="picker" placeholder="Select A day">
+			<input matInput  [min]='currentDate'  [matDatepickerFilter]="holidayFilter"  formControlName="appointmentDate"  [matDatepicker]="picker" placeholder="Select A day">
 			  
 			  
 			  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

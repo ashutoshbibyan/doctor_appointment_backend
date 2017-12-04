@@ -1,5 +1,6 @@
 package com.dr.in.controller;
 
+import com.dr.in.model.Principal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.chrono.IsoEra;
@@ -25,7 +26,7 @@ import com.dr.in.model.City;
 import com.dr.in.model.Degree;
 import com.dr.in.model.Doctor;
 import com.dr.in.model.FormResult;
-import com.dr.in.model.Principal;
+
 import com.dr.in.model.Speciality;
 import com.dr.in.model.State;
 import com.dr.in.model.User;

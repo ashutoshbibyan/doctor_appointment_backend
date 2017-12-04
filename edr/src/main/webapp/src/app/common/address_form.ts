@@ -1,3 +1,7 @@
+/** This component contains a address form which have following fields 
+ *  addressLineOne , addressLineTwo , state , city ,phoneNo
+ *  It emmit an event changed which emit whenever the value of a 
+ *  form field is changed */
 import { Component, Output, EventEmitter } from "@angular/core";
 import { FormControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Address } from "../model/address";
@@ -15,7 +19,8 @@ export class AddressForm {
 
     addressForm: FormGroup;
 
-    @Output() submited: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
+    //event of the component 
+    @Output() changed: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
 
     states: State[];
 
@@ -50,7 +55,7 @@ export class AddressForm {
         this.getAllState();
 
 
-
+        // ititalization of the form group 
         this.addressForm = this.formBuilder.group( {
 
             addressLineOne: this.addressLineOne,
@@ -62,15 +67,19 @@ export class AddressForm {
 
     }
 
+    // get all states form the database 
+
     getAllState() {
         this.commonService.getAllState().subscribe(( data ) => {
             if ( data != undefined ) {
                 this.states = data.json();
+                console.log( this.states );
 
             }
         } );
     }
 
+    /** gets all the cities for the state selected by user */
     getAllCities() {
 
         this.change();
@@ -82,10 +91,11 @@ export class AddressForm {
         } );
     }
 
+    // this emit the changed event whenever the form field value is changed 
     change() {
 
 
-        this.submited.emit( this.addressForm );
+        this.changed.emit( this.addressForm );
 
 
 

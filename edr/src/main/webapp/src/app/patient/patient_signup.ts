@@ -90,6 +90,7 @@ export class PatientSignup {
         this.patientService.getDiseaseList().subscribe(( data ) => {
             if ( data != undefined ) {
                 this.medConditions = data.json();
+                console.log( this.medConditions );
 
             }
         } );

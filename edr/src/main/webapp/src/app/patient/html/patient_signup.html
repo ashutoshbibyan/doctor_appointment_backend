@@ -1,5 +1,5 @@
 
-<mat-vertical-stepper linear>
+<mat-vertical-stepper >
 
 
   <mat-step [stepControl]="patientSignupForm">
@@ -92,7 +92,7 @@
   <mat-step [stepControl]="addressForm">
    
    <ng-template matStepLabel>Contact Information</ng-template>
-	<address-form (submited)="addressSubmited($event)"></address-form>
+	<address-form (changed)="addressSubmited($event)"></address-form>
 	
 	<button mat-raised-button color="accent" matStepperPrevious>Previous</button>
 	<button mat-raised-button color="primary" matStepperNext>Next</button>

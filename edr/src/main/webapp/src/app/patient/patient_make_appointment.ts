@@ -4,6 +4,10 @@ import { Patient } from "./patient";
 import { TimeSlot } from "../model/timeslot";
 import { Doctor } from "../dr/doctor";
 import { PatientService } from "./patient_service";
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/map';
+
 
 @Component( {
     selector: "patient-make-appointment",
@@ -24,6 +28,8 @@ export class PatientMakeAppointment {
 
 
     doctors: Doctor[] = new Array();
+
+    doctorsSugest: Observable<Doctor[]>;
 
     timeSlots: TimeSlot[] = new Array();
 
@@ -50,29 +56,7 @@ export class PatientMakeAppointment {
 
     /* this is the filter on date picker it filter all the hollidays */
 
-    holiday = ( selectedDate: Date ): boolean => {
-
-        let result: boolean = true;
-
-        if ( this.holidays ) {
-
-            for ( let i = 0; i < this.holidays.length; i++ ) {
-
-
-                let holiday: Date = this.holidays[i];
-
-                if ( selectedDate.getTime() == parseInt( holiday.toString() ) * 1000 ) {
-                    console.log( holiday );
-                    console.log( selectedDate );
-                    result = false;
-
-                }
-            }
-
-        }
-
-        return result;
-    };
+    holidayFilter;
 
     constructor( private formBuilder: FormBuilder, private patientService: PatientService ) {
 
@@ -87,6 +71,31 @@ export class PatientMakeAppointment {
         console.log( doc );
         this.holidays = doc.holidays;
         this.timeSlots = doc.timeSlots;
+
+        //filter value is changed whenever the doctor is value is changed
+        this.holidayFilter = ( selectedDate: Date ): boolean => {
+
+            let result: boolean = true;
+
+            if ( this.holidays ) {
+
+                for ( let i = 0; i < this.holidays.length; i++ ) {
+
+
+                    let holiday: Date = this.holidays[i];
+
+                    if ( selectedDate.getTime() == parseInt( holiday.toString() ) * 1000 ) {
+                        console.log( holiday );
+                        console.log( selectedDate );
+                        result = false;
+
+                    }
+                }
+
+            }
+
+            return result;
+        };
         console.log( this.holidays );
     }
 
@@ -95,7 +104,15 @@ export class PatientMakeAppointment {
         this.patient.name = "ashutosh";
 
 
+        if ( window.navigator.geolocation ) {
+            window.navigator.geolocation.getCurrentPosition( position => {
+                console.log( position );
+            } );
+        }
+
         this.getDocForPatient();
+
+
 
         this.appointmentForm = this.formBuilder.group( {
 
@@ -105,7 +122,10 @@ export class PatientMakeAppointment {
 
         } );
 
+
+
     }
+
 
 
 
@@ -124,6 +144,17 @@ export class PatientMakeAppointment {
     docHover( dr ) {
         console.log( dr );
     }
+
+
+
+    getDocDetail( i: number ) {
+        let doc: Doctor = this.doctors[i];
+
+        return doc.addrLineOne;
+
+    }
+
+
 
 
 }
