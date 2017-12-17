@@ -28,12 +28,14 @@ public class Doctor {
 	private String about;
 	private List<Degree> degrees;
 	private List<Speciality> specialities;
-	private List<Integer> workingDays;
+	private List<Day> workingDays;
 	private String addrLineOne;
 	private String addrLineTwo;
 	private String state;
 	private String city;
 	private int maxAppointments;
+	
+	
 	public int getMaxAppointments() {
 		return maxAppointments;
 	}
@@ -44,7 +46,7 @@ public class Doctor {
 	
 	private AppointmentInDoctor appointments;
 	private int appointmentFee;
-	private List<TimeSlot> timeSlots;
+	
 	private List<Instant> holidays;
 	
 	
@@ -109,12 +111,7 @@ public class Doctor {
 	public void setAppointments(AppointmentInDoctor appointments) {
 		this.appointments = appointments;
 	}
-	public List<TimeSlot> getTimeSlots() {
-		return timeSlots;
-	}
-	public void setTimeSlots(List<TimeSlot> timeSlots) {
-		this.timeSlots = timeSlots;
-	}
+	
 	public List<Degree> getDegrees() {
 		return degrees;
 	}
@@ -133,11 +130,14 @@ public class Doctor {
 	public void setHolidays(List<Instant> holidays) {
 		this.holidays = holidays;
 	}
-	public List<Integer> getWorkingDays() {
+	public List<Day> getWorkingDays() {
 		return workingDays;
 	}
-	public void setWorkingDays(List<Integer> workingDays) {
+	public void setWorkingDays(List<Day> workingDays) {
 		this.workingDays = workingDays;
+	}
+	public void addDayToWorkingDays(Day day){
+		this.workingDays.add(day);
 	}
 	
 	

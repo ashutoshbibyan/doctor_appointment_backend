@@ -71,6 +71,30 @@ public class PatientService {
 		return this.doctorService.getDoctorForPatient(state,city);
 	}
 	
+
+	/** check if the patientId is exist in database and return the formresult object 
+	 *  true if it exist else false 
+	 *  @param String (patient id to be check )*/
+
+	public FormResult patientExist(String patientId) {
+		
+		this.patient=this.getPatient(patientId);
+		
+		if(this.patient==null){
+			this.formResult.setResult(false);
+			this.formResult.setError(true);
+			this.formResult.setMessage("No Patient exist with this id ");
+			
+		}
+		else {
+			this.formResult.setResult(true);
+			this.formResult.setError(false);
+			this.formResult.setMessage("Patient id is Okay");
+		}
+	        
+		return this.formResult;
+	}
+	
 	
 	
 	

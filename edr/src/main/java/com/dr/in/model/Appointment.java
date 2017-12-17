@@ -26,22 +26,23 @@ public class Appointment {
 	private String patientName;
 	private String status;
 	private boolean refund;
-	private TimeSlot timeSlot;
+	private Hours hours;
 	
 	
 	
+	public Hours getHours() {
+		return hours;
+	}
+	public void setHours(Hours hours) {
+		this.hours = hours;
+	}
 	public String getPatientPhoneNo() {
 		return patientPhoneNo;
 	}
 	public void setPatientPhoneNo(String patientPhoneNo) {
 		this.patientPhoneNo = patientPhoneNo;
 	}
-	public TimeSlot getTimeSlot() {
-		return timeSlot;
-	}
-	public void setTimeSlot(TimeSlot timeSlot) {
-		this.timeSlot = timeSlot;
-	}
+
 	public Instant getDate() {
 		return date;
 	}

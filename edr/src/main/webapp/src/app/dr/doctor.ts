@@ -1,6 +1,6 @@
 import { Address } from "../model/address";
 import { TimeSlot } from "../model/timeslot";
-
+import { Day } from "../model/day";
 import { Degree } from "../model/degree";
 import { Speciality } from "../model/speciality";
 
@@ -13,7 +13,7 @@ export class Doctor {
     public degrees: Degree[];
     public maxAppointments: number;
     public specialities: Speciality[];
-    public workingDays: number[];
+    public workingDays: Day[];
     public addrLineOne: string;
     public addrLineTwo: string;
     public state: string;

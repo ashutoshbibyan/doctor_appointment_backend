@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dr.in.model.Appointment;
+import com.dr.in.model.Day;
 import com.dr.in.model.Doctor;
 import com.dr.in.model.FormResult;
 import com.dr.in.model.QDoctor;
@@ -34,6 +35,9 @@ public class DoctorService {
 	
 	@Autowired
 	private DoctorRepository doctorRepository;
+	
+	@Autowired
+	private PatientService patientService;
 	
 	
 	/** saveDoctor method saves the doctor object and return the 
@@ -94,8 +98,6 @@ public class DoctorService {
 		if(this.doctor!=null){
 			// if there is an object then add the appoinetment setup information and save it to db
 			this.doctor.setAppointmentFee(doctor.getAppointmentFee());
-			this.doctor.setTimeSlots(doctor.getTimeSlots());
-			this.doctor.setWorkingDays(doctor.getWorkingDays());
 			this.doctor.setMaxAppointments(doctor.getMaxAppointments());
 			this.saveDoctor(this.doctor);
 		}
@@ -197,6 +199,7 @@ public class DoctorService {
 	public Doctor getPublicDoctor(String docId) {
 		
 		this.doctor=this.doctorRepository.findOnePublicDoctorBydocId(docId);
+		
 		
 		
 		List<Instant> holidays=this.doctor.getHolidays();
@@ -388,10 +391,44 @@ public class DoctorService {
 				
 	
 	}
+
+	/** save workingHours save the workingdays variable of doctor object into database 
+	 *  it takes List of days and insert it into doctor object 
+	 *  @param List<Day> (list of day class object )
+	 *  @param String (doctor id of the doctor )
+	 *  @return FormResult (object of the formresult class)*/
+
+	public FormResult saveWorkingHours(List<Day> workingDays , String docId) {
+		
+		this.doctor=this.doctorRepository.findOne(docId);
+		
+		if(this.doctor!=null){
+			this.doctor.setWorkingDays(workingDays);
+			this.formResult=this.saveDoctor(this.doctor);
+		}
+		
+		else{
+			this.formResult.setResult(false);
+			this.formResult.setError(true);
+			this.formResult.setMessage("Please Log in first ");
+		}
+		
+		return this.formResult;
+	}
 	
 	
 
+	/** patientExist method takes patient id as the parameter and return the formresult object as 
+	 *  result if there is a patient with given id in database it return true in form result else 
+	 *  return the error and message 
+	 *  @param String (patient id to be checked)
+	 *  @return FormResult (true if patient id exist else false)*/
+	
+	public FormResult patientExist(String patientId){
+	   return  this.patientService.patientExist(patientId);
+	}
 
+	
 	
 	
 

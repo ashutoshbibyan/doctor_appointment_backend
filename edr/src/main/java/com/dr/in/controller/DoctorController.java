@@ -1,6 +1,9 @@
 package com.dr.in.controller;
 
 import com.dr.in.model.Principal;
+
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.chrono.IsoEra;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dr.in.model.Appointment;
 import com.dr.in.model.City;
+import com.dr.in.model.Day;
 import com.dr.in.model.Degree;
 import com.dr.in.model.Doctor;
 import com.dr.in.model.FormResult;
@@ -252,6 +256,28 @@ public class DoctorController {
 		
 		
 		return this.doctorService.getHolidayAfter(today,currentUser.getName());
+	}
+	
+	/** saveWorkingHour function takes list of day object and save it as workingdays parameter of the 
+	 *  doctor object 
+	 *  @param Doctor (object of doctor containing working days )
+	 *  @return FormResult (object of the formresult class)*/
+	
+	@PostMapping(path="/api/private/dr/save/workingdays")
+	public FormResult saveWorkindHours(@RequestBody Doctor doctor , Principal currentUser){
+		
+		return this.doctorService.saveWorkingHours(doctor.getWorkingDays(),currentUser.getName());
+	}
+	
+	
+	/** patientExist method takes patientid as the parameter and return the formResult object as 
+	 *  the result its true if patient id exist in the database else false 
+	 *  @param String (patient id  to be checked )
+	 *  @return FormResult (object of the formresult class)*/
+	
+	@GetMapping(path="/api/private/dr/patient/exist")
+	public FormResult patientExist(@RequestParam String patientId){
+		return this.doctorService.patientExist(patientId);
 	}
 	
 	

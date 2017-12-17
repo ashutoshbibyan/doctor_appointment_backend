@@ -13,13 +13,16 @@ import { DoctorAppointmentShow } from "./doctor_appointment_show";
 import { DoctorHolidayShow } from "./doctor_holiday_show";
 import { DoctorService } from "./doctor_service";
 
+import { DoctorAddWorkingHours } from "./doctor_add_working_hours";
+
+
 
 
 @NgModule( {
     imports: [MaterialModule, FormsModule, DoctorRoutingModule, ReactiveFormsModule, CommonModule
     ],
     declarations: [DoctorSignup, DoctorHome, DoctorAppointmentSetup, DoctorHoliday, DoctorPanel
-        , DoctorMakeAppointment, DoctorAppointmentShow, DoctorHolidayShow],
+        , DoctorMakeAppointment, DoctorAppointmentShow, DoctorHolidayShow, DoctorAddWorkingHours],
     providers: [DoctorService],
     exports: [DoctorSignup]
 

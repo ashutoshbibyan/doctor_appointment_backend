@@ -1,5 +1,5 @@
 
-import { TimeSlot } from "./timeslot";
+import { Hours } from "../model/hours";
 
 
 export class Appointment {
@@ -13,6 +13,6 @@ export class Appointment {
     public patientPhoneNo: string;
     public status: string;
     public refund: boolean;
-    public timeSlot: TimeSlot;
+    public hours: Hours;
 
 }

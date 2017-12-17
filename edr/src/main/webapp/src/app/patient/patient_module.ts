@@ -10,11 +10,14 @@ import { PatientProfile } from "./patient_profile";
 import { PatientMakeAppointment } from "./patient_make_appointment";
 import { PatientAddAddress } from "./patient_add_address";
 import { AppCommonModule } from "../common/common_module";
+import { SearchDocUsingDocid } from "./search_doc_using_docid";
+import { SearchDocUsingDocName } from "./search_doc_using_docname";
+
 
 @NgModule( {
     imports: [PatientRoutingModule, MaterialModule, CommonModule, ReactiveFormsModule, AppCommonModule],
     declarations: [PatientSignup, PatientHome, PatientProfile, PatientMakeAppointment
-        , PatientAddAddress],
+        , PatientAddAddress, SearchDocUsingDocid, SearchDocUsingDocName],
     providers: [PatientService],
     exports: []
 } )

@@ -5,7 +5,10 @@ import { DoctorService } from "./doctor_service";
 import { Time } from "../model/time";
 import { holidayValidator } from "./holidayValidator";
 import { Appointment } from "../model/appointment";
+import { Hours } from "../model/hours";
+import { CommonService } from "../common/common_service";
 import { FormResult } from "../model/formresult";
+import { MatDatepickerInputEvent, MatTabChangeEvent } from "@angular/material";
 
 @Component( {
     selector: "doc-make-appointment",
@@ -17,6 +20,8 @@ export class DoctorMakeAppointment {
     holidays: Date[] = new Array();
 
     result: FormResult = new FormResult();
+
+    hours: Hours[] = new Array();
 
     today: Date = new Date();
 
@@ -86,13 +91,31 @@ export class DoctorMakeAppointment {
 
 
 
-    constructor( private formBuilder: FormBuilder, private doctorService: DoctorService ) {
+    constructor( private formBuilder: FormBuilder, private doctorService: DoctorService, private commonService: CommonService ) {
+
+    }
+
+    /** dateselected execute when user select a date and it change the hours value according 
+     *  to the day of the date */
+
+    dateSelected( event: MatDatepickerInputEvent<Date> ) {
+
+        let date: Date = event.value;
+
+
+        for ( let i = 0; i < this.doctor.workingDays.length; i++ ) {
+            if ( this.doctor.workingDays[i].dayId == date.getDay() ) {
+                this.hours = this.doctor.workingDays[i].hours;
+            }
+        }
+
 
     }
 
 
 
-
+    /** getDoctor method gets the details of the doctor and use it to get information like 
+     *  holidays , workingdays and hours */
     public getDoctor() {
         this.doctorService.getDoctorPublicInfo().subscribe(( data ) => {
             if ( data != undefined ) {
@@ -110,7 +133,7 @@ export class DoctorMakeAppointment {
                     if ( workingDays != null ) {
 
                         for ( let i = 0; i < workingDays.length; i++ ) {
-                            if ( day == workingDays[i] ) {
+                            if ( day == workingDays[i].dayId ) {
                                 result = true;
                             }
 
@@ -144,12 +167,12 @@ export class DoctorMakeAppointment {
     }
 
 
-
+    /** execute when user submit the form using patient id */
     submit() {
         let appointment: Appointment = new Appointment();
         appointment.patientId = this.appointmentForm.value.patientId;
         appointment.date = new Date( this.appointmentForm.value.date );
-        appointment.timeSlot = this.appointmentForm.value.timeSlot;
+        appointment.hours = this.appointmentForm.value.timeSlot;
         console.log( appointment );
 
         this.doctorService.makeAppointment( appointment ).subscribe(( data ) => {
@@ -161,12 +184,13 @@ export class DoctorMakeAppointment {
     }
 
 
+    /** execute when user submit the form without patient id */
     submitWithoutId() {
         let appointment: Appointment = new Appointment();
         appointment.patientName = this.appointmentWithoutPatientId.value.patientName;
         appointment.patientPhoneNo = this.appointmentWithoutPatientId.value.patientPhoneNo;
         appointment.date = this.appointmentWithoutPatientId.value.appointmentDate;
-        appointment.timeSlot = this.appointmentWithoutPatientId.value.appointmentTimeSlot;
+        appointment.hours = this.appointmentWithoutPatientId.value.appointmentTimeSlot;
 
         this.doctorService.makeAppointment( appointment ).subscribe(( data ) => {
             if ( data != undefined ) {
@@ -176,6 +200,33 @@ export class DoctorMakeAppointment {
     }
 
 
+    /** tabChanged execute when user choose any tab it reset all the field of previous tab 
+     *  so things won't mixed up in two tabs */
+    tabChanged( event: MatTabChangeEvent ) {
+
+        if ( event.index == 0 ) {
+
+            this.appointmentForm.reset();
+
+        }
+        else if
+        ( event.index == 1 ) {
+            this.appointmentWithoutPatientId.reset();
+        }
+
+    }
+
+    /** patientIdExist method check if the patient id exist in database or not 
+     *  it execute on change */
+
+    patientIdExist() {
+
+        this.doctorService.patientExist( this.patientId.value ).subscribe(( data ) => {
+            if ( data.json().error ) {
+                this.patientId.setErrors( { "noPatient": true } );
+            }
+        } );
+    }
 
 
 }

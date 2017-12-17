@@ -7,7 +7,7 @@ import { DoctorPanel } from "./doctor_panel";
 import { DoctorMakeAppointment } from "./doctor_make_appointment";
 import { DoctorAppointmentShow } from "./doctor_appointment_show";
 import { DoctorHolidayShow } from "./doctor_holiday_show";
-
+import { DoctorAddWorkingHours } from "./doctor_add_working_hours";
 
 const doctorAppointment: Route = { path: "dr/appointment", component: DoctorAppointmentSetup };
 
@@ -17,6 +17,7 @@ const doctorPanel: Route = { path: "dr/panel", component: DoctorPanel };
 const doctorMakeAppointment: Route = { path: "dr/make/appointment", component: DoctorMakeAppointment };
 const doctorAppointmentShow: Route = { path: "dr/show/appointment", component: DoctorAppointmentShow };
 const doctorHolidayShow: Route = { path: "dr/show/holiday", component: DoctorHolidayShow };
+const doctorAddWorkingHours: Route = { path: "dr/add/hours", component: DoctorAddWorkingHours };
 
 
 const doctorHome: Route = {
@@ -27,7 +28,8 @@ const doctorHome: Route = {
         doctorPanel,
         doctorMakeAppointment,
         doctorAppointmentShow,
-        doctorHolidayShow
+        doctorHolidayShow,
+        doctorAddWorkingHours
 
     ]
 };

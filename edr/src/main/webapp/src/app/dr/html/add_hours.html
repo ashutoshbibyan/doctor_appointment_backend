@@ -1,0 +1,667 @@
+
+<form [formGroup]="workingHoursForm">
+
+<h2 *ngIf="formResult.result" class="text-capitalize text-success">{{formResult.message}}</h2>
+
+<!--  first row start here  -->	
+	<div class="row">
+	
+	<div class="col-sm-2">
+          <label>Monday</label>	 
+	</div>
+
+     <div class="col-sm-3">
+     	 <mat-slide-toggle [checked]="getADay(mondayCode).checked" color="primary"  formControlName="mondayControl" id={{mondayCode}} name="Monday"  aria-labelledby="Close"
+
+     	  (change)="checked($event)">{{getADay(mondayCode).dayStatus}}</mat-slide-toggle>
+     </div>
+	
+	<div class="col-lg-7" *ngIf="getADay(mondayCode).checked">
+	
+	
+	<div class="row" *ngIf="mondayStartAt.value!=24 && mondayCloseAt.value!=24">
+	
+			<div   *ngFor=" let hour of getADay(mondayCode).hours;let x =index">
+	
+	
+				<div class="col-lg-4" >
+		
+					<label>{{getTimeLabel(hour.startAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label>{{getTimeLabel(hour.closeAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label><i class="glyphicon glyphicon-remove" (click)="hourDelete(mondayCode,x)"></i></label>
+				
+				</div>
+	
+			</div>
+		
+	</div>
+		
+		
+    <div class="row">
+    
+    				<div *ngIf="mondayCloseAt.value!=24" class="col-lg-4">
+				
+				
+				<mat-form-field >
+			
+							<mat-select  formControlName="mondayStartAt" placeholder="OpenAt" (change)="hourSelected(mondayStartAt.value,mondayCode)">
+								
+								<mat-option *ngFor="let hour of hourListOption" value={{hour.value}}>{{hour.label}}</mat-option>		
+							
+							</mat-select>
+							
+			
+			   </mat-form-field>
+		
+		
+		
+		</div>
+		
+		
+		<div  *ngIf="mondayStartAt.value!=24"  class="col-lg-4">
+		
+							
+					<mat-form-field >
+						
+						<mat-select formControlName="mondayCloseAt" placeholder="CloseAt" (change)="hourSelected(mondayCloseAt.value,mondayCode)">
+							
+							<mat-option *ngFor="let hour of hourListOption" value={{hour.value}} >{{hour.label}}</mat-option>				
+						</mat-select>
+						
+						
+					</mat-form-field>
+		
+		</div>
+		
+		<div *ngIf="mondayStartAt.value!=24 && mondayCloseAt.value!=24" class="col-lg-4">
+			
+			      <button mat-raised-button color="primary" (click)="addDayHour(mondayStartAt.value,mondayCloseAt.value,mondayCode)">Add Hours</button>
+		
+		</div>
+    
+    
+    </div>
+	
+	</div>
+	
+	
+	</div>
+	<!-- first row ends here  -->
+	
+	<!-- second row start here  -->
+	<div class="row"> 
+	
+			<div class="col-sm-2">
+          <label>Tuesday</label>	 
+	</div>
+
+     <div class="col-sm-3">
+     	 <mat-slide-toggle [checked]="getADay(tuesdayCode).checked" color="primary"  formControlName="tuesdayControl" id={{tuesdayCode}} name="Tuesday" (change)="checked($event)">
+     	 {{getADay(tuesdayCode).dayStatus}}
+     	 </mat-slide-toggle>
+     </div>
+	
+	<div class="col-lg-7" *ngIf="getADay(tuesdayCode).checked">
+	
+	
+	<div class="row"  *ngIf="tuesdayStartAt.value!=24 && tuesdayCloseAt.value!=24">
+	
+			<div   *ngFor=" let hour of getADay(tuesdayCode).hours;let x =index">
+	
+	
+				<div class="col-lg-4" >
+		
+					<label>{{getTimeLabel(hour.startAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label>{{getTimeLabel(hour.closeAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label><i class="glyphicon glyphicon-remove" (click)="hourDelete(tuesdayCode,x)"></i></label>
+				
+				</div>
+	
+			</div>
+		
+	</div>
+		
+		
+    <div class="row">
+    
+    				<div *ngIf="tuesdayCloseAt.value!=24" class="col-lg-4">
+				
+				
+				<mat-form-field >
+			
+							<mat-select  formControlName="tuesdayStartAt" placeholder="OpenAt" (change)="hourSelected(tuesdayStartAt.value,tuesdayCode)">
+								
+								<mat-option *ngFor="let hour of hourListOption" value={{hour.value}}>{{hour.label}}</mat-option>		
+								
+							</mat-select>
+			
+			   </mat-form-field>
+		
+		
+		
+		</div>
+		
+		
+		<div  *ngIf="tuesdayStartAt.value!=24"  class="col-lg-4">
+		
+							
+					<mat-form-field >
+						
+						<mat-select formControlName="tuesdayCloseAt" placeholder="CloseAt" (change)="hourSelected(tuesdayCloseAt.value,tuesdayCode)">
+							
+							<mat-option *ngFor="let hour of hourListOption" value={{hour.value}} >{{hour.label}}</mat-option>				
+							
+						</mat-select>
+						
+					</mat-form-field>
+		
+		</div>
+		
+		<div *ngIf="tuesdayStartAt.value!=24 && tuesdayCloseAt.value!=24" class="col-lg-4">
+			
+			      <button mat-raised-button color="primary" (click)="addDayHour(tuesdayStartAt.value,tuesdayCloseAt.value,tuesdayCode)">Add Hours</button>
+		
+		</div>
+    
+    
+    </div>
+	
+	</div>
+	
+	
+	</div>
+	
+	<!-- second row ends here  -->
+	
+	<!-- third row start here  -->
+	
+	<div class="row">
+	
+			<div class="col-sm-2">
+          <label>Wednesday</label>	 
+	</div>
+
+     <div class="col-sm-3">
+     	 <mat-slide-toggle [checked]="getADay(wednesdayCode).checked" color="primary" formControlName="wednesdayControl" id={{wednesdayCode}} name="Wednesday" (change)="checked($event)">
+     	 {{getADay(wednesdayCode).dayStatus}}
+     	 </mat-slide-toggle>
+     </div>
+	
+	<div class="col-lg-7" *ngIf="getADay(wednesdayCode).checked">
+	
+	
+	<div class="row"  *ngIf="wednesdayStartAt.value!=24 && wednesdayCloseAt.value!=24">
+	
+			<div   *ngFor=" let hour of getADay(wednesdayCode).hours;let x =index">
+	
+	
+				<div class="col-lg-4" >
+		
+					<label>{{getTimeLabel(hour.startAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label>{{getTimeLabel(hour.closeAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label><i class="glyphicon glyphicon-remove" (click)="hourDelete(wednesdayCode,x)"></i></label>
+				
+				</div>
+	
+			</div>
+		
+	</div>
+		
+		
+    <div class="row">
+    
+    				<div *ngIf="wednesdayCloseAt.value!=24" class="col-lg-4">
+				
+				
+				<mat-form-field >
+			
+							<mat-select  formControlName="wednesdayStartAt" placeholder="OpenAt" (change)="hourSelected(wednesdayStartAt.value,wednesdayCode)">
+								
+								<mat-option *ngFor="let hour of hourListOption" value={{hour.value}}>{{hour.label}}</mat-option>		
+							
+							</mat-select>
+			
+			   </mat-form-field>
+		
+		
+		
+		</div>
+		
+		
+		<div  *ngIf="wednesdayStartAt.value!=24"  class="col-lg-4">
+		
+							
+					<mat-form-field >
+						
+						<mat-select formControlName="wednesdayCloseAt" placeholder="CloseAt" (change)="hourSelected(wednesdayCloseAt.value,wednesdayCode)">
+							
+							<mat-option *ngFor="let hour of hourListOption" value={{hour.value}} >{{hour.label}}</mat-option>				
+						</mat-select>
+						
+					</mat-form-field>
+		
+		</div>
+		
+		<div *ngIf="wednesdayStartAt.value!=24 && wednesdayCloseAt.value!=24" class="col-lg-4">
+			
+			      <button mat-raised-button color="primary" (click)="addDayHour(wednesdayStartAt.value,wednesdayCloseAt.value,wednesdayCode)">Add Hours</button>
+		
+		</div>
+    
+    
+    </div>
+	
+	</div>
+	
+	
+					
+	
+	</div>
+	
+<!-- 	third row ends here  -->
+
+<!-- fourth row start here  -->
+<div class="row">
+
+		<div class="col-sm-2">
+          <label>Thursday</label>	 
+	</div>
+
+     <div class="col-sm-3">
+     	 <mat-slide-toggle [checked]="getADay(thursdayCode).checked" color="primary" formControlName="thursdayControl" id={{thursdayCode}} name="Thursday" (change)="checked($event)">
+     	 {{getADay(thursdayCode).dayStatus}}
+     	 </mat-slide-toggle>
+     </div>
+	
+	<div class="col-lg-7" *ngIf="getADay(thursdayCode).checked">
+	
+	
+	<div class="row"  *ngIf="thursdayStartAt.value!=24 && thursdayCloseAt.value!=24">
+	
+			<div   *ngFor=" let hour of getADay(thursdayCode).hours;let x =index">
+	
+	
+				<div class="col-lg-4" >
+		
+					<label>{{getTimeLabel(hour.startAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label>{{getTimeLabel(hour.closeAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label><i class="glyphicon glyphicon-remove" (click)="hourDelete(thursdayCode,x)"></i></label>
+				
+				</div>
+	
+			</div>
+		
+	</div>
+		
+		
+    <div class="row">
+    
+    				<div *ngIf="thursdayCloseAt.value!=24" class="col-lg-4">
+				
+				
+				<mat-form-field >
+			
+							<mat-select  formControlName="thursdayStartAt" placeholder="OpenAt" (change)="hourSelected(thursdayStartAt.value,thursdayCode)">
+								
+								<mat-option *ngFor="let hour of hourListOption" value={{hour.value}}>{{hour.label}}</mat-option>		
+							</mat-select>
+			
+			   </mat-form-field>
+		
+		
+		
+		</div>
+		
+		
+		<div  *ngIf="thursdayStartAt.value!=24"  class="col-lg-4">
+		
+							
+					<mat-form-field >
+						
+						<mat-select formControlName="thursdayCloseAt" placeholder="CloseAt" (change)="hourSelected(thursdayCloseAt.value,thursdayCode)">
+							
+							<mat-option *ngFor="let hour of hourListOption" value={{hour.value}} >{{hour.label}}</mat-option>				
+						</mat-select>
+						
+					</mat-form-field>
+		
+		</div>
+		
+		<div *ngIf="thursdayStartAt.value!=24 && thursdayCloseAt.value!=24" class="col-lg-4">
+			
+			      <button mat-raised-button color="primary" (click)="addDayHour(thursdayStartAt.value,thursdayCloseAt.value,thursdayCode)">Add Hours</button>
+		
+		</div>
+    
+    
+    </div>
+	
+	</div>
+	
+	
+
+</div>
+<!-- fourth row ends here  -->
+
+
+<!-- fifth row start here  -->
+<div class="row">
+
+			<div class="col-sm-2">
+          <label>Friday</label>	 
+	</div>
+
+     <div class="col-sm-3">
+     	 <mat-slide-toggle [checked]="getADay(fridayCode).checked" color="primary" formControlName="fridayControl" id={{fridayCode}} name="Friday" (change)="checked($event)">
+     	 {{getADay(fridayCode).dayStatus}}
+     	 </mat-slide-toggle>
+     </div>
+	
+	<div class="col-lg-7" *ngIf="getADay(fridayCode).checked">
+	
+	
+	<div class="row"  *ngIf="fridayStartAt.value!=24 && fridayCloseAt.value!=24">
+	
+			<div   *ngFor=" let hour of getADay(fridayCode).hours;let x =index">
+	
+	
+				<div class="col-lg-4" >
+		
+					<label>{{getTimeLabel(hour.startAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label>{{getTimeLabel(hour.closeAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label><i class="glyphicon glyphicon-remove" (click)="hourDelete(fridayCode,x)"></i></label>
+				
+				</div>
+	
+			</div>
+		
+	</div>
+		
+		
+    <div class="row">
+    
+    				<div *ngIf="fridayCloseAt.value!=24" class="col-lg-4">
+				
+				
+				<mat-form-field >
+			
+							<mat-select  formControlName="fridayStartAt" placeholder="OpenAt" (change)="hourSelected(fridayStartAt.value,fridayCode)">
+								
+								<mat-option *ngFor="let hour of hourListOption" value={{hour.value}}>{{hour.label}}</mat-option>		
+							</mat-select>
+			
+			   </mat-form-field>
+		
+		
+		
+		</div>
+		
+		
+		<div  *ngIf="fridayStartAt.value!=24"  class="col-lg-4">
+		
+							
+					<mat-form-field >
+						
+						<mat-select formControlName="fridayCloseAt" placeholder="CloseAt" (change)="hourSelected(fridayCloseAt.value,fridayCode)">
+							
+							<mat-option *ngFor="let hour of hourListOption" value={{hour.value}} >{{hour.label}}</mat-option>				
+						</mat-select>
+						
+					</mat-form-field>
+		
+		</div>
+		
+		<div *ngIf="fridayStartAt.value!=24 && fridayCloseAt.value!=24" class="col-lg-4">
+			
+			      <button mat-raised-button color="primary" (click)="addDayHour(fridayStartAt.value,fridayCloseAt.value,fridayCode)">Add Hours</button>
+		
+		</div>
+    
+    
+    </div>
+	
+	</div>
+
+</div>
+<!-- fifth row ends here -->
+
+<!-- sixth row start here  -->
+<div class="row">
+
+
+			
+			<div class="col-sm-2">
+          <label>Saturday</label>	 
+	</div>
+
+     <div class="col-sm-3">
+     	 <mat-slide-toggle [checked]="getADay(saturdayCode).checked" color="primary" formControlName="saturdayControl" id={{saturdayCode}} name="Saturday" (change)="checked($event)">
+     	 {{getADay(saturdayCode).dayStatus}}
+     	 </mat-slide-toggle>
+     </div>
+	
+	<div class="col-lg-7" *ngIf="getADay(saturdayCode).checked">
+	
+	
+	<div class="row"  *ngIf="saturdayStartAt.value!=24 && saturdayCloseAt.value!=24">
+	
+			<div   *ngFor=" let hour of getADay(saturdayCode).hours;let x =index">
+	
+	
+				<div class="col-lg-4" >
+		
+					<label>{{getTimeLabel(hour.startAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label>{{getTimeLabel(hour.closeAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label><i class="glyphicon glyphicon-remove" (click)="hourDelete(saturdayCode,x)"></i></label>
+				
+				</div>
+	
+			</div>
+		
+	</div>
+		
+		
+    <div class="row">
+    
+    				<div *ngIf="saturdayCloseAt.value!=24" class="col-lg-4">
+				
+				
+				<mat-form-field >
+			
+							<mat-select  formControlName="saturdayStartAt" placeholder="OpenAt" (change)="hourSelected(saturdayStartAt.value,saturdayCode)">
+								
+								<mat-option *ngFor="let hour of hourListOption" value={{hour.value}}>{{hour.label}}</mat-option>		
+							</mat-select>
+			
+			   </mat-form-field>
+		
+		
+		
+		</div>
+		
+		
+		<div  *ngIf="saturdayStartAt.value!=24"  class="col-lg-4">
+		
+							
+					<mat-form-field >
+						
+						<mat-select formControlName="saturdayCloseAt" placeholder="CloseAt" (change)="hourSelected(saturdayCloseAt.value,saturdayCode)">
+							
+							<mat-option *ngFor="let hour of hourListOption" value={{hour.value}} >{{hour.label}}</mat-option>				
+						</mat-select>
+						
+					</mat-form-field>
+		
+		</div>
+		
+		<div *ngIf="saturdayStartAt.value!=24 && saturdayCloseAt.value!=24" class="col-lg-4">
+			
+			      <button mat-raised-button color="primary" (click)="addDayHour(saturdayStartAt.value,saturdayCloseAt.value,saturdayCode)">Add Hours</button>
+		
+		</div>
+    
+    
+    </div>
+	
+	</div>
+			
+		
+
+
+
+</div>
+<!-- sixth row ends here  -->
+
+<!-- seventh row start here  -->
+<div class="row">
+
+
+				
+			<div class="col-sm-2">
+          <label>Sunday</label>	 
+	</div>
+
+     <div class="col-sm-3">
+     	 <mat-slide-toggle [checked]="getADay(sundayCode).checked" color="primary" formControlName="sundayControl" id={{sundayCode}} name="Sunday" (change)="checked($event)">
+     	 {{getADay(sundayCode).dayStatus}}
+     	 </mat-slide-toggle>
+     </div>
+	
+	<div class="col-lg-7" *ngIf="getADay(sundayCode).checked">
+	
+	
+	<div class="row"  *ngIf="sundayStartAt.value!=24 && sundayCloseAt.value!=24">
+	
+			<div   *ngFor=" let hour of getADay(sundayCode).hours;let x =index">
+	
+	
+				<div class="col-lg-4" >
+		
+					<label>{{getTimeLabel(hour.startAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label>{{getTimeLabel(hour.closeAt)}}</label>
+				
+				</div>
+				
+				<div class="col-lg-4">
+					<label><i class="glyphicon glyphicon-remove" (click)="hourDelete(sundayCode,x)"></i></label>
+				
+				</div>
+	
+			</div>
+		
+	</div>
+		
+		
+    <div class="row">
+    
+    				<div *ngIf="sundayCloseAt.value!=24" class="col-lg-4">
+				
+				
+				<mat-form-field >
+			
+							<mat-select  formControlName="sundayStartAt" placeholder="OpenAt" (change)="hourSelected(sundayStartAt.value,sundayCode)">
+								
+								<mat-option *ngFor="let hour of hourListOption" value={{hour.value}}>{{hour.label}}</mat-option>		
+							</mat-select>
+			
+			   </mat-form-field>
+		
+		
+		
+		</div>
+		
+		
+		<div  *ngIf="sundayStartAt.value!=24"  class="col-lg-4">
+		
+							
+					<mat-form-field >
+						
+						<mat-select formControlName="sundayCloseAt" placeholder="CloseAt" (change)="hourSelected(sundayCloseAt.value,sundayCode)">
+							
+							<mat-option *ngFor="let hour of hourListOption" value={{hour.value}} >{{hour.label}}</mat-option>				
+						</mat-select>
+						
+					</mat-form-field>
+		
+		</div>
+		
+		<div *ngIf="sundayStartAt.value!=24 && sundayCloseAt.value!=24" class="col-lg-4">
+			
+			      <button mat-raised-button color="primary" (click)="addDayHour(sundayStartAt.value,sundayCloseAt.value,sundayCode)">Add Hours</button>
+		
+		</div>
+    
+    
+    </div>
+	
+	</div>
+			
+		
+			
+			
+			
+
+
+</div>
+
+<!-- seventh row ends here  -->
+
+
+
+
+
+	<button mat-raised-button color="primary" (click)="submit()">Save</button>
+
+</form>
