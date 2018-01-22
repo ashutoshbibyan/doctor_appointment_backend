@@ -1,0 +1,55 @@
+<h3>Doctor Public Profile</h3>
+
+
+
+	<h4>Name : {{doctor.name}}</h4>
+	<h4>About:</h4>
+	<p>{{doctor.about}}</p>
+	
+	<h4>Qualification</h4>
+	<div *ngFor="let degree of doctor.degrees">
+		<h5>{{degree.degreeName}}</h5>
+	</div>
+	
+	<h4>Speciality:</h4>
+	<div *ngFor="let speciality of doctor.specialities">
+	
+		<h5>{{speciality.specialityName}}</h5>
+	
+	</div>
+	<h4>Working Days </h4>
+	<div *ngFor="let workingday of doctor.workingDays">
+	
+		<div class="row">
+		
+        <div class="col-md-4">
+		
+		<h5>{{workingday.dayName}}</h5>
+		
+		</div>
+		
+		<div class="col-md-8">
+		
+		<p  *ngFor="let hour of workingday.hours" >
+		
+		{{commonService.getTimeLabel(commonService.fromLocalTimeToString(hour.startAt))}}
+		To
+		{{commonService.getTimeLabel(commonService.fromLocalTimeToString(hour.closeAt))}}
+		
+		</p>
+		
+		</div>
+		
+		
+		</div>
+		<br>
+		
+		
+	</div>
+	
+	<h4>Address</h4>
+	<div>
+		<p>{{doctor.addrLineOne}}</p>
+		<p>{{doctor.city}}</p>
+	
+	</div>

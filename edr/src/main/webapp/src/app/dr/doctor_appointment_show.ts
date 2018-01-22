@@ -21,6 +21,14 @@ export class DoctorAppointmentShow {
     ] );
 
 
+
+
+    pageSize: number = 3;
+
+    totalPages: number;
+
+    pages: number[] = new Array();
+
     appointments: Appointment[];
 
     constructor( private doctorService: DoctorService, private formBuilder: FormBuilder ) {
@@ -28,32 +36,64 @@ export class DoctorAppointmentShow {
     }
 
     ngOnInit() {
-        //  this.getAppointments();
 
         this.dateForm = this.formBuilder.group( {
             from: this.from,
             to: this.to
         } );
+
+
     }
 
-    //    getAppointments() {
-    //        this.doctorService.getDocAppointment().subscribe(( data ) => {
-    //            if ( data != undefined ) {
-    //                this.appointments = data.json();
-    //
-    //            }
-    //        } );
-    //    }
 
 
-    submit() {
+    // get appointments gets the appointment from the data base
+
+    getAppointments( pageNo: number ) {
+
         let from: Date = this.dateForm.value.from;
         let to: Date = this.dateForm.value.to;
-        this.doctorService.getAppointmentOfPeriod( from, to ).subscribe(( data ) => {
+
+        this.doctorService.getAppointmentOfPeriod( from, to, pageNo, this.pageSize ).subscribe(( data ) => {
             if ( data != undefined ) {
-                this.appointments = data.json();
+                console.log( data.json() );
+                this.appointments = data.json().content;
+                this.totalPages = data.json().totalPages;
+
+                // here we are checking if there are more than one page                 
+                if ( this.totalPages > 1 ) {
+                    // here we are checking if we already created the pages array or not 
+                    if ( this.totalPages != this.pages.length ) {
+                        // if not create one 
+                        this.createPages( this.totalPages );
+                    }
+                }
+
             }
         } );
     }
+
+
+    createPages( noOfPages: number ) {
+
+        for ( let i = 0; i < noOfPages; i++ ) {
+            this.pages.push( i );
+        }
+
+        console.log( this.pages );
+    }
+
+
+
+
+
+    submit() {
+
+
+        this.getAppointments( 0 );
+
+    }
+
+
 
 }

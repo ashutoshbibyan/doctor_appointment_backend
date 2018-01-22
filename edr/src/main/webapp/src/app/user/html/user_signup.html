@@ -1,10 +1,16 @@
-   
+  <site-main-header></site-main-header> 
+  
+  
+  
+  <div class="content">
+  
+  			
+  			
   <form [formGroup]="userSignupForm" (ngSubmit)="submit()">
   
   
   
-  <div class="form-group">
-   
+ 
       <mat-form-field>
   			
   			<input matInput required type ="text" placeholder="Email" name="username" formControlName="email" >
@@ -15,9 +21,9 @@
   				Enter a valid Email
   			</mat-error>
   		</mat-form-field>
-  </div>
+
   
-  <div class="form-group">
+ 
     	<mat-form-field>
   			<input matInput required type="password" placeholder="Password" name="password" formControlName="password">
   		
@@ -26,28 +32,26 @@
   			</mat-error>
   		</mat-form-field>
   
-  </div>
   
-  <div class="form-group">
   			
   			
   			<mat-radio-group formControlName="role" name="role">
-  				<mat-radio-button  value="ROLE_DOCTOR">I am Doctor</mat-radio-button>
+  				<mat-radio-button  value="ROLE_DOCTOR" checked="true">I am Doctor</mat-radio-button>
   				<mat-radio-button value="ROLE_PATIENT">I am Patient</mat-radio-button>
   				
-  				<mat-error *ngIf="role.hasError('required')">Please select an option</mat-error>
+  			
   			</mat-radio-group>
   			
-  			
-  			
-  		
+  		<br>
+  		<br>  
+  		<button mat-raised-button color="primary" type="submit">Submit</button>
+  
+  </form>
+  
+  
   
   </div>
   
   
   
-    		
   
-  		<button mat-raised-button color="primary" type="submit">Submit</button>
-  
-  </form>

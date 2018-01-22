@@ -2,7 +2,7 @@ package com.dr.in.model;
 
 import java.util.List;
 
-public class Day {
+public class Day implements Comparable<Day> {
 	
 	private String dayName;
 	private int dayId;
@@ -52,6 +52,13 @@ public class Day {
 
 	public void setHours(List<Hours> hours) {
 		this.hours = hours;
+	}
+
+	
+	@Override
+	public int compareTo(Day o) {
+		
+		return this.dayId-o.dayId ;
 	}
 	
 	

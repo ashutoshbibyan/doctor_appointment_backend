@@ -1,5 +1,9 @@
-<form [formGroup]="loginForm" (ngSubmit)="submit()">
-			<div class="form-group">
+<site-main-header></site-main-header>
+
+<div class="content">
+
+		<form [formGroup]="loginForm" (ngSubmit)="submit()">
+			
 			
 				<mat-form-field class="fullwidth">
 				
@@ -15,9 +19,9 @@
 					
 				</mat-form-field>
 			
-			</div>
 			
-	        <div class="form-group">
+			
+	       
 	        
 	        <mat-form-field class="fullwidth">
 				
@@ -28,7 +32,10 @@
 					</mat-error>
 				</mat-form-field>
 	        
-	        </div>
+	       
+	        
+	        <br>
+	        <br>
 	        
 	        <button mat-raised-button color="primary" type="submit">Submit</button>
 				
@@ -36,4 +43,9 @@
 				
 				
 </form>
+
+
+</div>
+
+
 			

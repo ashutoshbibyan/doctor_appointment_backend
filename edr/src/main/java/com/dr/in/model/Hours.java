@@ -2,7 +2,7 @@ package com.dr.in.model;
 
 import java.time.LocalTime;
 
-public class Hours {
+public class Hours implements Comparable<Hours>{
 
 	private LocalTime startAt;
 	private LocalTime closeAt;
@@ -26,6 +26,13 @@ public class Hours {
 	
 	public void setCloseAt(LocalTime closeAt) {
 		this.closeAt = closeAt;
+	}
+
+
+	@Override
+	public int compareTo(Hours hour) {
+		// TODO Auto-generated method stub
+		return this.startAt.compareTo(hour.startAt);
 	}
 	
 	

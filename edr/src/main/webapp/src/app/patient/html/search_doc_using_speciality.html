@@ -1,0 +1,78 @@
+<h2>Search Doc Using Speciality</h2>
+
+<form [formGroup]="searchDocUsingSpecialityForm" (ngSubmit)="submit()">
+
+
+	<div class="form-group">
+		
+		<mat-form-field>
+		
+			<mat-select placeholder="Select Speciality" formControlName="speciality">
+				
+				<mat-option *ngFor="let speciality of specialities" [value]="speciality.specialityName">{{speciality.specialityName}}</mat-option>
+			
+			</mat-select>
+			
+		</mat-form-field>
+	
+	</div>
+	
+	<div class="form-group">
+		
+		<mat-form-field>
+		
+			<mat-select placeholder="Select State" formControlName="state" (change)="stateSelected()">
+				
+				<mat-option *ngFor="let state of states" [value]="state.stateId">{{state.stateName}}</mat-option>
+			
+			</mat-select>
+			
+		</mat-form-field>
+	
+	</div>
+	
+	<div class="form-group">
+		
+		<mat-form-field>
+		
+			<mat-select placeholder="Select City" formControlName="city">
+				
+				<mat-option *ngFor="let city of cities" [value]="city.cityName">{{city.cityName}}</mat-option>
+			
+			</mat-select>
+			
+		</mat-form-field>
+	
+	</div>
+	
+	
+	<div class="form-group">
+	
+		<button mat-raised-button color="primary" type="submit">Submit</button>
+	</div>
+
+
+</form>
+
+<div *ngIf="showDoc" >
+
+<div class="panel panel-success" *ngFor="let doctor of doctorList">
+
+<h4 class="panel-heading">Name : {{doctor.name}}</h4>
+	<div class="panel-body">
+	
+	<h4>About:</h4>
+	<p>{{doctor.about}}</p>
+	
+	<a href="/dr/public/profile/{{doctor.docId}}">Check Profile</a>
+
+	<button mat-raised-button color="accent" (click)="addDoctor(doctor)">Add Into List</button>
+	</div>
+	
+
+</div>
+	
+	
+	
+
+</div>

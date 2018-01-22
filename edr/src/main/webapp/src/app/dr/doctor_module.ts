@@ -12,6 +12,7 @@ import { DoctorMakeAppointment } from "./doctor_make_appointment";
 import { DoctorAppointmentShow } from "./doctor_appointment_show";
 import { DoctorHolidayShow } from "./doctor_holiday_show";
 import { DoctorService } from "./doctor_service";
+import { DoctorPublicProfile } from "./doctor_public_profile";
 
 import { DoctorAddWorkingHours } from "./doctor_add_working_hours";
 
@@ -22,7 +23,8 @@ import { DoctorAddWorkingHours } from "./doctor_add_working_hours";
     imports: [MaterialModule, FormsModule, DoctorRoutingModule, ReactiveFormsModule, CommonModule
     ],
     declarations: [DoctorSignup, DoctorHome, DoctorAppointmentSetup, DoctorHoliday, DoctorPanel
-        , DoctorMakeAppointment, DoctorAppointmentShow, DoctorHolidayShow, DoctorAddWorkingHours],
+        , DoctorMakeAppointment, DoctorAppointmentShow, DoctorHolidayShow, DoctorAddWorkingHours
+        , DoctorPublicProfile],
     providers: [DoctorService],
     exports: [DoctorSignup]
 

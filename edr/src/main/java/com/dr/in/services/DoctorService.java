@@ -5,18 +5,25 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dr.in.model.Appointment;
 import com.dr.in.model.Day;
 import com.dr.in.model.Doctor;
 import com.dr.in.model.FormResult;
+import com.dr.in.model.Patient;
 import com.dr.in.model.QDoctor;
+import com.dr.in.model.Speciality;
 import com.dr.in.repository.DoctorRepository;
 import com.querydsl.core.types.Predicate;
 
@@ -201,32 +208,34 @@ public class DoctorService {
 		this.doctor=this.doctorRepository.findOnePublicDoctorBydocId(docId);
 		
 		
-		
-		List<Instant> holidays=this.doctor.getHolidays();
-		
-		
-		// check if there is any holidays in database		
-		if(holidays!=null){
-			Iterator<Instant> iter= holidays.iterator();
+		if(this.doctor!=null){
+
+			List<Instant> holidays=this.doctor.getHolidays();
 			
-			List<Instant> sortedHoliday=new ArrayList<>();
 			
-			Instant today =Instant.now();
-			// we subtract one day from today so today is selected when checked with is after method 
-			today=today.minus(1,ChronoUnit.DAYS);
-			
-			while (iter.hasNext()){
-				Instant date=iter.next();
+			// check if there is any holidays in database		
+			if(holidays!=null){
+				Iterator<Instant> iter= holidays.iterator();
 				
-				if(date.isAfter(today)){
-					sortedHoliday.add(date);
+				List<Instant> sortedHoliday=new ArrayList<>();
+				
+				Instant today =Instant.now();
+				// we subtract one day from today so today is selected when checked with is after method 
+				today=today.minus(1,ChronoUnit.DAYS);
+				
+				while (iter.hasNext()){
+					Instant date=iter.next();
+					
+					if(date.isAfter(today)){
+						sortedHoliday.add(date);
+					}
 				}
+				// changed the holiday list removed all the holiday of past 
+				this.doctor.setHolidays(sortedHoliday);
 			}
-			// changed the holiday list removed all the holiday of past 
-			this.doctor.setHolidays(sortedHoliday);
 		}
 		
-	
+	    
 		
 		return this.doctor;
 	}
@@ -240,10 +249,23 @@ public class DoctorService {
 		
 		this.doctor=this.doctorRepository.findOne(appointment.getDoctorId());
 		
+		if(appointment.getPatientId()!=null){
+			
+			Patient patient=this.patientService.getPatient(appointment.getPatientId());
+			
+			appointment.setPatientName(patient.getName());
+			
+			appointment.setPatientPhoneNo(patient.getAddress().getPhoneNo());
+		}
+		
+		
+		
 						
 		int noOfAppointments=this.getNoOfAppointments(appointment.getDate(), appointment.getDoctorId());
 		
 		int maxNoOfAppointment=this.doctor.getMaxAppointments();
+		
+		
 		
 		if(noOfAppointments<maxNoOfAppointment){
 			
@@ -289,12 +311,16 @@ public class DoctorService {
 
 	/** getAppointmentPeriod method takes three parameter doctor id the starting date and 
 	 *  the closing date and return the list of appointments in between these two dates 
+	 * @param pageSize 
+	 * @param pageNo 
 	 *  @param Instant (from the date start)
 	 *  @param Instant (to the date ends)
 	 *  @param String  (doctor id )
+	 *  @param int (page no )
+	 *  @param int (page size)
 	 *  @return List<Appointment> (list of all the appointments in between)*/
-	public List<Appointment> getAppointmentPeriod(Instant from, Instant to, String docId) {
-		return this.appointmentService.getDocAppointmentOfPeriod(from, to,docId);
+	public Page<Appointment> getAppointmentPeriod(Instant from, Instant to, String docId, int pageNo, int pageSize) {
+		return this.appointmentService.getDocAppointmentOfPeriod(from, to,docId ,pageNo,pageSize);
 		
 	}
 
@@ -403,6 +429,13 @@ public class DoctorService {
 		this.doctor=this.doctorRepository.findOne(docId);
 		
 		if(this.doctor!=null){
+		    Collections.sort(workingDays);
+		    Iterator<Day> iter=workingDays.iterator();
+		    while(iter.hasNext()){
+		    	Day day= iter.next();
+		    	Collections.sort(day.getHours());
+		    	
+		    }
 			this.doctor.setWorkingDays(workingDays);
 			this.formResult=this.saveDoctor(this.doctor);
 		}
@@ -426,6 +459,53 @@ public class DoctorService {
 	
 	public FormResult patientExist(String patientId){
 	   return  this.patientService.patientExist(patientId);
+	}
+
+	
+	/** getDoctorUsingDocName method takes three parameter first is the doctor name the second 
+	 *  parameter is the state id and third is cityname and it serach the doctor with that name in 
+	 *  that state and with same city 
+	 *  @param String (doctor name )
+	 *  @param String (state id )
+	 *  @param String (city name )
+	 *  @param int (page no )
+	 *  @param int (page size no of object in a page )
+	 *  @return Page<Doctor> (list of doctor )*/
+
+	public Page<Doctor> getDoctorUsingDocName(String docName, String stateId, String cityName,int page , int pageSize) {
+		QDoctor qdoctor= new QDoctor("doctor");
+		
+		Predicate predicate=qdoctor.name.eq(docName).and(qdoctor.state.eq(stateId))
+				.and(qdoctor.city.eq(cityName));
+		
+		Pageable pageable = new PageRequest(page, pageSize);
+		
+		return   this.doctorRepository.findAll(predicate, pageable);
+	}
+
+	/** getDoctorUsingDocSpeciality method get the list of doctor using speciality and state and city it takes 
+	 *  five parameter 
+	 *  @param Speciality (speciality object )
+	 *  @param String (state id )
+	 *  @param String (city Name)
+	 *  @param int (page no )
+	 *  @param int (page size )
+	 *  @return Page<Doctor> (list of object of doctor class)
+	 *  
+	 *  */
+
+	public Page<Doctor> getDoctorUsingDocSpeciality(Speciality docSpeciality, String stateId, String cityName, int page,
+			int pageSize) {
+		
+		QDoctor qdoctor=new QDoctor("doctor");
+		
+		Predicate predicate = qdoctor.specialities.contains(docSpeciality).and(qdoctor.state.eq(stateId))
+				.and(qdoctor.city.eq(cityName));
+		
+		
+		Pageable pageable = new PageRequest(page, pageSize);
+		
+		return this.doctorRepository.findAll(predicate, pageable);
 	}
 
 	

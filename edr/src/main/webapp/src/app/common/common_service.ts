@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions, URLSearchParams } from "@angular/http";
 import { HourListOption } from "../model/hourListOptions";
 
 
+
 @Injectable()
 export class CommonService {
 
@@ -16,11 +17,14 @@ export class CommonService {
 
     }
 
+    /** getAllState method get all the state list present in database */
 
     public getAllState() {
         let url = "/api/public/dr/state/all";
         return this.http.get( url, this.commOptions );
     }
+
+    /** getAllCities method get all the cities for a perticular state */
 
     public getAllCities( stateId: string ) {
         let url = "/api/public/dr/city/all";
@@ -40,6 +44,56 @@ export class CommonService {
         }
 
         return "";
+    }
+
+
+    /** fromLocalTimeToString method takes array of string which contain two string value one is for hour 
+     *  and another is for minute and resturn the combined string value of time where hour and minute are 
+     *  seperated by :*/
+    fromLocalTimeToString( time: string[] ) {
+
+        let result: string;
+
+        // if its less than 10 its single digit so we add 0 before it 
+        if ( parseInt( time[0] ) < 10 ) {
+
+
+
+            if ( parseInt( time[1] ) == 0 ) {
+                result = "0" + time[0] + ":" + "0" + time[1];
+
+            }
+            else {
+                result = "0" + time[0] + ":" + time[1];
+
+            }
+
+        }
+        else {
+            // if its 0 its single digit 0 so we add 0 so it become 00
+            if ( parseInt( time[1] ) == 0 ) {
+                result = time[0] + ":" + "0" + time[1];
+            }
+
+            else {
+                result = time[0] + ":" + time[1];
+            }
+
+        }
+
+        return result;
+    }
+
+
+    public getAllDegree() {
+        let url = "/api/public/dr/degree/all";
+        return this.http.get( url, this.commOptions );
+    }
+
+
+    public getAllSpeciality() {
+        let url = "/api/public/dr/speciality/all";
+        return this.http.get( url, this.commOptions );
     }
 
 

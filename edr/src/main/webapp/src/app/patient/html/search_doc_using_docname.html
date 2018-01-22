@@ -1,1 +1,65 @@
 <h2>Search Using Doctor Name</h2>
+
+
+<form [formGroup]="searchUsingDocNameForm" (ngSubmit)="submit()">
+
+<div class="form-group">
+
+	<mat-form-field>
+	
+		<input matInput formControlName="docName" placeholder="Enter the name " type="text">
+		
+	</mat-form-field>
+
+	<mat-form-field>
+	
+		<mat-select formControlName="state" placeholder="Select A State" (change)="stateSelected()">
+		
+			<mat-option *ngFor="let state of states" [value]="state.stateId">{{state.stateName}}</mat-option>
+		
+		</mat-select>
+	
+	</mat-form-field>
+	
+	<mat-form-field>
+	
+		<mat-select formControlName="city" placeholder="Select A City" >
+				
+			<mat-option *ngFor="let city of cities" [value]="city.cityName">{{city.cityName}}</mat-option>
+			
+		</mat-select>
+	
+	</mat-form-field>
+	
+	<div class="form-group">
+	
+		<button mat-raised-button color="primary" type="submit"> Submit</button>
+	</div>
+
+</div>
+
+
+</form>
+
+
+<div *ngIf="showDoc" >
+
+<div class="panel panel-success" *ngFor="let doctor of doctorList">
+
+<h4 class="panel-heading">Name : {{doctor.name}}</h4>
+	<div class="panel-body">
+	
+	<h4>About:</h4>
+	<p>{{doctor.about}}</p>
+	
+	<a href="/dr/public/profile/{{doctor.docId}}">Check Profile</a>
+    <button mat-raised-button color="accent"  (click)=" addDoctor(doctor)">Add Doctor</button>
+	</div>
+	
+
+</div>
+	
+	
+	
+
+</div>

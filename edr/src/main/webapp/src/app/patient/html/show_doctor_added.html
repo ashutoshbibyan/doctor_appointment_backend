@@ -1,0 +1,18 @@
+<h2>Show Doctor Added List</h2>
+
+
+<div class="panel panel-success" *ngFor="let doctor of doctorList">
+
+<h4 class="panel-heading">Name : {{doctor.name}}</h4>
+	<div class="panel-body">
+	
+	<h4>Phone No :</h4>
+	<p>{{doctor.phoneno}}</p>
+	
+	<a href="/dr/public/profile/{{doctor.docId}}">Check Profile</a>
+
+	<button mat-raised-button color="accent" (click)="deleteDoctor(doctor)">Delete</button>
+	</div>
+	
+
+</div>

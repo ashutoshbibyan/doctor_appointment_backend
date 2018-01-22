@@ -3,6 +3,10 @@ import { FormBuilder, FormControl, Validators, FormGroup } from "@angular/forms"
 import { Patient } from "./patient";
 import { TimeSlot } from "../model/timeslot";
 import { Doctor } from "../dr/doctor";
+import { Day } from "../model/day";
+import { CommonService } from "../common/common_service";
+import { Hours } from "../model/hours";
+import { MatDatepickerInputEvent } from "@angular/material";
 import { PatientService } from "./patient_service";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
@@ -25,7 +29,9 @@ export class PatientMakeAppointment {
 
     currentDate: Date = new Date();
 
+    hours: Hours[] = new Array();
 
+    workingDays: Day[] = new Array();
 
     doctors: Doctor[] = new Array();
 
@@ -33,7 +39,6 @@ export class PatientMakeAppointment {
 
     timeSlots: TimeSlot[] = new Array();
 
-    // month is october but we use 9 becaue date.getmonth start from 0 
 
     holidays: Date[] = new Array();
 
@@ -58,7 +63,7 @@ export class PatientMakeAppointment {
 
     holidayFilter;
 
-    constructor( private formBuilder: FormBuilder, private patientService: PatientService ) {
+    constructor( private formBuilder: FormBuilder, private patientService: PatientService, private commonService: CommonService ) {
 
     }
 
@@ -70,12 +75,27 @@ export class PatientMakeAppointment {
         let doc: Doctor = this.appointmentForm.value.selectedDoc;
         console.log( doc );
         this.holidays = doc.holidays;
-        this.timeSlots = doc.timeSlots;
+        this.workingDays = doc.workingDays;
 
-        //filter value is changed whenever the doctor is value is changed
+
+        //filter value is changed whenever the doctor's value is changed
         this.holidayFilter = ( selectedDate: Date ): boolean => {
 
-            let result: boolean = true;
+            let day: number = selectedDate.getDay();
+            let result: boolean = false;
+
+            if ( this.workingDays ) {
+
+                for ( let i = 0; i < this.workingDays.length; i++ ) {
+                    if ( day == this.workingDays[i].dayId ) {
+                        result = true;
+                    }
+
+
+
+                }
+
+            }
 
             if ( this.holidays ) {
 
@@ -92,11 +112,25 @@ export class PatientMakeAppointment {
                     }
                 }
 
+
             }
 
             return result;
         };
         console.log( this.holidays );
+    }
+
+    /** dateSelected method execute when user select the date and change the time slots available at that day*/
+
+    dateSelected( event: MatDatepickerInputEvent<Date> ) {
+
+
+        for ( let i = 0; i < this.workingDays.length; i++ ) {
+            if ( this.workingDays[i].dayId == event.value.getDay() ) {
+                this.hours = this.workingDays[i].hours;
+            }
+        }
+
     }
 
 

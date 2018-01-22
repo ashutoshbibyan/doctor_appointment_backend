@@ -30,7 +30,21 @@ public class Patient {
 	private List<Disease> diseases;
 	
 	
+	private List<DoctorInPatient> doctors;
 	
+	
+	
+	public void addToDoctors(DoctorInPatient doctorInPatient){
+		this.doctors.add(doctorInPatient);
+	}
+	
+	
+	public List<DoctorInPatient> getDoctors() {
+		return doctors;
+	}
+	public void setDoctors(List<DoctorInPatient> doctors) {
+		this.doctors = doctors;
+	}
 	public String getPatientId() {
 		return patientId;
 	}

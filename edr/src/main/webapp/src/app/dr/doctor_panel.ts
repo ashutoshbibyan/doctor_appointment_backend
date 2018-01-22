@@ -13,6 +13,14 @@ export class DoctorPanel {
 
     appointments: Appointment[];
 
+    pageNo: number;
+
+    pageSize: number = 3;
+
+    totalPages: number;
+
+    pages: number[] = new Array();
+
     constructor( private doctorService: DoctorService ) {
 
     }
@@ -20,17 +28,43 @@ export class DoctorPanel {
 
     ngOnInit() {
 
-        this.getAppointments();
+        this.getAppointments( 0 );
 
     }
 
 
-    getAppointments() {
-        this.doctorService.getTodayAppointment().subscribe(( data ) => {
+    getAppointments( page: number ) {
+
+        this.pageNo = page;
+
+        this.doctorService.getTodayAppointment( this.pageNo, this.pageSize ).subscribe(( data ) => {
             if ( data != undefined ) {
-                this.appointments = data.json();
+                console.log( data.json() );
+                this.appointments = data.json().content;
+                this.totalPages = data.json().totalPages;
+
+                // here we are checking if there are more than one page                 
+                if ( this.totalPages > 1 ) {
+                    // here we are checking if we already created the pages array or not 
+                    if ( this.totalPages != this.pages.length ) {
+                        // if not create one 
+                        this.createPages( this.totalPages );
+                    }
+                }
+
             }
         } );
     }
+
+
+    createPages( noOfPages: number ) {
+
+        for ( let i = 0; i < noOfPages; i++ ) {
+            this.pages.push( i );
+        }
+
+        console.log( this.pages );
+    }
+
 
 }

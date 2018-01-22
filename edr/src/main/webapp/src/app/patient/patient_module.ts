@@ -12,12 +12,17 @@ import { PatientAddAddress } from "./patient_add_address";
 import { AppCommonModule } from "../common/common_module";
 import { SearchDocUsingDocid } from "./search_doc_using_docid";
 import { SearchDocUsingDocName } from "./search_doc_using_docname";
+import { SearchDocUsingSpeciality } from "./search_doc_using_speciality";
+import { ShowDoctorAdded } from "./show_doctors_added";
+import { AddDoctor } from "./add_doctor";
+import { AppointmentWithAddedDoctor } from "./appointment_with_added_doctor";
 
 
 @NgModule( {
     imports: [PatientRoutingModule, MaterialModule, CommonModule, ReactiveFormsModule, AppCommonModule],
     declarations: [PatientSignup, PatientHome, PatientProfile, PatientMakeAppointment
-        , PatientAddAddress, SearchDocUsingDocid, SearchDocUsingDocName],
+        , PatientAddAddress, SearchDocUsingDocid, SearchDocUsingDocName, SearchDocUsingSpeciality,
+        ShowDoctorAdded, AddDoctor, AppointmentWithAddedDoctor],
     providers: [PatientService],
     exports: []
 } )

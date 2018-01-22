@@ -2,7 +2,6 @@ package com.dr.in.controller;
 
 import com.dr.in.model.Principal;
 
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -14,9 +13,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -197,14 +200,17 @@ public class DoctorController {
 	 *  takes two parameter both are Instant of date one is starting and other is ending date
 	 *  @param Instant(from date instant)
 	 *  @param Instant(to date instant )
+	 *  @param int (page no )
+	 *  @param int (page size)
 	 *  @return List<Appointment> (list of the object of the appointment class)*/
 	@GetMapping(path="/api/private/dr/get/appointment/period")
-	public List<Appointment> getAppointmentPeriod(@RequestParam("from")  String from , @RequestParam("to") String to,Principal currentUser){
+	public Page<Appointment> getAppointmentPeriod(@RequestParam("from")  String from , @RequestParam("to") String to,
+			@RequestParam int pageNo , @RequestParam int pageSize ,Principal currentUser){
 		
 		
 		Instant fromInstant =Instant.ofEpochMilli(Long.parseLong(from));
 		Instant toInstant =Instant.ofEpochMilli(Long.parseLong(to));
-		return this.doctorService.getAppointmentPeriod(fromInstant,toInstant,currentUser.getName());
+		return this.doctorService.getAppointmentPeriod(fromInstant,toInstant,currentUser.getName(),pageNo,pageSize);
 	}
 	
 	
@@ -213,7 +219,7 @@ public class DoctorController {
 	 * @return List<Appointment> (list of the appointment class object )*/
 	
 	@GetMapping(path="/api/private/dr/get/appointment/today")	
-	public List<Appointment> getTodayAppointment(Principal currentUser){
+	public Page<Appointment> getTodayAppointment( @RequestParam int pageNo,@RequestParam int pageSize, Principal currentUser){
 	    
 		
 	    
@@ -223,7 +229,7 @@ public class DoctorController {
 	    
 	    
 	    
-		return this.doctorService.getAppointmentPeriod(yesterday, today,currentUser.getName());
+		return this.doctorService.getAppointmentPeriod(yesterday, today,currentUser.getName() ,pageNo,pageSize);
 	}
 	
 	
@@ -280,6 +286,20 @@ public class DoctorController {
 		return this.doctorService.patientExist(patientId);
 	}
 	
+	
+	/** getDoctorPublicProfile method takes doctor id as the parameter and return the 
+	 *  doctor object with all the fields available publically as a result if there is no 
+	 *  doctor with provided docid it return httpstaus no_content 204 with null value 
+	 *  @param String (doctor id )
+	 *  @return Doctor (doctor object )*/
+	@GetMapping(path="/api/public/dr/get/profile")
+	public Doctor getDoctorPublicProfile(@RequestParam String docId , HttpServletResponse response){
+		Doctor doc= this.doctorService.getPublicDoctor(docId);
+		if(doc==null){
+			response.setStatus(HttpStatus.NO_CONTENT.value());
+		}
+		return doc;
+	}
 	
 	
 }

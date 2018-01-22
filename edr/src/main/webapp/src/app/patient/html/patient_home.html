@@ -7,8 +7,10 @@
 		  	Appointment <i class="caret"></i></a>
  	  <div class="collapse" id="appointmentMenu">
  	  
- 	   <a class="list-group-item" routerLink="patient/make/appointment">Quick Appointment</a>
- 	   <a class="list-group-item" >Appointment Using Doctor Id</a>
+ 	   <a class="list-group-item" routerLink="appointment/with/added/doctor">Added Doctor</a>
+ 	   <a class="list-group-item" routerLink="patient/make/appointment">Dr In Your City</a>
+ 	   
+ 	  
  	  </div>
  	  
  	<a class="list-group-item" data-toggle="collapse" href="#searchDocMenu">
@@ -17,21 +19,13 @@
  	<div class="collapse"  id="searchDocMenu">
  		<a class="list-group-item" routerLink="search/using/docid"> Using Doctor Id</a>
  		<a class="list-group-item" routerLink="search/using/docname"> Using Doctor Name</a>
- 		<a class="list-group-item">Using Speciality</a>
+ 		<a class="list-group-item" routerLink="search/using/speciality">Using Speciality</a>
  		
  	</div>
  	
  	
- 	<a class="list-group-item" data-toggle="collapse" href="#doctorMenu">
- 	 Doctor<i class="caret"></i></a>
- 	 
- 	 <div class="collapse" id="doctorMenu">
- 	 
- 	 	<a class="list-group-item">Add</a>
- 	 	<a class="list-group-item">Doctors Added</a>
+ 	 	<a class="list-group-item" routerLink="show/doc/added" >Doctors Added</a>
  	 	
- 	 </div>
- 	
  	</div>
  	
  	

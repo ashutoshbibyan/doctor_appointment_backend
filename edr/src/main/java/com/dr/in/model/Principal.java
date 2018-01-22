@@ -2,7 +2,7 @@ package com.dr.in.model;
 
 public class Principal {
 
-	private String name="doctor@gmail.com";
+	private String name="lalitdoctor@gmail.com";
 
 	public String getName() {
 		return name;

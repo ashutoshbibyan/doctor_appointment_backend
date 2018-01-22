@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
@@ -85,19 +88,27 @@ public class AppointmentService {
 	
 	/** getDocAppointmentOfPeriod method takes three parameter starting date ending date and 
 	 *  the doctor id 
+	 * @param pageSize 
+	 * @param pageNo 
 	 *  @param Instant (starting date )
 	 *  @param Instant (ending date )
 	 *  @param String (doctor id )
+	 *  @param int (page no )
+	 *  @param int (page size)
 	 *  @return List<Appointment> (list of appointment object)*/
-	public List<Appointment> getDocAppointmentOfPeriod(Instant from , Instant to, String docId){
+	public Page<Appointment> getDocAppointmentOfPeriod(Instant from , Instant to, String docId, int pageNo, int pageSize){
 		QAppointment qappointment=new QAppointment("appointment");
 		Predicate betweendate=qappointment.date.after(from).and(qappointment.date.before(to));
 		Predicate predicate=qappointment.doctorId.eq(docId).and(betweendate);
 
 		OrderSpecifier<Instant> order= qappointment.date.asc();
 		
+		Sort sort = new Sort(Sort.Direction.ASC, "date");
 		
-		return (List<Appointment>) this.appointmentRepository.findAll(predicate,order);
+		Pageable page= new PageRequest(pageNo, pageSize ,sort);
+		
+		
+		return  this.appointmentRepository.findAll(predicate, page);
 		
 	}
 	
@@ -106,14 +117,16 @@ public class AppointmentService {
 	 *  return all the appointment of that doctor for that particular date 
 	 *  @param Instant (date )
 	 *  @param String (doctor id)
+	 *  @param int (page no )
+	 *  @param int (page size)
 	 *  @return List<Appointment> (list of all the appointment object )*/
-	public List<Appointment> getAppointmentOfSpecificDate(Instant to,String docId){
+	public Page<Appointment> getAppointmentOfSpecificDate(Instant to,String docId ,int pageNo,int pageSize){
 		
 		
 		    Instant from = to.minus(1,ChronoUnit.DAYS);
 		
 		
-	    return this.getDocAppointmentOfPeriod(from, to ,docId);
+	    return this.getDocAppointmentOfPeriod(from, to ,docId,pageNo,pageSize);
 	}
 
 
@@ -126,8 +139,8 @@ public class AppointmentService {
 	public int getNoOfAppointments(Instant date, String docId) {
 		QAppointment qappointment=new QAppointment("appointment");
 		Predicate predicate = qappointment.doctorId.eq(docId).and(qappointment.date.eq(date));
-		List<Appointment> appointments=(List<Appointment>) this.appointmentRepository.findAll(predicate);
-		return appointments.size();
+		 
+		return (int) this.appointmentRepository.count(predicate);
 		
 	}
 	

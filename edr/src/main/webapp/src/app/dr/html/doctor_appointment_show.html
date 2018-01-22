@@ -5,7 +5,7 @@
 		<mat-form-field>
 	       <input matInput formControlName="from"  [matDatepicker]="pickerfrom" placeholder="From">
 					  <mat-datepicker-toggle matSuffix [for]="pickerfrom"></mat-datepicker-toggle>
-					  <mat-datepicker #pickerfrom></mat-datepicker>
+					  <mat-datepicker touchUi="true" #pickerfrom></mat-datepicker>
 					  
 					  
 	   </mat-form-field>
@@ -15,7 +15,7 @@
 		<mat-form-field>
 	       <input matInput formControlName="to" [matDatepicker]="pickerto" placeholder="To">
 					  <mat-datepicker-toggle matSuffix [for]="pickerto"></mat-datepicker-toggle>
-					  <mat-datepicker #pickerto></mat-datepicker>
+					  <mat-datepicker touchUi="true" #pickerto></mat-datepicker>
 					  
 					  
 	   </mat-form-field>
@@ -50,8 +50,8 @@
 	
        </div>
       <div class="panel-footer">
-      <h5>Time: {{appointment.timeSlot.start.hour}}:{{appointment.timeSlot.start.minute}} 
-	{{appointment.timeSlot.start.meridien}}</h5>
+      <h5>Time- {{doctorService.getTimeLabel(appointment.hours.startAt)}} To 
+      		   {{doctorService.getTimeLabel(appointment.hours.closeAt)}}</h5>
       
       </div>
    </div>
@@ -59,11 +59,18 @@
 	
 	
 	
-	
-	
-	
 	</div>
 	
+	
+</div>
 
+
+<div class="col-sm-12">
+
+<div class="col-sm-1" *ngFor="let page of pages">
+		
+		<button class="btn btn-info" (click)="getAppointments(page)" >{{page}}</button>
+	
+</div>
 
 </div>

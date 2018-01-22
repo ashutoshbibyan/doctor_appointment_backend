@@ -107,7 +107,7 @@ public class CommonServices {
 	}
 
 	public List<State> getAllState() {
-		System.out.println(this.stateRepository.findAll().size());
+		
 		return this.stateRepository.findAllBy();
 	}
 	

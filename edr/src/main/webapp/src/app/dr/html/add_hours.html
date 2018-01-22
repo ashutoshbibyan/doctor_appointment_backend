@@ -1,7 +1,6 @@
 
 <form [formGroup]="workingHoursForm">
 
-<h2 *ngIf="formResult.result" class="text-capitalize text-success">{{formResult.message}}</h2>
 
 <!--  first row start here  -->	
 	<div class="row">
@@ -580,12 +579,12 @@
 	
 	<div class="row"  *ngIf="sundayStartAt.value!=24 && sundayCloseAt.value!=24">
 	
-			<div   *ngFor=" let hour of getADay(sundayCode).hours;let x =index">
+			<div   *ngFor=" let hour of getADay(sundayCode).hours;let x = index">
 	
 	
 				<div class="col-lg-4" >
 		
-					<label>{{getTimeLabel(hour.startAt)}}</label>
+				<label>{{getTimeLabel(hour.startAt)}}</label>
 				
 				</div>
 				
@@ -660,6 +659,7 @@
 
 
 
+<h2 *ngIf="formResult.result" class="text-capitalize text-success">{{formResult.message}}</h2>
 
 
 	<button mat-raised-button color="primary" (click)="submit()">Save</button>

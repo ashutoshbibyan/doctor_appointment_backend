@@ -9,6 +9,9 @@ import { PatientModule } from "./patient/patient_module";
 import { AppRoutes } from "./app_routes_config";
 import { Home } from "./home";
 import { SiteAdminModule } from "./site_admin/site_admin_module";
+import { ServiceWorkerModule } from "@angular/service-worker";
+import { environment } from "../environments/environment";
+
 
 
 import { AppComponent } from './app.component';
@@ -19,6 +22,7 @@ import { AppComponent } from './app.component';
     ],
     imports: [
         RouterModule.forRoot( AppRoutes ),
+        ServiceWorkerModule.register( '/ngsw-worker.js', { enabled: environment.production } ),
         BrowserModule, BrowserAnimationsModule, UserModule, FormsModule, MaterialModule,
         PatientModule, SiteAdminModule
     ],

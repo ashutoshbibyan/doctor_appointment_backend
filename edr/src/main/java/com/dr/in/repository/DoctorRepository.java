@@ -12,7 +12,7 @@ import com.querydsl.core.types.Predicate;
 public interface DoctorRepository extends MongoRepository<Doctor, String> ,QueryDslPredicateExecutor<Doctor>{
 	
 	
-	@Query(fields="{about:0,appointments:0}")
+	@Query(fields="{appointments:0}")
 	public Doctor findOnePublicDoctorBydocId(String docId);
 
 	@Query(value="{state:?0,city:?1}",fields="{appointments:0}")

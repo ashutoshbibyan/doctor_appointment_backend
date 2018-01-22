@@ -5,6 +5,7 @@ import { Appointment } from "../model/appointment";
 import { Hours } from "../model/hours";
 import { Day } from "../model/day";
 import { Observable } from "rxjs";
+import { CommonService } from "../common/common_service"
 
 
 
@@ -16,7 +17,7 @@ export class DoctorService {
     commOptions: RequestOptions = new RequestOptions( { headers: this.headers } );
 
 
-    constructor( private http: Http ) {
+    constructor( private http: Http, private commonService: CommonService ) {
 
     }
 
@@ -83,17 +84,25 @@ export class DoctorService {
         return this.http.get( url, this.commOptions );
     }
 
-    public getAppointmentOfPeriod( from: Date, to: Date ) {
+    /**getAppointmentOfPeriod method gets the appointment between a period and it sends result in pages
+     * format pageno and pagesize are get by parameter */
+
+    public getAppointmentOfPeriod( from: Date, to: Date, pageNo: number, pageSize: number ) {
         let url = "/api/private/dr/get/appointment/period";
         let param = new URLSearchParams();
         param.set( "from", from.getTime().toString() );
         param.set( "to", to.getTime().toString() );
+        param.set( "pageNo", pageNo.toString() );
+        param.set( "pageSize", pageSize.toString() );
         this.commOptions.params = param;
 
         return this.http.get( url, this.commOptions );
 
 
     }
+
+
+    /** getholidayofperiod method get the list of holidays between a time period */
 
     public getHolidayOfPeriod( from: Date, to: Date ) {
         let url = "/api/private/dr/get/holiday/period";
@@ -107,9 +116,16 @@ export class DoctorService {
 
     }
 
+    /** getTodayAppointment get the appointment of today it takes two parameter pageno and pagesize 
+     *  and send that page full of today's appointment */
 
-    public getTodayAppointment() {
+    public getTodayAppointment( pageNo: number, pageSize: number ) {
         let url = "/api/private/dr/get/appointment/today";
+
+        let param = new URLSearchParams();
+        param.set( "pageNo", pageNo.toString() );
+        param.set( "pageSize", pageSize.toString() );
+        this.commOptions.params = param;
 
         return this.http.get( url, this.commOptions );
     }
@@ -209,6 +225,15 @@ export class DoctorService {
         return result;
     }
 
+
+    /** getTimeLabel method takes the array of string which is got from database and convert it to 
+     *  time lable according to hourListOptions file */
+
+    getTimeLabel( hour: string[] ) {
+        return this.commonService.getTimeLabel( this.fromLocalTimeToString( hour ) );
+    }
+
+
     /** patient exist method takes patient id as parameter and checks if the patient exist in 
      *  database or not */
     patientExist( patientId: string ) {
@@ -217,6 +242,30 @@ export class DoctorService {
         param.set( "patientId", patientId );
         this.commOptions.params = param;
         return this.http.get( url, this.commOptions );
+    }
+
+    /** getPatientData method takes the patient id as a parameter and return the patient object 
+     *  as a result */
+
+    getPatientData( patientId: string ) {
+        let url: string = "/api/public/get/patient";
+        let param: URLSearchParams = new URLSearchParams();
+        param.set( "patientId", patientId );
+        this.commOptions.params = param;
+        return this.http.get( url, this.commOptions );
+    }
+
+    /** getDocUsingId method takes the doctor id as the parameter and return the doctor object */
+
+    getDocUsingId( docId: string ) {
+
+        let url: string = "/api/public/dr/get/profile";
+        let param: URLSearchParams = new URLSearchParams();
+        param.set( "docId", docId );
+        this.commOptions.params = param;
+        return this.http.get( url, this.commOptions );
+
+
     }
 
 

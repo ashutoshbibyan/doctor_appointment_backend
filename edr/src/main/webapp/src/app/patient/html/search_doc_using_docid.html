@@ -1,1 +1,55 @@
 <h2>Search Using DocId</h2>
+
+<form [formGroup]="searchDocForm" (ngSubmit)="Submit()">
+
+	<h4 *ngIf="result.error" class="text-capitalize text-danger">{{result.message}}</h4>
+	
+	<div class="form-group">
+		<mat-form-field>
+		<input matInput formControlName="docId" placeholder="Enter The Doctor Id" type="text">
+		</mat-form-field>
+		
+	</div>
+	
+	<button mat-raised-button color="primary" type="submit" >Search</button>
+
+</form>
+
+
+<div *ngIf="showDoc">
+
+<div class="panel panel-success">
+
+<h4 class="panel-heading">Name : {{doctor.name}}</h4>
+	<div class="panel-body">
+	
+	<h4>About:</h4>
+	<p>{{doctor.about}}</p>
+	
+	<a href="/dr/public/profile/{{doctor.docId}}">Check Profile</a>
+	
+<!-- 	<h4>Qualification</h4> -->
+<!-- 	<div *ngFor="let degree of doctor.degrees"> -->
+<!-- 		<h5>{{degree.degreeName}}</h5> -->
+<!-- 	</div> -->
+	
+<!-- 	<h4>Speciality:</h4> -->
+<!-- 	<div *ngFor="let speciality of doctor.specialities"> -->
+	
+<!-- 		<h5>{{speciality.specialityName}}</h5> -->
+	
+<!-- 	</div> -->
+<!-- 	<h4>Working Days </h4> -->
+<!-- 	<div *ngFor="let workingday of doctor.workingDays"> -->
+<!-- 		<h5>{{workingday.dayName}}</h5> -->
+<!-- 	</div> -->
+	
+	</div>
+	
+
+</div>
+	
+	
+	
+
+</div>

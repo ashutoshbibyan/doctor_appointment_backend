@@ -5,7 +5,7 @@ import {
     , MatTabsModule, MatCheckboxModule, MatRadioModule, MatStepperModule,
     MatSelectModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE, NativeDateAdapter
     , DateAdapter, MAT_DATE_FORMATS, MatSlideToggleModule, MatTableModule, MatTooltipModule,
-    MatAutocompleteModule
+    MatAutocompleteModule, MatToolbarModule
 
 } from "@angular/material";
 
@@ -15,7 +15,7 @@ import {
         , MatSidenavModule, MatListModule, MatProgressSpinnerModule, MatButtonModule
         , MatTabsModule, MatCheckboxModule, MatRadioModule, MatStepperModule, MatSelectModule
         , MatDatepickerModule, MatNativeDateModule, MatSlideToggleModule, MatTableModule, MatTooltipModule
-        , MatAutocompleteModule
+        , MatAutocompleteModule, MatToolbarModule
 
     ],
 
@@ -27,7 +27,7 @@ import {
         , MatSidenavModule, MatListModule, MatProgressSpinnerModule, MatButtonModule
         , MatTabsModule, MatCheckboxModule, MatRadioModule, MatStepperModule, MatSelectModule
         , MatDatepickerModule, MatNativeDateModule, MatSlideToggleModule, MatTableModule, MatTooltipModule
-        , MatAutocompleteModule
+        , MatAutocompleteModule, MatToolbarModule
     ]
 } )
 export class MaterialModule {
