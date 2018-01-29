@@ -8,7 +8,6 @@ public class Hours implements Comparable<Hours>{
 	private LocalTime closeAt;
 	
 	
-	
 	public LocalTime getStartAt() {
 		return startAt;
 	}

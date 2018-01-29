@@ -1,4 +1,4 @@
-<h2>Search Doc Using Speciality</h2>
+<h2 class="text-center">Search Doc Using Speciality</h2>
 
 <form [formGroup]="searchDocUsingSpecialityForm" (ngSubmit)="submit()">
 
@@ -56,18 +56,45 @@
 
 <div *ngIf="showDoc" >
 
-<div class="panel panel-success" *ngFor="let doctor of doctorList">
+<div  *ngFor="let doctor of doctorList">
 
-<h4 class="panel-heading">Name : {{doctor.name}}</h4>
-	<div class="panel-body">
+<mat-card>
+
+	<mat-card-header>
 	
-	<h4>About:</h4>
+		<mat-card-title>
+		
+			<h4>Name : {{doctor.name}}</h4>
+		</mat-card-title>
+	
+	</mat-card-header>
+	
+	
+	<mat-card-content>
+	
+	
+		<h4>About:</h4>
 	<p>{{doctor.about}}</p>
 	
-	<a href="/dr/public/profile/{{doctor.docId}}">Check Profile</a>
+	
+	</mat-card-content>
+	
+	
+	<mat-card-actions>
+	
+	<a mat-button href="/dr/public/profile/{{doctor.docId}}">Check Profile</a>
 
-	<button mat-raised-button color="accent" (click)="addDoctor(doctor)">Add Into List</button>
-	</div>
+	<button mat-button color="accent" (click)="addDoctor(doctor)">Add Into List</button>
+	
+	</mat-card-actions>
+	
+
+
+
+</mat-card>
+
+
+	
 	
 
 </div>

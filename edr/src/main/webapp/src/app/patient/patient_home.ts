@@ -8,7 +8,8 @@ import { FormControl, FormGroup, FormBuilder, Validators, ValidatorFn } from "@a
 
 @Component( {
     selector: "patient-home",
-    templateUrl: "./html/patient_home.html"
+    templateUrl: "./html/patient_home.html",
+    styleUrls: ["./css/patient_home.css"]
 } )
 
 export class PatientHome {

@@ -1,18 +1,63 @@
-<h2>Show Doctor Added List</h2>
+<h2 class="text-center">Show Doctor Added List</h2>
 
 
-<div class="panel panel-success" *ngFor="let doctor of doctorList">
 
-<h4 class="panel-heading">Name : {{doctor.name}}</h4>
-	<div class="panel-body">
+
+
+
+<div  *ngFor="let doctor of doctorList">
+
+<mat-card>
+
+
+<mat-card-header>
+
+
+
+
+
+	<mat-card-title>
 	
-	<h4>Phone No :</h4>
-	<p>{{doctor.phoneno}}</p>
+	<h4>Name : {{doctor.name}}</h4>
 	
-	<a href="/dr/public/profile/{{doctor.docId}}">Check Profile</a>
+	</mat-card-title>
 
-	<button mat-raised-button color="accent" (click)="deleteDoctor(doctor)">Delete</button>
-	</div>
+
+</mat-card-header>
+
+
+	<mat-card-content>
 	
+	
+	
+					<h4>Phone No :</h4>
+					<p>{{doctor.phoneno}}</p>
+	
+	
+	
+	
+	</mat-card-content>
+	
+	
+	<mat-card-actions>
+	
+	
+			<a mat-button href="/dr/public/profile/{{doctor.docId}}">Check Profile</a>
+			
+		
+			<button mat-button color="accent" (click)="deleteDoctor(doctor)">Delete</button>
+	
+	
+	</mat-card-actions>
+	
+
+
+
+
+
+
+
+</mat-card>
+
 
 </div>

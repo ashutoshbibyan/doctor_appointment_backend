@@ -24,7 +24,8 @@ const doctorPublicProfile: Route = { path: "dr/public/profile/:docId", component
 
 const doctorHome: Route = {
     path: "dr/home", component: DoctorHome, children: [
-
+        { path: "", component: DoctorPanel },
+        doctorSignUp,
         doctorAppointment,
         doctorHoliday,
         doctorPanel,
@@ -37,5 +38,5 @@ const doctorHome: Route = {
 };
 
 
-export const DoctorRoutes: Routes = [doctorSignUp, doctorHome, doctorPublicProfile];
+export const DoctorRoutes: Routes = [doctorHome, doctorPublicProfile];
 

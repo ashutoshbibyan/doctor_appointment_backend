@@ -24,7 +24,7 @@ export class SearchDocUsingSpeciality {
 
     showDoc: boolean = false;
 
-    pageSize: number = 10;
+    pageSize: number = 2;
 
     doctorList: Doctor[] = new Array();
 

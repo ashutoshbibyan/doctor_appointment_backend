@@ -13,7 +13,7 @@ import 'hammerjs';
 @Component( {
     selector: "add-hours",
     templateUrl: "./html/add_hours.html",
-    styles: ["label,mat-slide-toggle{border-top: .84375em solid transparent; padding: .4375em 0;}"]
+    styleUrls: ["./css/add_hours.css"]
 } )
 export class DoctorAddWorkingHours {
 

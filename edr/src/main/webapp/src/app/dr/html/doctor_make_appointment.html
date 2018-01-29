@@ -1,4 +1,4 @@
-<h4>Make An Appointment</h4>
+<h3 class="text-center">Make An Appointment</h3>
 
 
 
@@ -30,7 +30,7 @@
 					<mat-form-field>
 	       <input matInput (dateChange)="dateSelected($event)" formControlName="date" [min]="today"  [matDatepickerFilter]="workingDayFilter" [matDatepicker]="picker" placeholder="Choose a date">
 					  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-					  <mat-datepicker #picker></mat-datepicker>
+					  <mat-datepicker touchUi="true" #picker></mat-datepicker>
 					  
 					   <mat-error  class="text-capitalize" *ngIf="date.hasError('matDatepickerFilter')" class="text-capitalize" >
 					 Doctor is not available this day</mat-error>
@@ -102,7 +102,7 @@
 					<mat-form-field>
 	                  <input (dateChange)="dateSelected($event)" matInput [min]="today" [matDatepickerFilter]="workingDayFilter" formControlName="appointmentDate"   [matDatepicker]="pickertwo" placeholder="Choose a date">
 					  <mat-datepicker-toggle matSuffix [for]="pickertwo"></mat-datepicker-toggle>
-					  <mat-datepicker #pickertwo></mat-datepicker>
+					  <mat-datepicker touchUi="true" #pickertwo></mat-datepicker>
 					 
 					  <mat-error  class="text-capitalize" *ngIf="date.hasError('matDatepickerFilter')" class="text-capitalize" >
 					 Doctor is not available this day</mat-error>

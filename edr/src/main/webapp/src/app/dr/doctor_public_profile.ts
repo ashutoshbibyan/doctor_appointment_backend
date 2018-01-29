@@ -6,7 +6,8 @@ import { CommonService } from "../common/common_service";
 
 @Component( {
     selector: "doc-public-profile",
-    templateUrl: "./html/doctor_public_profile.html"
+    templateUrl: "./html/doctor_public_profile.html",
+    styleUrls: ["./css/doctor_public_profile.css"]
 } )
 
 export class DoctorPublicProfile {

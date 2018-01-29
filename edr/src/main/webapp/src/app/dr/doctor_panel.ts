@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { DoctorService } from "./doctor_service";
 import { Appointment } from "../model/appointment";
+import { PageEvent } from "@angular/material";
 
 
 @Component( {
@@ -15,11 +16,12 @@ export class DoctorPanel {
 
     pageNo: number;
 
-    pageSize: number = 3;
+    pageSize: number = 10;
 
-    totalPages: number;
+    totalElements: number;
 
-    pages: number[] = new Array();
+    showAppointment: boolean = false;
+
 
     constructor( private doctorService: DoctorService ) {
 
@@ -41,29 +43,21 @@ export class DoctorPanel {
             if ( data != undefined ) {
                 console.log( data.json() );
                 this.appointments = data.json().content;
-                this.totalPages = data.json().totalPages;
-
-                // here we are checking if there are more than one page                 
-                if ( this.totalPages > 1 ) {
-                    // here we are checking if we already created the pages array or not 
-                    if ( this.totalPages != this.pages.length ) {
-                        // if not create one 
-                        this.createPages( this.totalPages );
-                    }
+                this.totalElements = data.json().totalElements;
+                if ( this.appointments.length != 0 ) {
+                    this.showAppointment = true;
                 }
+
+
 
             }
         } );
     }
 
+    nextPage( event: PageEvent ) {
 
-    createPages( noOfPages: number ) {
+        this.getAppointments( event.pageIndex );
 
-        for ( let i = 0; i < noOfPages; i++ ) {
-            this.pages.push( i );
-        }
-
-        console.log( this.pages );
     }
 
 

@@ -1,3 +1,4 @@
+<h3 class="text-center">Choose A Time Interval</h3>
 <form [formGroup]="dateForm" (ngSubmit)="submit()">
 
 	<div class="form-group">
@@ -33,10 +34,12 @@
 
 
 
-<h4>List Of All Holidays</h4>
+<h4 class="text-center">List Of All Holidays</h4>
 
-<ul class="list-group" *ngFor="let date of holidayList">
+<mat-list *ngFor="let date of holidayList">
 
-	<li class="list-group-item">{{date*1000|date:"longDate"}}</li>
 
-</ul>
+	<mat-list-item>{{date*1000|date:"longDate"}}</mat-list-item>
+
+</mat-list>
+

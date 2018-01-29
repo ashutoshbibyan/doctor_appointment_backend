@@ -1,47 +1,69 @@
+<div id="container">
+
+
 <h3>Doctor Public Profile</h3>
 
 
 
-	<h4>Name : {{doctor.name}}</h4>
+	<h3>Name : {{doctor.name}}</h3>
 	<h4>About:</h4>
 	<p>{{doctor.about}}</p>
 	
 	<h4>Qualification</h4>
-	<div *ngFor="let degree of doctor.degrees">
-		<h5>{{degree.degreeName}}</h5>
-	</div>
 	
+	<mat-list>
+	
+	
+			<div *ngFor="let degree of doctor.degrees">
+				<mat-list-item><h5>{{degree.degreeName}}</h5></mat-list-item>
+			</div>
+			
+			
+    </mat-list>
+    
+    
+    
 	<h4>Speciality:</h4>
+	
+	<mat-list>
+	
 	<div *ngFor="let speciality of doctor.specialities">
 	
-		<h5>{{speciality.specialityName}}</h5>
+		<mat-list-item><h5>{{speciality.specialityName}}</h5></mat-list-item>
 	
 	</div>
+	
+	</mat-list>
 	<h4>Working Days </h4>
 	<div *ngFor="let workingday of doctor.workingDays">
 	
-		<div class="row">
+		
+		
+		<mat-list>
 		
         <div class="col-md-4">
 		
-		<h5>{{workingday.dayName}}</h5>
+		<mat-list-item><h5>{{workingday.dayName}}</h5></mat-list-item>
 		
 		</div>
 		
-		<div class="col-md-8">
 		
-		<p  *ngFor="let hour of workingday.hours" >
-		
+		<div *ngFor="let hour of workingday.hours" >
+		<p>
 		{{commonService.getTimeLabel(commonService.fromLocalTimeToString(hour.startAt))}}
-		To
+		 To
 		{{commonService.getTimeLabel(commonService.fromLocalTimeToString(hour.closeAt))}}
-		
 		</p>
-		
 		</div>
 		
 		
-		</div>
+		
+		
+		
+		
+		</mat-list>
+		
+		
 		<br>
 		
 		
@@ -53,3 +75,6 @@
 		<p>{{doctor.city}}</p>
 	
 	</div>
+
+
+</div>

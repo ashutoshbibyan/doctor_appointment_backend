@@ -1,4 +1,4 @@
-<h2>Search Using DocId</h2>
+<h2 class="text-center">Search Using DocId</h2>
 
 <form [formGroup]="searchDocForm" (ngSubmit)="Submit()">
 
@@ -18,38 +18,35 @@
 
 <div *ngIf="showDoc">
 
-<div class="panel panel-success">
+<mat-card>
 
-<h4 class="panel-heading">Name : {{doctor.name}}</h4>
-	<div class="panel-body">
+	<mat-card-header>
+	
+		<mat-card-title>
+		
+		<h4 class="panel-heading">Name : {{doctor.name}}</h4>
+		
+		</mat-card-title>
+	
+	</mat-card-header>
+	
+	<mat-card-content>
 	
 	<h4>About:</h4>
 	<p>{{doctor.about}}</p>
 	
-	<a href="/dr/public/profile/{{doctor.docId}}">Check Profile</a>
 	
-<!-- 	<h4>Qualification</h4> -->
-<!-- 	<div *ngFor="let degree of doctor.degrees"> -->
-<!-- 		<h5>{{degree.degreeName}}</h5> -->
-<!-- 	</div> -->
+	</mat-card-content>
 	
-<!-- 	<h4>Speciality:</h4> -->
-<!-- 	<div *ngFor="let speciality of doctor.specialities"> -->
+	<mat-card-actions>
+	<a mat-button href="/dr/public/profile/{{doctor.docId}}">Check Profile</a>
 	
-<!-- 		<h5>{{speciality.specialityName}}</h5> -->
-	
-<!-- 	</div> -->
-<!-- 	<h4>Working Days </h4> -->
-<!-- 	<div *ngFor="let workingday of doctor.workingDays"> -->
-<!-- 		<h5>{{workingday.dayName}}</h5> -->
-<!-- 	</div> -->
-	
-	</div>
-	
+	</mat-card-actions>
 
-</div>
-	
-	
+
+</mat-card>
+
+
 	
 
 </div>

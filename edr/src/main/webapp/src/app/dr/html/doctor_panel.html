@@ -1,4 +1,11 @@
-<h3>List of Today's Appointments</h3>
+
+<h3 *ngIf="!showAppointment">There are no appointment today</h3>
+
+<div *ngIf="showAppointment">
+
+
+
+<h3 class="text-center">List of Today's Appointments</h3>
 
 
 
@@ -6,45 +13,42 @@
 <div  *ngFor="let appointment of appointments">
 
 
+	<mat-card>
 	
 	
-	<div >
-	
-			<div class="panel panel-info">
-			   <div class="panel-heading">
-		    		<h5>Date:{{appointment.date*1000|date:'mediumDate'}}</h5>
-		       </div>  
-		       <div class="panel-body">
-		             <h6>PatientId {{appointment.patientId}}</h6>
-			         <h6>Patient Name:{{appointment.patientName}}</h6>
-			         <h6>Patient PhoneNo:{{appointment.patientPhoneNo}}</h6>
-			
-		       </div>
-		      <div class="panel-footer">
-		      <h5>Time: {{doctorService.getTimeLabel(appointment.hours.startAt)}} To 
-		      		   {{doctorService.getTimeLabel(appointment.hours.closeAt)}}</h5>
-		      
-		      </div>
-		   </div>
-				
-	
-	</div>	
-	
-	
-	
-
-</div>
-
-
-<div>
-
-		<div  *ngFor="let page of pages">
-				
-				<button class="btn btn-info" (click)="getAppointments(page)" >{{page}}</button>
-			
-		</div>
+		<mat-card-header>
 		
-
+			<mat-card-title> <h5>Date:{{appointment.date*1000|date:'mediumDate'}}</h5> </mat-card-title>
+			
+		
+		</mat-card-header>
+		
+		
+		<mat-card-content>
+		 <h6>PatientId {{appointment.patientId}}</h6>
+		<h6>Patient Name:{{appointment.patientName}}</h6>
+	    <h6>Patient PhoneNo:{{appointment.patientPhoneNo}}</h6>
+		<h5>Time: {{doctorService.getTimeLabel(appointment.hours.startAt)}} To 
+		      		   {{doctorService.getTimeLabel(appointment.hours.closeAt)}}</h5>
+		</mat-card-content>
+	
+	
+	</mat-card>
+	
+	
 </div>
 
 
+<mat-paginator [length]="totalElements" [pageSize]="pageSize" (page)="nextPage($event)">
+
+
+
+</mat-paginator>
+
+
+
+
+
+
+
+</div>

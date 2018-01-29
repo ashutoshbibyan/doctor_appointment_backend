@@ -117,8 +117,10 @@ export class DoctorMakeAppointment {
     /** getDoctor method gets the details of the doctor and use it to get information like 
      *  holidays , workingdays and hours */
     public getDoctor() {
+
         this.doctorService.getDoctorPublicInfo().subscribe(( data ) => {
             if ( data != undefined ) {
+                console.log( data );
                 this.doctor = data.json();
 
                 /* filter is dependent on the doctor object thats why 

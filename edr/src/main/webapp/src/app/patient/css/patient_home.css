@@ -4,8 +4,3 @@ html, body, app-root, mat-sidenav-container, .my-content {
   height: 100%;
 }
 
-mat-sidenav{
-	width: 70%;
-	
-	
-}

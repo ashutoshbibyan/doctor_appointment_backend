@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { DoctorService } from "./doctor_service";
 import { Appointment } from "../model/appointment";
 import { FormControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { PageEvent } from "@angular/material";
 
 @Component( {
     selector: "doc-appointment-show",
@@ -23,11 +24,11 @@ export class DoctorAppointmentShow {
 
 
 
-    pageSize: number = 3;
+    pageSize: number = 10;
 
-    totalPages: number;
+    totalElements: number = 0;
 
-    pages: number[] = new Array();
+
 
     appointments: Appointment[];
 
@@ -58,30 +59,15 @@ export class DoctorAppointmentShow {
             if ( data != undefined ) {
                 console.log( data.json() );
                 this.appointments = data.json().content;
-                this.totalPages = data.json().totalPages;
+                this.totalElements = data.json().totalElements;
 
-                // here we are checking if there are more than one page                 
-                if ( this.totalPages > 1 ) {
-                    // here we are checking if we already created the pages array or not 
-                    if ( this.totalPages != this.pages.length ) {
-                        // if not create one 
-                        this.createPages( this.totalPages );
-                    }
-                }
+
 
             }
         } );
     }
 
 
-    createPages( noOfPages: number ) {
-
-        for ( let i = 0; i < noOfPages; i++ ) {
-            this.pages.push( i );
-        }
-
-        console.log( this.pages );
-    }
 
 
 
@@ -91,6 +77,13 @@ export class DoctorAppointmentShow {
 
 
         this.getAppointments( 0 );
+
+    }
+
+
+    nextPage( event: PageEvent ) {
+        console.log( event );
+        this.getAppointments( event.pageIndex );
 
     }
 

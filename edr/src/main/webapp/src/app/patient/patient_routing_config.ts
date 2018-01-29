@@ -36,6 +36,7 @@ const patientHome: Route = {
     path: "patient/home", component: PatientHome, children: [
 
         { path: "", component: PatientMakeAppointment },
+        patientSignup,
         patientMakeAppointment,
         patientAddAddress,
         searchDocUsingDocid,
@@ -49,4 +50,4 @@ const patientHome: Route = {
 };
 
 
-export const PatientRoutes: Routes = [patientSignup, patientHome, patientProfile];
+export const PatientRoutes: Routes = [patientHome, patientProfile];
