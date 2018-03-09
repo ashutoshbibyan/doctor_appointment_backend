@@ -4,12 +4,15 @@ import { AddressForm } from "./address_form";
 import { CommonService } from "./common_service";
 import { MaterialModule } from "../material/material.module";
 import { CommonModule } from "@angular/common";
+import { UserImageUpload } from "./user_image_upload";
+import { UserImageGallery } from "./user_image_gallery";
+import { UserChooseProfileImage } from "./user_choose_profile_image";
 
 
 @NgModule( {
     imports: [MaterialModule, CommonModule, ReactiveFormsModule],
-    declarations: [AddressForm],
-    exports: [AddressForm],
+    declarations: [AddressForm, UserImageUpload, UserImageGallery, UserChooseProfileImage],
+    exports: [AddressForm, UserChooseProfileImage],
     providers: [CommonService]
 } )
 

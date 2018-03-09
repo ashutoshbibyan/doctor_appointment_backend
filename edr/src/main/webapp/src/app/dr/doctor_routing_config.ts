@@ -9,9 +9,10 @@ import { DoctorAppointmentShow } from "./doctor_appointment_show";
 import { DoctorHolidayShow } from "./doctor_holiday_show";
 import { DoctorAddWorkingHours } from "./doctor_add_working_hours";
 import { DoctorPublicProfile } from "./doctor_public_profile";
+import { DoctorProfileEdit } from "./doctor_profile_edit";
 
 const doctorAppointment: Route = { path: "dr/appointment", component: DoctorAppointmentSetup };
-
+const doctorProfileEdit: Route = { path: "dr/profile/edit", component: DoctorProfileEdit };
 const doctorHoliday: Route = { path: "dr/holiday", component: DoctorHoliday };
 const doctorSignUp: Route = { path: "dr/signup", component: DoctorSignup };
 const doctorPanel: Route = { path: "dr/panel", component: DoctorPanel };
@@ -32,7 +33,8 @@ const doctorHome: Route = {
         doctorMakeAppointment,
         doctorAppointmentShow,
         doctorHolidayShow,
-        doctorAddWorkingHours
+        doctorAddWorkingHours,
+        doctorProfileEdit
 
     ]
 };

@@ -54,7 +54,12 @@
 
 </form>
 
+<h3 class="text-center text-success" *ngIf="result.result">{{result.message}}</h3>
+<h3 class="text-center text-danger"  *ngIf="result.error">{{result.message}}</h3>
+
 <div *ngIf="showDoc" >
+
+<div class="grid-container">
 
 <div  *ngFor="let doctor of doctorList">
 
@@ -96,6 +101,8 @@
 
 	
 	
+
+</div>
 
 </div>
 	

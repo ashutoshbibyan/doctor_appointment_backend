@@ -2,9 +2,6 @@
 
 
 
-<h4 *ngIf="result.result" class="text-capitalize text-success">{{result.message}}</h4>
-<h4 *ngIf="result.error" class="text-capitalize text-danger">{{result.message}}</h4>
-
 
 <mat-tab-group (selectedTabChange)="tabChanged($event)">
   <mat-tab  label="Using Patient Id">
@@ -46,9 +43,9 @@
 					<mat-form-field>
 						<mat-select formControlName="timeSlot" placeholder="Choose A TimeSlot">
 							<mat-option *ngFor="let hour of hours"  [value]="hour">
-	       						{{commonService.getTimeLabel(doctorService.fromLocalTimeToString(hour.startAt))}}
+	       						{{commonService.getTimeLabel(hour.startAt)}}
 	       						to
-	       						{{commonService.getTimeLabel(doctorService.fromLocalTimeToString(hour.closeAt))}}
+	       						{{commonService.getTimeLabel(hour.closeAt)}}
 							</mat-option>
 							
 						</mat-select>
@@ -116,9 +113,9 @@
 					<mat-form-field>
 						<mat-select  placeholder="Choose A TimeSlot" formControlName="appointmentTimeSlot">
 							<mat-option *ngFor="let hour of hours"  [value]="hour">
-	       						{{commonService.getTimeLabel(doctorService.fromLocalTimeToString(hour.startAt))}}
+	       						{{commonService.getTimeLabel(hour.startAt)}}
 	       						to
-	       						{{commonService.getTimeLabel(doctorService.fromLocalTimeToString(hour.closeAt))}}
+	       						{{commonService.getTimeLabel(hour.closeAt)}}
 							</mat-option>
 							
 						</mat-select>

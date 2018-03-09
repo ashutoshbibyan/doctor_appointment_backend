@@ -13,20 +13,25 @@ import { DoctorAppointmentShow } from "./doctor_appointment_show";
 import { DoctorHolidayShow } from "./doctor_holiday_show";
 import { DoctorService } from "./doctor_service";
 import { DoctorPublicProfile } from "./doctor_public_profile";
-
+import { DoctorProfileEdit } from "./doctor_profile_edit";
+import { AppCommonModule } from "../common/common_module";
 import { DoctorAddWorkingHours } from "./doctor_add_working_hours";
+import { UserChooseProfileImage } from "../common/user_choose_profile_image";
 
 
 
 
 @NgModule( {
     imports: [MaterialModule, FormsModule, DoctorRoutingModule, ReactiveFormsModule, CommonModule
+        , AppCommonModule
+
     ],
     declarations: [DoctorSignup, DoctorHome, DoctorAppointmentSetup, DoctorHoliday, DoctorPanel
         , DoctorMakeAppointment, DoctorAppointmentShow, DoctorHolidayShow, DoctorAddWorkingHours
-        , DoctorPublicProfile],
+        , DoctorPublicProfile, DoctorProfileEdit],
     providers: [DoctorService],
-    exports: [DoctorSignup]
+    exports: [DoctorSignup],
+    entryComponents: [UserChooseProfileImage]
 
 } )
 

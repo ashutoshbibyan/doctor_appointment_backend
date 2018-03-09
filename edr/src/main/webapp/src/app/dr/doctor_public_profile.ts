@@ -37,7 +37,7 @@ export class DoctorPublicProfile {
         this.doctorService.getDocUsingId( this.docId ).subscribe(( data ) => {
             if ( data.status != 204 ) {
                 this.doctor = data.json();
-                console.log( this.doctor );
+                this.doctor.workingDays = this.doctorService.deseralizeWorkingDays( this.doctor.workingDays );
 
             }
         } );

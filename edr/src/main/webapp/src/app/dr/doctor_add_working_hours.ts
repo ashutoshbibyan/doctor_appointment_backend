@@ -9,6 +9,8 @@ import { Doctor } from "./doctor";
 import { Hours } from "../model/hours";
 import { FormGroup, FormControl, FormBuilder, Validators } from "@angular/forms";
 import 'hammerjs';
+import { LocalTime } from "js-joda";
+import { MatSnackBar } from "@angular/material";
 
 @Component( {
     selector: "add-hours",
@@ -16,6 +18,8 @@ import 'hammerjs';
     styleUrls: ["./css/add_hours.css"]
 } )
 export class DoctorAddWorkingHours {
+
+    progress: boolean = true;
 
     workState: string = "closed";
 
@@ -34,11 +38,15 @@ export class DoctorAddWorkingHours {
 
     mondayCloseAt: FormControl = new FormControl( "", [] );
 
+    mondayAppointmentNo: FormControl = new FormControl( "", [] );
+
     tuesdayControl: FormControl = new FormControl( "", [] );
 
     tuesdayStartAt: FormControl = new FormControl( "", [] );
 
     tuesdayCloseAt: FormControl = new FormControl( "", [] );
+
+    tuesdayAppointmentNo: FormControl = new FormControl( "", [] );
 
     wednesdayControl: FormControl = new FormControl( "", [] );
 
@@ -46,11 +54,15 @@ export class DoctorAddWorkingHours {
 
     wednesdayCloseAt: FormControl = new FormControl( "", [] );
 
+    wednesdayAppointmentNo: FormControl = new FormControl( "", [] );
+
     thursdayControl: FormControl = new FormControl( "", [] );
 
     thursdayStartAt: FormControl = new FormControl( "", [] );
 
     thursdayCloseAt: FormControl = new FormControl( "", [] );
+
+    thursdayAppointmentNo: FormControl = new FormControl( "", [] );
 
     fridayControl: FormControl = new FormControl( "", [] );
 
@@ -58,17 +70,23 @@ export class DoctorAddWorkingHours {
 
     fridayCloseAt: FormControl = new FormControl( "", [] );
 
+    fridayAppointmentNo: FormControl = new FormControl( "", [] );
+
     saturdayControl: FormControl = new FormControl( "", [] );
 
     saturdayStartAt: FormControl = new FormControl( "", [] );
 
     saturdayCloseAt: FormControl = new FormControl( "", [] );
 
+    saturdayAppointmentNo: FormControl = new FormControl( "", [] );
+
     sundayControl: FormControl = new FormControl( "", [] );
 
     sundayStartAt: FormControl = new FormControl( "", [] );
 
     sundayCloseAt: FormControl = new FormControl( "", [] );
+
+    sundayAppointmentNo: FormControl = new FormControl( "", [] );
 
 
     mondayCode: number = 1;
@@ -83,34 +101,45 @@ export class DoctorAddWorkingHours {
     hourListOption = HourListOption;
 
 
-    constructor( private formBuilder: FormBuilder, private doctorService: DoctorService ) {
+    constructor( private formBuilder: FormBuilder, private doctorService: DoctorService
+        , private matSnackbar: MatSnackBar ) {
 
     }
 
 
     ngOnInit() {
+
         this.workingHoursForm = this.formBuilder.group( {
             "mondayControl": this.mondayControl,
             "mondayStartAt": this.mondayStartAt,
             "mondayCloseAt": this.mondayCloseAt,
+            "mondayAppointmentNo": this.mondayAppointmentNo,
             "tuesdayControl": this.tuesdayControl,
             "tuesdayStartAt": this.tuesdayStartAt,
             "tuesdayCloseAt": this.tuesdayCloseAt,
+            "tuesdayAppointmentNo": this.tuesdayAppointmentNo,
             "wednesdayControl": this.wednesdayControl,
             "wednesdayStartAt": this.wednesdayStartAt,
             "wednesdayCloseAt": this.wednesdayCloseAt,
+            "wednesdayAppointmentNo": this.wednesdayAppointmentNo,
             "thursdayControl": this.thursdayControl,
             "thursdayStartAt": this.thursdayStartAt,
             "thursdayCloseAt": this.thursdayCloseAt,
+            "thursdayAppointmentNo": this.thursdayAppointmentNo,
             "fridayControl": this.fridayControl,
             "fridayStartAt": this.fridayStartAt,
             "fridayCloseAt": this.fridayCloseAt,
+            "fridayAppointmentNo": this.fridayAppointmentNo,
             "saturdayControl": this.saturdayControl,
             "saturdayStartAt": this.saturdayStartAt,
             "saturdayCloseAt": this.saturdayCloseAt,
+            "saturdayAppointmentNo": this.saturdayAppointmentNo,
             "sundayControl": this.sundayControl,
             "sundayStartAt": this.sundayStartAt,
-            "sundayCloseAt": this.sundayCloseAt
+            "sundayCloseAt": this.sundayCloseAt,
+            "sundayAppointmentNo": this.sundayAppointmentNo
+
+
 
         } );
 
@@ -124,13 +153,29 @@ export class DoctorAddWorkingHours {
 
     }
 
+
+
+
+
+
+
     /** getDoctorWorkingdays Method */
 
     getDoctorWorkingDays() {
 
-        this.workingDays = this.doctorService.getDoctorWorkingDays();
+        this.doctorService.getDoctorPublicInfo().subscribe(( data ) => {
+            if ( data != undefined ) {
 
-        console.log( this.workingDays );
+                let doctor: Doctor = data;
+
+                this.workingDays = this.doctorService.deseralizeWorkingDays( doctor.workingDays );
+
+                this.progress = false;
+
+
+            }
+        } );
+
 
     }
 
@@ -139,7 +184,7 @@ export class DoctorAddWorkingHours {
 
     checked( event: MatSlideToggleChange ) {
 
-        console.log( event );
+
 
         if ( event.checked ) {
 
@@ -149,7 +194,7 @@ export class DoctorAddWorkingHours {
             day.dayName = event.source.name;
             day.dayStatus = "Open";
             day.checked = true;
-
+            console.log( day );
             this.workingDays.push( day );
 
 
@@ -164,90 +209,129 @@ export class DoctorAddWorkingHours {
             }
 
         }
-        console.log( this.workingDays );
+
     }
 
 
 
     submit() {
 
-        this.addDayHour( this.mondayStartAt.value, this.mondayCloseAt.value, this.mondayCode );
-        this.addDayHour( this.tuesdayStartAt.value, this.tuesdayCloseAt.value, this.tuesdayCode );
-        this.addDayHour( this.wednesdayStartAt.value, this.wednesdayCloseAt.value, this.wednesdayCode );
-        this.addDayHour( this.thursdayStartAt.value, this.thursdayCloseAt.value, this.thursdayCode );
-        this.addDayHour( this.fridayStartAt.value, this.fridayCloseAt.value, this.fridayCode );
-        this.addDayHour( this.saturdayStartAt.value, this.saturdayCloseAt.value, this.saturdayCode );
-        this.addDayHour( this.sundayStartAt.value, this.sundayCloseAt.value, this.sundayCode );
+        this.addDayHour( this.mondayStartAt.value, this.mondayCloseAt.value, this.mondayAppointmentNo.value, this.mondayCode );
+        this.addDayHour( this.tuesdayStartAt.value, this.tuesdayCloseAt.value, this.tuesdayAppointmentNo.value, this.tuesdayCode );
+        this.addDayHour( this.wednesdayStartAt.value, this.wednesdayCloseAt.value, this.wednesdayAppointmentNo.value, this.wednesdayCode );
+        this.addDayHour( this.thursdayStartAt.value, this.thursdayCloseAt.value, this.thursdayAppointmentNo.value, this.thursdayCode );
+        this.addDayHour( this.fridayStartAt.value, this.fridayCloseAt.value, this.fridayAppointmentNo.value, this.fridayCode );
+        this.addDayHour( this.saturdayStartAt.value, this.saturdayCloseAt.value, this.saturdayAppointmentNo.value, this.saturdayCode );
+        this.addDayHour( this.sundayStartAt.value, this.sundayCloseAt.value, this.sundayAppointmentNo.value, this.sundayCode );
 
 
+
+        console.log( this.workingDays );
         this.doctorService.saveWorkingDays( this.workingDays ).subscribe(( data ) => {
             if ( data != undefined ) {
                 this.formResult = data.json();
+                if ( this.formResult.result ) {
+                    this.matSnackbar.open( this.formResult.message, "Done", {
+                        duration: 3000
+                    } );
+                }
+                else {
+                    if ( this.formResult.error ) {
+                        this.matSnackbar.open( this.formResult.message, "Error", {
+                            duration: 3000
+                        } );
+                    }
+                }
             }
         } );
 
-        console.log( this.workingDays );
+
 
 
     }
 
     /** addDayHour execute when user click on addhour button it takes three parameter 
-     *  startAt , closeAt , dayid  and add the hour object to day with that dayid */
+     *  startAt , closeAt ,maxpatientno,  dayid  and add the hour object to day with that dayid */
 
-    addDayHour( startAt: string, closeAt: string, dayId: number ) {
+    addDayHour( startAt: string, closeAt: string, maxPatientNo: number, dayId: number ) {
 
         if ( startAt != "" && closeAt != "" ) {
 
-
-            let hours: Hours = new Hours();
-
-            if ( startAt == "24" || closeAt == "24" ) {
-                hours.startAt = '00:00';
-                hours.closeAt = '23:59';
-
-            }
-            else {
-
-                hours.startAt = startAt;
-                hours.closeAt = closeAt;
-            }
-
-            for ( let i = 0; i < this.workingDays.length; i++ ) {
-
-                if ( this.workingDays[i].equal( dayId ) ) {
-
-                    let hoursArr: Hours[] = this.workingDays[i].hours;
-
-                    if ( hoursArr.length == 0 ) {
-
-                        hoursArr.push( hours );
-
-                    }
-                    else {
-
-                        let isExist: boolean = false;
-
-                        for ( let j = 0; j < hoursArr.length; j++ ) {
+            if ( maxPatientNo != 0 ) {
 
 
-                            if ( hoursArr[j].equal( hours ) ) {
 
-                                isExist = true;
+                let hours: Hours = new Hours();
+
+
+                hours.startAt = LocalTime.parse( startAt );
+                hours.closeAt = LocalTime.parse( closeAt );
+
+
+                hours.maxPatientNo = maxPatientNo;
+
+
+
+                for ( let i = 0; i < this.workingDays.length; i++ ) {
+
+                    if ( this.workingDays[i].equals( dayId ) ) {
+
+                        let hoursArr: Hours[] = this.workingDays[i].hours;
+
+                        if ( hoursArr.length == 0 ) {
+
+                            hoursArr.push( hours );
+
+                        }
+                        else {
+
+                            let isExist: boolean = false;
+
+                            for ( let j = 0; j < hoursArr.length; j++ ) {
+
+
+                                if ( hoursArr[j].equal( hours ) ) {
+
+
+                                    isExist = true;
+                                }
+
+
+
                             }
 
+                            if ( !isExist ) {
+                                hoursArr.push( hours );
+                            }
                         }
 
-                        if ( !isExist ) {
-                            hoursArr.push( hours );
-                        }
+
+                        this.workingDays[i].hours = hoursArr;
                     }
-
-                    this.workingDays[i].hours = hoursArr;
                 }
             }
 
 
+        }
 
+        else {
+
+
+            if ( maxPatientNo != 0 ) {
+                let hours: Hours = new Hours();
+
+                if ( startAt == "24" || closeAt == "24" ) {
+                    hours.startAt = LocalTime.parse( '00:00' );
+                    hours.closeAt = LocalTime.parse( '23:59' );
+                    hours.maxPatientNo = maxPatientNo;
+                    let hourArr: Hours[] = new Array();
+                    hourArr.push( hours );
+
+                    this.workingDays[this.getADayIndex( dayId )].hours = hourArr;
+
+
+                }
+            }
         }
 
 
@@ -312,31 +396,28 @@ export class DoctorAddWorkingHours {
      *  one value for 24 hours */
 
     hourSelected( value: string, dayid: number ) {
-        console.log( this.workingDays );
+
         let hour: Hours = new Hours();
-        hour.startAt = "00:00";
-        hour.closeAt = '23:59';
-        let hourArr: Hours[] = new Array();
-
-        if ( value == "24" ) {
+        hour.startAt = LocalTime.parse( "00:00" );
+        hour.closeAt = LocalTime.parse( "23:59" );
 
 
-            hourArr.push( hour );
 
-            this.workingDays[this.getADayIndex( dayid )].hours = hourArr;
+        if ( value != "24" ) {
 
-        }
+            let oldHours: Hours[] = new Array();
+            oldHours = this.getADay( dayid ).hours;
+            oldHours = this.doctorService.deseralizeHoursArray( oldHours );
+            for ( let i = 0; i < oldHours.length; i++ ) {
 
-        else {
-            for ( let i = 0; i < this.workingDays[this.getADayIndex( dayid )].hours.length; i++ ) {
-
-                if ( this.workingDays[this.getADayIndex( dayid )].hours[i].equal( hour ) ) {
+                if ( hour.equal( oldHours[i] ) ) {
 
                     this.workingDays[this.getADayIndex( dayid )].hours.splice( i, 1 );
 
                 }
             }
         }
+
 
 
     }

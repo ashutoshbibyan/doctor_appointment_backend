@@ -10,7 +10,8 @@ const REG_DATE = new RegExp( " /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20
 
 @Component( {
     selector: "patient-signup",
-    templateUrl: "./html/patient_signup.html"
+    templateUrl: "./html/patient_signup.html",
+    styleUrls: ["./css/patient_signup.css"]
 } )
 export class PatientSignup {
 

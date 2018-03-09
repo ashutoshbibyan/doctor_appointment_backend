@@ -8,12 +8,14 @@ import { Appointment } from "../model/appointment";
 import { Hours } from "../model/hours";
 import { CommonService } from "../common/common_service";
 import { FormResult } from "../model/formresult";
-import { MatDatepickerInputEvent, MatTabChangeEvent } from "@angular/material";
+import { MatDatepickerInputEvent, MatTabChangeEvent, MatSnackBar } from "@angular/material";
 
 @Component( {
     selector: "doc-make-appointment",
-    templateUrl: "./html/doctor_make_appointment.html"
+    templateUrl: "./html/doctor_make_appointment.html",
+    styleUrls: ["./css/doctor_make_appointment.css"]
 } )
+
 export class DoctorMakeAppointment {
 
     doctor: Doctor = new Doctor();
@@ -91,7 +93,8 @@ export class DoctorMakeAppointment {
 
 
 
-    constructor( private formBuilder: FormBuilder, private doctorService: DoctorService, private commonService: CommonService ) {
+    constructor( private formBuilder: FormBuilder, private doctorService: DoctorService
+        , private commonService: CommonService, private matSnackBar: MatSnackBar ) {
 
     }
 
@@ -105,13 +108,13 @@ export class DoctorMakeAppointment {
 
         for ( let i = 0; i < this.doctor.workingDays.length; i++ ) {
             if ( this.doctor.workingDays[i].dayId == date.getDay() ) {
-                this.hours = this.doctor.workingDays[i].hours;
+                this.hours = this.doctorService.deseralizeHoursArray( this.doctor.workingDays[i].hours );
             }
         }
 
 
     }
-
+    0
 
 
     /** getDoctor method gets the details of the doctor and use it to get information like 
@@ -121,7 +124,7 @@ export class DoctorMakeAppointment {
         this.doctorService.getDoctorPublicInfo().subscribe(( data ) => {
             if ( data != undefined ) {
                 console.log( data );
-                this.doctor = data.json();
+                this.doctor = data;
 
                 /* filter is dependent on the doctor object thats why 
                  * it is set here */
@@ -169,6 +172,15 @@ export class DoctorMakeAppointment {
     }
 
 
+    // open snackbar method takes two parameter message and action and open the matsnackbar
+
+    openSnackBar( message: string, action: string ) {
+        this.matSnackBar.open( message, action, {
+            duration: 3000,
+        } );
+    }
+
+
     /** execute when user submit the form using patient id */
     submit() {
         let appointment: Appointment = new Appointment();
@@ -180,6 +192,14 @@ export class DoctorMakeAppointment {
         this.doctorService.makeAppointment( appointment ).subscribe(( data ) => {
             if ( data != undefined ) {
                 this.result = data.json();
+                if ( this.result.result ) {
+                    this.openSnackBar( this.result.message, "Done" )
+                }
+                else {
+                    if ( this.result.error ) {
+                        this.openSnackBar( this.result.message, "Error" );
+                    }
+                }
             }
         } );
 
@@ -197,6 +217,14 @@ export class DoctorMakeAppointment {
         this.doctorService.makeAppointment( appointment ).subscribe(( data ) => {
             if ( data != undefined ) {
                 this.result = data.json();
+                if ( this.result.result ) {
+                    this.openSnackBar( this.result.message, "Done" )
+                }
+                else {
+                    if ( this.result.error ) {
+                        this.openSnackBar( this.result.message, "Error" );
+                    }
+                }
             }
         } );
     }

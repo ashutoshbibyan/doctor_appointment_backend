@@ -34,8 +34,17 @@ public class Doctor {
 	private String state;
 	private String city;
 	private int maxAppointments;
+	private UserFile profileImage;
 	
 	
+	
+	
+	public UserFile getProfileImage() {
+		return profileImage;
+	}
+	public void setProfileImage(UserFile profileImage) {
+		this.profileImage = profileImage;
+	}
 	public int getMaxAppointments() {
 		return maxAppointments;
 	}

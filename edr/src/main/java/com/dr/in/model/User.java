@@ -19,7 +19,15 @@ public class User {
 	private boolean isEnabled=true;
 	private List<String> roles;
 	
+	private List<String> images;
 	
+	
+	public List<String> getImages() {
+		return images;
+	}
+	public void setImages(List<String> images) {
+		this.images = images;
+	}
 	public String getEmail() {
 		return email;
 	}

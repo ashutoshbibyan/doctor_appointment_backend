@@ -41,7 +41,7 @@ export class DoctorAppointmentSetup {
     getDoctor() {
         this.doctorService.getDoctorPublicInfo().subscribe(( data ) => {
             if ( data != undefined ) {
-                this.doctor = data.json();
+                this.doctor = data;
                 this.feeAmount.setValue( this.doctor.appointmentFee );
                 this.maxAppointments.setValue( this.doctor.maxAppointments );
             }

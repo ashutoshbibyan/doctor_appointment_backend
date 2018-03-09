@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.dr.in.model.Appointment;
 import com.dr.in.model.FormResult;
+import com.dr.in.model.Hours;
 import com.dr.in.model.QAppointment;
 import com.dr.in.repository.AppointmentRepository;
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers.CalendarDeserializer;
@@ -141,6 +142,28 @@ public class AppointmentService {
 		Predicate predicate = qappointment.doctorId.eq(docId).and(qappointment.date.eq(date));
 		 
 		return (int) this.appointmentRepository.count(predicate);
+		
+	}
+
+	
+	/** getAppointmentBooked method  get the appointment Booked for that doctor on that perticular day 
+	 *  and at that perticular time slot 
+	 *  @param String (doctor id )
+	 *  @param Instant (date value in Instant type )
+	 *  @param Hours (time slot object of hours class) 
+	 *  @return long (no of appointment left )*/
+
+
+
+	public long getAppointmentBooked(String docId, Instant date, Hours hour) {
+		// TODO Auto-generated method stub
+		
+		QAppointment qappointment = new QAppointment("appointment");
+		
+		Predicate predicate = qappointment.doctorId.eq(docId).and(qappointment.date.eq(date))
+				              .and(qappointment.hours.eq(hour));
+		
+		return this.appointmentRepository.count(predicate);
 		
 	}
 	

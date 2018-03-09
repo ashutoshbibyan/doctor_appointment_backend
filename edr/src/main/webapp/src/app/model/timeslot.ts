@@ -1,6 +1,9 @@
 import { Time } from "./time";
+import { LocalTime } from "js-joda";
 
 export class TimeSlot {
-    public start: Time = new Time();
-    public end: Time = new Time();
+    public start: LocalTime = new LocalTime();
+    public end: LocalTime = new LocalTime();
+
+
 }

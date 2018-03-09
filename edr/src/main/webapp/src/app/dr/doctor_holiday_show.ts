@@ -5,7 +5,8 @@ import { FormControl, FormGroup, FormBuilder, Validators } from "@angular/forms"
 
 @Component( {
     selector: "doc-holiday-show",
-    templateUrl: "./html/doctor_holiday_show.html"
+    templateUrl: "./html/doctor_holiday_show.html",
+    styleUrls: ["./css/doctor_holiday_show.css"]
 } )
 export class DoctorHolidayShow {
 
@@ -49,12 +50,33 @@ export class DoctorHolidayShow {
     submit() {
         let from: Date = this.dateForm.value.from;
         let to: Date = this.dateForm.value.to;
+        this.getHolidayOfPeriod( from, to );
 
+    }
+
+
+    /** getHolidayOfPeriod get the holiday between two period it takes two date parameter 
+     *  and return the list of holidays between them */
+
+    getHolidayOfPeriod( from: Date, to: Date ) {
         this.doctorService.getHolidayOfPeriod( from, to ).subscribe(( data ) => {
             if ( data != undefined ) {
                 this.holidayList = data.json();
                 console.log( data.json() );
 
+            }
+        } );
+    }
+
+    deleteHoliday( date: Date ) {
+        this.doctorService.deleteHoliday( date ).subscribe(( data ) => {
+            if ( data != undefined ) {
+                console.log( data.json() );
+                if ( data.json().result ) {
+                    let from: Date = this.dateForm.value.from;
+                    let to: Date = this.dateForm.value.to;
+                    this.getHolidayOfPeriod( from, to );
+                }
             }
         } );
     }

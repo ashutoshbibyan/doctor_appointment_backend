@@ -33,13 +33,19 @@
 
 
 
+<div class="content-center">
 
+
+	
 <h4 class="text-center">List Of All Holidays</h4>
 
 <mat-list *ngFor="let date of holidayList">
 
 
-	<mat-list-item>{{date*1000|date:"longDate"}}</mat-list-item>
+	<mat-list-item>{{date*1000|date:"longDate"}}<button mat-button (click)="deleteHoliday(date)"> <i class="material-icons">delete</i></button></mat-list-item>
 
 </mat-list>
+	
 
+
+</div>

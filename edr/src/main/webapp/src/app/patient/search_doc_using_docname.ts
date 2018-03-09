@@ -6,6 +6,7 @@ import { State } from "../model/state";
 import { City } from "../model/city";
 import { Doctor } from "../dr/doctor";
 import { DoctorInPatient } from "../model/doctorInPatient";
+import { FormResult } from "../model/formresult";
 
 
 @Component( {
@@ -14,6 +15,7 @@ import { DoctorInPatient } from "../model/doctorInPatient";
 } )
 export class SearchDocUsingDocName {
 
+    result: FormResult = new FormResult();
 
     searchUsingDocNameForm: FormGroup;
 
@@ -115,7 +117,10 @@ export class SearchDocUsingDocName {
         doctorInPatient.appointmentFee = doctor.appointmentFee;
 
         this.patientService.addDoctor( doctorInPatient ).subscribe(( data ) => {
-            console.log( data.json() );
+            if ( data != undefined ) {
+                console.log( data.json() );
+                this.result = data.json();
+            }
         } );
 
     }

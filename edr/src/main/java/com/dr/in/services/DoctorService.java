@@ -21,9 +21,11 @@ import com.dr.in.model.Appointment;
 import com.dr.in.model.Day;
 import com.dr.in.model.Doctor;
 import com.dr.in.model.FormResult;
+import com.dr.in.model.Hours;
 import com.dr.in.model.Patient;
 import com.dr.in.model.QDoctor;
 import com.dr.in.model.Speciality;
+import com.dr.in.model.UserFile;
 import com.dr.in.repository.DoctorRepository;
 import com.querydsl.core.types.Predicate;
 
@@ -410,11 +412,14 @@ public class DoctorService {
 	}
 
 
-	public List<Doctor> getDoctorForPatient(String state, String city) {
+	public Page<Doctor> getDoctorForPatient(String state, String city, int pageNo, int pageSize) {
 		
+			QDoctor qdoctor= new QDoctor("doctor");
+			Predicate predicate = qdoctor.state.eq(state).and(qdoctor.city.eq(city));
+			Pageable pageable =new PageRequest(pageNo, pageSize);
+			
 		
-	    return this.doctorRepository.findAllByStateAndCity(state, city);
-				
+	    return this.doctorRepository.findAll(predicate, pageable);		
 	
 	}
 
@@ -507,7 +512,63 @@ public class DoctorService {
 		
 		return this.doctorRepository.findAll(predicate, pageable);
 	}
+	
+	
+	/** deleteHoliday method takes date as a parameter and remove it from the data base 
+	 *  @param Instant (date to be deleted)
+	 *  @param String (doctor Id)
+	 *  @return FormResult (Form result object )*/
 
+
+	public FormResult deleteHoliday(Instant date,String docId) {
+		this.doctor=this.doctorRepository.findOne(docId);
+		
+		Iterator<Instant> iter = this.doctor.getHolidays().iterator();
+		
+		// set the result value to false if date is removed it will get changed 
+		this.formResult.setError(true);
+		this.formResult.setResult(false);
+		this.formResult.setMessage("no holiday with this date ");
+		
+		while(iter.hasNext()){
+			
+			if(iter.next().equals(date)){
+				iter.remove();
+				this.saveDoctor(this.doctor);
+				this.formResult.setResult(true);
+				this.formResult.setError(false);
+				this.formResult.setMessage("Holiday is deleted from the list ");
+			}
+			
+			
+				
+		
+		}
+		
+		
+		return this.formResult;
+	}
+
+	/** saveProfileImage method takes UserFile object and doctor id as 
+	 *  parameter and save it as the profile image of the user 
+	 * @param UserFile (object of the UserFile)
+	 * @param String (doctor id )
+	 * @return FormResult(object of the FormResult)*/
+
+	public FormResult saveProfileImage(UserFile image,String docId) {
+		
+		this.doctor=this.doctorRepository.findOne(docId);
+		
+		this.doctor.setProfileImage(image);
+		
+		this.formResult=this.saveDoctor(this.doctor);
+		
+		
+		return this.formResult;
+	}
+
+	
+	
 	
 	
 	

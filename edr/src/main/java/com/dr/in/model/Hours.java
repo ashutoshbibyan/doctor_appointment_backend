@@ -6,8 +6,22 @@ public class Hours implements Comparable<Hours>{
 
 	private LocalTime startAt;
 	private LocalTime closeAt;
+	private int maxPatientNo;
 	
 	
+	
+	
+	
+	public int getMaxPatientNo() {
+		return maxPatientNo;
+	}
+
+
+	public void setMaxPatientNo(int maxPatientNo) {
+		this.maxPatientNo = maxPatientNo;
+	}
+
+
 	public LocalTime getStartAt() {
 		return startAt;
 	}

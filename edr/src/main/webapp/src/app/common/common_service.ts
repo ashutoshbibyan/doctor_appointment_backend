@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Http, Headers, RequestOptions, URLSearchParams } from "@angular/http";
 import { HourListOption } from "../model/hourListOptions";
-
+import { LocalTime, DateTimeFormatter } from "js-joda";
 
 
 @Injectable()
@@ -35,53 +35,18 @@ export class CommonService {
     }
 
     /** getTimeLabel get the label value for a time the label value is for display only */
-    getTimeLabel( value: string ): string {
+    getTimeLabel( value: LocalTime ): string {
         for ( let i = 0; i < this.hourListOption.length; i++ ) {
 
-            if ( this.hourListOption[i].value == value ) {
+
+            let timeFormater: DateTimeFormatter = DateTimeFormatter.ofPattern( "HH:mm" );
+
+            if ( this.hourListOption[i].value == value.format( timeFormater ) ) {
                 return this.hourListOption[i].label;
             }
         }
 
         return "";
-    }
-
-
-    /** fromLocalTimeToString method takes array of string which contain two string value one is for hour 
-     *  and another is for minute and resturn the combined string value of time where hour and minute are 
-     *  seperated by :*/
-    fromLocalTimeToString( time: string[] ) {
-
-        let result: string;
-
-        // if its less than 10 its single digit so we add 0 before it 
-        if ( parseInt( time[0] ) < 10 ) {
-
-
-
-            if ( parseInt( time[1] ) == 0 ) {
-                result = "0" + time[0] + ":" + "0" + time[1];
-
-            }
-            else {
-                result = "0" + time[0] + ":" + time[1];
-
-            }
-
-        }
-        else {
-            // if its 0 its single digit 0 so we add 0 so it become 00
-            if ( parseInt( time[1] ) == 0 ) {
-                result = time[0] + ":" + "0" + time[1];
-            }
-
-            else {
-                result = time[0] + ":" + time[1];
-            }
-
-        }
-
-        return result;
     }
 
 
@@ -95,6 +60,34 @@ export class CommonService {
         let url = "/api/public/dr/speciality/all";
         return this.http.get( url, this.commOptions );
     }
+
+    /** uploadImage upload the image in user database */
+    public uploadImage( formData ) {
+
+        let url: string = "/api/private/upload/image";
+
+        console.log( formData );
+
+        return this.http.post( url, formData );
+
+    }
+
+    /** getUserImages get all the images from the current logged in user*/
+    public getUserImages( pageNo: number, pageSize: number ) {
+        let url = "/api/private/user/get/images";
+
+        let param: URLSearchParams = new URLSearchParams();
+
+        param.set( "pageNo", pageNo.toString() );
+        param.set( "pageSize", pageSize.toString() );
+
+        this.commOptions.params = param;
+
+
+        return this.http.get( url, this.commOptions );
+    }
+
+
 
 
 }

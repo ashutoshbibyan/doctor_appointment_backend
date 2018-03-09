@@ -37,6 +37,7 @@ import com.dr.in.model.FormResult;
 import com.dr.in.model.Speciality;
 import com.dr.in.model.State;
 import com.dr.in.model.User;
+import com.dr.in.model.UserFile;
 import com.dr.in.repository.DoctorRepository;
 import com.dr.in.services.CommonServices;
 import com.dr.in.services.DoctorService;
@@ -49,7 +50,8 @@ public class DoctorController {
 	private CommonServices commonService;
 	
 	
-	
+	@Autowired
+	private FormResult result;
 	
 	@Autowired
 	private DoctorService doctorService;
@@ -299,6 +301,53 @@ public class DoctorController {
 			response.setStatus(HttpStatus.NO_CONTENT.value());
 		}
 		return doc;
+	}
+	
+	
+	/** deleteHoliday method takes date as a parameter and remove it from the data base 
+	 *  @param long (date to be deleted in miliseconds Long  format)
+	 *  @return FormResult (Form result object )*/
+	@PostMapping(path="/api/private/dr/delete/holiday")
+	public FormResult deleteHoliday(@RequestBody long date , Principal currentUser){
+		Instant dateInstant = Instant.ofEpochSecond(date);
+		return this.doctorService.deleteHoliday(dateInstant,currentUser.getName());
+	}
+	
+	
+	/** saveDoctorObject method takes the doctor object and save it into the database 
+	 *  @param Doctor (object of the doctor class)
+	 *  @return FormResult (object of the form result )*/
+	
+	@PostMapping(path="/api/private/dr/save")
+	public FormResult saveDoctorObject(@RequestBody Doctor doctor , Principal currentUser){
+	
+		if(doctor.getDocId().equals(currentUser.getName())){
+			
+			this.result=this.doctorService.saveDoctor(doctor);
+			
+		}
+		
+		else{
+			
+			this.result.setError(true);
+			this.result.setMessage("Your are not authorized to change this information ");
+			this.result.setResult(false);
+		}
+		
+		return this.result;
+		
+	}
+	
+	
+	/** changeProfileImage method takes UserFile as an parametere and add it as the 
+	 *  profile image of the doctor 
+	 *  @param UserFile (object of the UserFile)
+	 *  @return FormResult(object of the FormResult)*/
+	
+	@PostMapping(path="/api/private/dr/change/profileimg")
+	public FormResult changeProfileImage(@RequestBody UserFile image , Principal currentUser){
+		
+		return this.doctorService.saveProfileImage(image,currentUser.getName());
 	}
 	
 	

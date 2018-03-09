@@ -1,8 +1,10 @@
 import { Address } from "../model/address";
-import { TimeSlot } from "../model/timeslot";
+import { Hours } from "../model/hours";
 import { Day } from "../model/day";
 import { Degree } from "../model/degree";
 import { Speciality } from "../model/speciality";
+import { DoctorService } from "./doctor_service";
+import { UserFile } from "../model/userfile";
 
 
 export class Doctor {
@@ -20,10 +22,10 @@ export class Doctor {
     public city: string;
     public phoneno: string;
     public appointmentFee: number;
-    public timeSlots: TimeSlot[] = new Array();
+    public timeSlots: Hours[] = new Array();
 
+    public profileImage: UserFile = new UserFile();
     public holidays: Date[];
-
 
 
 

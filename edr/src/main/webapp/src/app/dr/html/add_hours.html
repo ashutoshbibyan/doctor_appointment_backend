@@ -1,5 +1,6 @@
+<mat-progress-bar *ngIf="progress" mode="indeterminate" color="accent"></mat-progress-bar>
 
-<form [formGroup]="workingHoursForm">
+<form [formGroup]="workingHoursForm" (submit)="submit()">
 
 
 <!--  first row start here  -->	
@@ -28,8 +29,12 @@
 					<label>{{getTimeLabel(hour.startAt)}}</label>
 				
 				
+				    <label>To</label>
 				
 					<label>{{getTimeLabel(hour.closeAt)}}</label>
+					
+					
+					<label>{{ hour.maxPatientNo}} Appointments</label>
 				
 				
 				
@@ -80,9 +85,18 @@
 		
 		</div>
 		
+		<div>
+				<mat-form-field>
+				
+				<input formControlName="mondayAppointmentNo" matInput type="text" placeholder="No Of Appointments">
+				
+				</mat-form-field>
+		
+		</div>
+		
 		<div *ngIf="mondayStartAt.value!=24 && mondayCloseAt.value!=24" >
 				
-			      <button mat-raised-button color="primary" (click)="addDayHour(mondayStartAt.value,mondayCloseAt.value,mondayCode)">Add Hours</button>
+			      <button mat-raised-button color="primary" (click)="addDayHour(mondayStartAt.value,mondayCloseAt.value,mondayAppointmentNo.value,mondayCode)">Add Hours</button>
 		
 		</div>
     
@@ -126,6 +140,7 @@
 					<label>{{getTimeLabel(hour.closeAt)}}</label>
 				
 				 
+				 	<label>{{ hour.maxPatientNo}} Appointments</label>
 				
 				 
 					<label><i class="material-icons" (click)="hourDelete(tuesdayCode,x)">cancel</i></label>
@@ -172,9 +187,20 @@
 		
 		</div>
 		
+		
+		<div>
+				<mat-form-field>
+				
+				<input formControlName="tuesdayAppointmentNo" matInput type="text" placeholder="No Of Appointments">
+				
+				</mat-form-field>
+		
+		</div>
+		
+		
 		<div *ngIf="tuesdayStartAt.value!=24 && tuesdayCloseAt.value!=24" class="col-lg-4">
 			
-			      <button mat-raised-button color="primary" (click)="addDayHour(tuesdayStartAt.value,tuesdayCloseAt.value,tuesdayCode)">Add Hours</button>
+			      <button mat-raised-button color="primary" (click)="addDayHour(tuesdayStartAt.value,tuesdayCloseAt.value,tuesdayAppointmentNo.value,tuesdayCode)">Add Hours</button>
 		
 		</div>
     
@@ -220,7 +246,7 @@
 					<label>{{getTimeLabel(hour.closeAt)}}</label>
 				
 				 
-				
+					<label>{{ hour.maxPatientNo}} Appointments</label>
 				 
 					<label><i class="material-icons" (click)="hourDelete(wednesdayCode,x)">cancel</i></label>
 				
@@ -265,9 +291,19 @@
 		
 		</div>
 		
+		<div>
+				<mat-form-field>
+				
+				<input formControlName="wednesdayAppointmentNo" matInput type="text" placeholder="No Of Appointments">
+				
+				</mat-form-field>
+		
+		</div>
+		
+		
 		<div *ngIf="wednesdayStartAt.value!=24 && wednesdayCloseAt.value!=24" class="col-lg-4">
 			
-			      <button mat-raised-button color="primary" (click)="addDayHour(wednesdayStartAt.value,wednesdayCloseAt.value,wednesdayCode)">Add Hours</button>
+			      <button mat-raised-button color="primary" (click)="addDayHour(wednesdayStartAt.value,wednesdayCloseAt.value,wednesdayAppointmentNo.value,wednesdayCode)">Add Hours</button>
 		
 		</div>
     
@@ -313,6 +349,7 @@
 					<label>{{getTimeLabel(hour.closeAt)}}</label>
 				
 				
+					<label>{{ hour.maxPatientNo}} Appointments</label>
 				
 				
 					<label><i class="material-icons" (click)="hourDelete(thursdayCode,x)">cancel</i></label>
@@ -357,9 +394,19 @@
 		
 		</div>
 		
+		
+		<div>
+				<mat-form-field>
+				
+				<input formControlName="thursdayAppointmentNo" matInput type="text" placeholder="No Of Appointments">
+				
+				</mat-form-field>
+		
+		</div>
+		
 		<div *ngIf="thursdayStartAt.value!=24 && thursdayCloseAt.value!=24" class="col-lg-4">
 			
-			      <button mat-raised-button color="primary" (click)="addDayHour(thursdayStartAt.value,thursdayCloseAt.value,thursdayCode)">Add Hours</button>
+			      <button mat-raised-button color="primary" (click)="addDayHour(thursdayStartAt.value,thursdayCloseAt.value,thursdayAppointmentNo.value,thursdayCode)">Add Hours</button>
 		
 		</div>
     
@@ -405,6 +452,7 @@
 					<label>{{getTimeLabel(hour.closeAt)}}</label>
 				
 				
+					<label>{{ hour.maxPatientNo}} Appointments</label>
 				
 				
 					<label><i class="material-icons" (click)="hourDelete(fridayCode,x)">cancel</i></label>
@@ -448,9 +496,20 @@
 		
 		</div>
 		
+		
+		
+		<div>
+				<mat-form-field>
+				
+				<input formControlName="fridayAppointmentNo" matInput type="text" placeholder="No Of Appointments">
+				
+				</mat-form-field>
+		
+		</div>
+		
 		<div *ngIf="fridayStartAt.value!=24 && fridayCloseAt.value!=24" class="col-lg-4">
 			
-			      <button mat-raised-button color="primary" (click)="addDayHour(fridayStartAt.value,fridayCloseAt.value,fridayCode)">Add Hours</button>
+			      <button mat-raised-button color="primary" (click)="addDayHour(fridayStartAt.value,fridayCloseAt.value,fridayAppointmentNo.value,fridayCode)">Add Hours</button>
 		
 		</div>
     
@@ -494,6 +553,7 @@
 				 	<label>{{getTimeLabel(hour.closeAt)}}</label>
 				
 				 
+				 	<label>{{ hour.maxPatientNo}} Appointments</label>
 				
 				 	<label><i class="material-icons" (click)="hourDelete(saturdayCode,x)">cancel</i></label>
 				
@@ -537,9 +597,18 @@
 		
 		</div>
 		
+		<div>
+				<mat-form-field>
+				
+				<input formControlName="saturdayAppointmentNo" matInput type="text" placeholder="No Of Appointments">
+				
+				</mat-form-field>
+		
+		</div>
+		
 		<div *ngIf="saturdayStartAt.value!=24 && saturdayCloseAt.value!=24" class="col-lg-4">
 			
-			      <button mat-raised-button color="primary" (click)="addDayHour(saturdayStartAt.value,saturdayCloseAt.value,saturdayCode)">Add Hours</button>
+			      <button mat-raised-button color="primary" (click)="addDayHour(saturdayStartAt.value,saturdayCloseAt.value,saturdayAppointmentNo.value,saturdayCode)">Add Hours</button>
 		
 		</div>
     
@@ -561,7 +630,7 @@
 
 				
 			
-          <label>Sunday</label>	 
+          <h4>Sunday</h4>	 
 	
 	
      	 <mat-slide-toggle [checked]="getADay(sundayCode).checked" color="primary" formControlName="sundayControl" id={{sundayCode}} name="Sunday" (change)="checked($event)">
@@ -586,6 +655,7 @@
 				<label>{{getTimeLabel(hour.closeAt)}}</label>
 				
 				 
+				 <label>{{ hour.maxPatientNo}} Appointments</label>
 				
 				
 				<label><i class="material-icons" (click)="hourDelete(sundayCode,x)">cancel</i></label>
@@ -630,9 +700,18 @@
 		
 		</div>
 		
+		<div>
+				<mat-form-field>
+				
+				<input formControlName="sundayAppointmentNo" matInput type="text" placeholder="No Of Appointments">
+				
+				</mat-form-field>
+		
+		</div>
+		
 		<div *ngIf="sundayStartAt.value!=24 && sundayCloseAt.value!=24" class="col-lg-4">
 			
-			      <button mat-raised-button color="primary" (click)="addDayHour(sundayStartAt.value,sundayCloseAt.value,sundayCode)">Add Hours</button>
+			      <button mat-raised-button color="primary" (click)="addDayHour(sundayStartAt.value,sundayCloseAt.value,sundayAppointmentNo.value,sundayCode)">Add Hours</button>
 		
 		</div>
     
@@ -653,10 +732,9 @@
 
 
 
-<h2 *ngIf="formResult.result" class="text-capitalize text-success">{{formResult.message}}</h2>
 
 <br>
 
-<button mat-raised-button color="accent" (click)="submit()">Save</button>
+<button mat-raised-button color="accent" type="submit" >Save</button>
 
 </form>

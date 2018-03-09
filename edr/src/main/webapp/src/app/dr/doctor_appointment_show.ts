@@ -3,15 +3,20 @@ import { DoctorService } from "./doctor_service";
 import { Appointment } from "../model/appointment";
 import { FormControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PageEvent } from "@angular/material";
+import { CommonService } from "../common/common_service";
 
 @Component( {
     selector: "doc-appointment-show",
-    templateUrl: "./html/doctor_appointment_show.html"
+    templateUrl: "./html/doctor_appointment_show.html",
+    styleUrls: ["./css/doctor_appointment_show.css"]
+
 } )
 
 export class DoctorAppointmentShow {
 
     dateForm: FormGroup;
+
+    progress: boolean = false;
 
     from: FormControl = new FormControl( "", [
         Validators.required
@@ -32,7 +37,7 @@ export class DoctorAppointmentShow {
 
     appointments: Appointment[];
 
-    constructor( private doctorService: DoctorService, private formBuilder: FormBuilder ) {
+    constructor( private doctorService: DoctorService, private commonService: CommonService, private formBuilder: FormBuilder ) {
 
     }
 
@@ -52,14 +57,17 @@ export class DoctorAppointmentShow {
 
     getAppointments( pageNo: number ) {
 
+        // start the progress bar 
+        this.progress = true;
         let from: Date = this.dateForm.value.from;
         let to: Date = this.dateForm.value.to;
 
         this.doctorService.getAppointmentOfPeriod( from, to, pageNo, this.pageSize ).subscribe(( data ) => {
             if ( data != undefined ) {
                 console.log( data.json() );
-                this.appointments = data.json().content;
+                this.appointments = this.doctorService.deseralizeAppointmentArray( data.json().content );
                 this.totalElements = data.json().totalElements;
+                this.progress = false;  // close the progress bar 
 
 
 

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormControl, Validators, FormGroup } from "@angular/forms";
 import { Patient } from "./patient";
 import { TimeSlot } from "../model/timeslot";
@@ -6,12 +6,19 @@ import { Doctor } from "../dr/doctor";
 import { Day } from "../model/day";
 import { CommonService } from "../common/common_service";
 import { Hours } from "../model/hours";
-import { MatDatepickerInputEvent } from "@angular/material";
+import { MatDatepickerInputEvent, MatSelect, MatSelectTrigger } from "@angular/material";
 import { PatientService } from "./patient_service";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 
+import { DoctorService } from "../dr/doctor_service";
+
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/observable/fromEvent';
+import { LocalTime, DateTimeFormatter } from "js-joda/dist/js-joda";
 
 @Component( {
     selector: "patient-make-appointment",
@@ -19,6 +26,18 @@ import 'rxjs/add/operator/map';
 } )
 export class PatientMakeAppointment {
 
+
+    @ViewChild( "docSelect" ) docSelect: MatSelect;
+
+    private readonly RELOAD_TOP_SCROLL_POSITION = 6;
+
+    appointmentLeft: number;
+
+    pageNo: number = 0;
+
+    totalPages: number;
+
+    pageSize: number = 10;
 
     patient: Patient = new Patient();
 
@@ -63,7 +82,8 @@ export class PatientMakeAppointment {
 
     holidayFilter;
 
-    constructor( private formBuilder: FormBuilder, private patientService: PatientService, private commonService: CommonService ) {
+    constructor( private formBuilder: FormBuilder, private patientService: PatientService, private commonService: CommonService
+        , private doctorService: DoctorService ) {
 
     }
 
@@ -73,10 +93,11 @@ export class PatientMakeAppointment {
     drSelected() {
 
         let doc: Doctor = this.appointmentForm.value.selectedDoc;
-        console.log( doc );
+
         this.holidays = doc.holidays;
         this.workingDays = doc.workingDays;
 
+        console.log( doc );
 
         //filter value is changed whenever the doctor's value is changed
         this.holidayFilter = ( selectedDate: Date ): boolean => {
@@ -127,7 +148,8 @@ export class PatientMakeAppointment {
 
         for ( let i = 0; i < this.workingDays.length; i++ ) {
             if ( this.workingDays[i].dayId == event.value.getDay() ) {
-                this.hours = this.workingDays[i].hours;
+
+                this.hours = this.doctorService.deseralizeHoursArray( this.workingDays[i].hours );
             }
         }
 
@@ -144,7 +166,7 @@ export class PatientMakeAppointment {
             } );
         }
 
-        this.getDocForPatient();
+        this.getDocForPatient( this.pageNo, this.pageSize );
 
 
 
@@ -157,6 +179,8 @@ export class PatientMakeAppointment {
         } );
 
 
+        this.docSelect.onOpen.subscribe(() => this.registerPanelScrollEvent() );
+
 
     }
 
@@ -167,10 +191,14 @@ export class PatientMakeAppointment {
         console.log( this.appointmentForm.value );
     }
 
-    getDocForPatient() {
-        this.patientService.getDocForPatient().subscribe(( data ) => {
+    getDocForPatient( pageNo: number, pageSize: number ) {
+        this.patientService.getDocForPatient( pageNo, pageSize ).subscribe(( data ) => {
             if ( data != undefined ) {
-                this.doctors = data.json();
+
+                this.doctors = this.doctors.concat( data.json().content );
+                this.totalPages = data.json().totalPages;
+                console.log( data.json().content );
+                console.log( this.doctors );
             }
         } );
     }
@@ -189,6 +217,45 @@ export class PatientMakeAppointment {
     }
 
 
+
+
+    getAppointmentLeft() {
+        this.patientService.getAppointmentBooked( this.selectedDoc.value.docId,
+            this.appointmentDate.value, this.appointmentTime.value )
+            .subscribe(( data ) => {
+                if ( data != undefined ) {
+                    console.log( data.json() );
+
+                }
+            } );
+    }
+
+
+    getNewDoc() {
+
+        console.log( this.docSelect );
+
+    }
+
+    registerPanelScrollEvent() {
+
+        const panel = this.docSelect.panel.nativeElement;
+        panel.addEventListener( 'scroll', event => this.loadAllOnScroll( event ) );
+    }
+
+    loadAllOnScroll( event ) {
+
+        if ( event.target.scrollTop > this.RELOAD_TOP_SCROLL_POSITION ) {
+
+            if ( this.pageNo < this.totalPages ) {
+                this.pageNo = this.pageNo + 1;
+                this.getDocForPatient( this.pageNo, this.pageSize );
+            }
+
+        }
+
+
+    }
 
 
 }

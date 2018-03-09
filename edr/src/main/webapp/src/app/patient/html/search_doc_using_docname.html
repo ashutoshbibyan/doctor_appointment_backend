@@ -1,3 +1,6 @@
+
+
+
 <h2 class="text-center">Search Using Doctor Name</h2>
 
 
@@ -41,8 +44,10 @@
 
 </form>
 
+<h3 class="text-center text-success" *ngIf="result.result">{{result.message}}</h3>
+<h3 class="text-center text-danger"  *ngIf="result.error">{{result.message}}</h3>
 
-<div *ngIf="showDoc" >
+<div  class="grid-container" *ngIf="showDoc" >
 
 
 <div  *ngFor="let doctor of doctorList">
@@ -77,14 +82,7 @@
 	
 	</mat-card-actions>
 	
-
-
-
 </mat-card>
-
-
-	
-	
 
 </div>
 	

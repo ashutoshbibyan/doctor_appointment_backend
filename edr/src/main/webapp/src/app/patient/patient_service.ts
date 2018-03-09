@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions, URLSearchParams } from "@angular/http";
 import { Patient } from "./patient";
 import { Speciality } from "../model/speciality";
 import { DoctorInPatient } from "../model/doctorInPatient";
+import { Hours } from "../model/hours";
 
 @Injectable()
 export class PatientService {
@@ -39,8 +40,12 @@ export class PatientService {
     }
 
 
-    public getDocForPatient() {
+    public getDocForPatient( pageNo: number, pageSize: number ) {
         let url = "/api/private/patient/get/doctor";
+        let param: URLSearchParams = new URLSearchParams();
+        param.set( "pageNo", pageNo.toString() );
+        param.set( "pageSize", pageSize.toString() );
+        this.commOptions.params = param;
         return this.http.get( url, this.commOptions );
     }
 
@@ -118,5 +123,25 @@ export class PatientService {
         return this.http.post( url, doctorInPatient, this.commOptions );
     }
 
+
+    /* getAppointmentBooked method gets the appointment booked for that particular doctor 
+     * on selected day at that time period 
+     * @param string (doctor id )
+     * @param date (date of appointments )
+     * @param hours( time slot )*/
+
+    public getAppointmentBooked( docId: string, date: Date, hours: Hours ) {
+        let url = "/api/public/patient/appointment/booked";
+        let param = new URLSearchParams();
+
+        param.set( "docId", docId );
+        param.set( "dateInLong", date.getTime().toString() );
+        this.commOptions.params = param;
+
+
+        return this.http.post( url, hours, this.commOptions );
+
+
+    }
 
 }

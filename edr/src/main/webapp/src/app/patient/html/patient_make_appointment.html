@@ -1,4 +1,7 @@
-<h4 class="text-center">Make An Appointment With Dr In Your City</h4>
+<div class="content-center">
+
+	
+	<h4 class="text-center">Make An Appointment With Dr In Your City</h4>
 
 
 <mat-horizontal-stepper>
@@ -11,10 +14,10 @@
 
 	<div class="form-group">
 	
-		<mat-form-field>
+		<mat-form-field >
 		
-					<mat-select placeholder="Choose a Doctor" formControlName="selectedDoc" (change)="drSelected()">
-							<div *ngFor="let dr of doctors;let i = index" [matTooltip]="getDocDetail(i)" matTooltipPosition="right">
+					<mat-select  #docSelect placeholder="Choose a Doctor" formControlName="selectedDoc" (change)="drSelected()">
+							<div  *ngFor="let dr of doctors;let i = index" [matTooltip]="getDocDetail(i)" matTooltipPosition="right">
 							
 							<mat-option  [value]="dr">
 							
@@ -60,14 +63,22 @@
 	
 		<mat-form-field>
 		
-			<mat-select placeholder="Choose a Time" formControlName="appointmentTime">
-				
-			<mat-option *ngFor="let hour of hours" [value]="hour" >
-				{{commonService.getTimeLabel(commonService.fromLocalTimeToString(hour.startAt))}} To 
-				{{commonService.getTimeLabel(commonService.fromLocalTimeToString(hour.closeAt))}}
-			</mat-option>
-				
+			<mat-select placeholder="Choose a Time"  formControlName="appointmentTime" (change)="getAppointmentLeft()">
+			
+			
+			 <div *ngFor="let hour of hours" >
+					
+					
+					
+					<mat-option  [value]="hour" >
+						{{commonService.getTimeLabel(hour.startAt)}} To 
+						{{commonService.getTimeLabel(hour.closeAt)}}
+					</mat-option>
+					
+					
+			</div>		
 			</mat-select>
+			
 			<mat-error *ngIf="appointmentTime.hasError('required')"> Please Select A Time</mat-error>
 		
 		</mat-form-field>
@@ -105,3 +116,7 @@
  
  </mat-horizontal-stepper>
       
+	-
+
+
+</div>

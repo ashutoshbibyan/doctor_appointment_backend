@@ -1,6 +1,8 @@
 package com.dr.in.controller;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +21,7 @@ import com.dr.in.model.Disease;
 import com.dr.in.model.Doctor;
 import com.dr.in.model.DoctorInPatient;
 import com.dr.in.model.FormResult;
+import com.dr.in.model.Hours;
 import com.dr.in.model.Patient;
 import com.dr.in.model.Speciality;
 import com.dr.in.services.CommonServices;
@@ -69,10 +73,10 @@ public class PatientController {
 	/** getDoctorForPatient method get the list of doctor which are in the same city 
 	 *  of the patient */
 	@GetMapping(path="/api/private/patient/get/doctor")
-	public List<Doctor> getDoctorForPatient(){
+	public Page<Doctor> getDoctorForPatient(@RequestParam int pageNo , @RequestParam int pageSize){
 		// this is hardcoded right now it will be replaced by current user
 		String patientId="patient@gmail.com";
-		return this.patientService.getDoctorForPatient(patientId);
+		return this.patientService.getDoctorForPatient(patientId,pageNo,pageSize);
 	}
 	
 	/** getPublicPatient method takes the patientId as parameter and return the patient object 
@@ -164,6 +168,21 @@ public class PatientController {
 	public FormResult deleteDoctorFromList(@RequestBody DoctorInPatient doctorInPatient){
 		String patientId="patient@gmail.com";
 		return this.patientService.deleteDoctorFromList(doctorInPatient, patientId);
+	}
+	
+	
+	/** getAppointmentBooked get no of appointments Booked for a perticular time  
+	 *  slot on a perticular day of the selected doctor
+	 *  @param String (doctor id of doctor)
+	 *  @param Instant (Date for appointment)
+	 *  @param Hours (object of hour class it is the time slot )
+	 *  @return long (no of appointment left for that time )  */
+	@PostMapping(path="/api/public/patient/appointment/booked")
+	public long getAppointmentLeft(@RequestBody Hours hours,@RequestParam String dateInLong,@RequestParam String docId){
+	
+		Instant date= Instant.ofEpochMilli(Long.parseLong(dateInLong));
+		return  this.patientService.getAppointmentBooked(docId,date,hours);
+		
 	}
 
 }

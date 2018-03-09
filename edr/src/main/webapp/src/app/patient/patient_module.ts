@@ -16,10 +16,13 @@ import { SearchDocUsingSpeciality } from "./search_doc_using_speciality";
 import { ShowDoctorAdded } from "./show_doctors_added";
 import { AddDoctor } from "./add_doctor";
 import { AppointmentWithAddedDoctor } from "./appointment_with_added_doctor";
+import { ScrollDispatchModule } from '@angular/cdk/scrolling';
+
 
 
 @NgModule( {
-    imports: [PatientRoutingModule, MaterialModule, CommonModule, ReactiveFormsModule, AppCommonModule],
+    imports: [PatientRoutingModule, MaterialModule, CommonModule, ReactiveFormsModule, AppCommonModule
+        , ScrollDispatchModule],
     declarations: [PatientSignup, PatientHome, PatientProfile, PatientMakeAppointment
         , PatientAddAddress, SearchDocUsingDocid, SearchDocUsingDocName, SearchDocUsingSpeciality,
         ShowDoctorAdded, AddDoctor, AppointmentWithAddedDoctor],

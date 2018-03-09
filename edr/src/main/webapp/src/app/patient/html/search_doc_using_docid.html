@@ -1,3 +1,6 @@
+
+
+
 <h2 class="text-center">Search Using DocId</h2>
 
 <form [formGroup]="searchDocForm" (ngSubmit)="Submit()">
@@ -16,9 +19,11 @@
 </form>
 
 
-<div *ngIf="showDoc">
+<div class="content-center" *ngIf="showDoc">
 
-<mat-card>
+
+
+		<mat-card>
 
 	<mat-card-header>
 	
@@ -45,6 +50,8 @@
 
 
 </mat-card>
+
+
 
 
 	

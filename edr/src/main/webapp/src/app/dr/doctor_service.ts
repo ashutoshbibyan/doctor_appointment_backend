@@ -6,6 +6,8 @@ import { Hours } from "../model/hours";
 import { Day } from "../model/day";
 import { Observable } from "rxjs";
 import { CommonService } from "../common/common_service"
+import { LocalTime } from "js-joda";
+import { UserFile } from "../model/userfile";
 
 
 
@@ -21,10 +23,24 @@ export class DoctorService {
 
     }
 
+    /* save doctor method save the new doctor object using the signup method 
+     * of the backend */
+
     public saveDoctor( doctor: Doctor ) {
         let url = "/api/private/dr/signup";
         return this.http.post( url, doctor, this.commOptions );
     }
+
+
+    /*savedoctorobject method save the existing doctor object in the database */
+
+    public saveDoctorObject( doctor: Doctor ) {
+        let url = "/api/private/dr/save";
+        return this.http.post( url, doctor, this.commOptions );
+    }
+
+
+
 
     public docAppointmentSetup( doctor: Doctor ) {
         let url = "/api/private/dr/appointment/setup";
@@ -71,7 +87,7 @@ export class DoctorService {
 
     public getDoctorPublicInfo() {
         let url = "/api/public/dr/get/doctor";
-        return this.http.get( url, this.commOptions );
+        return this.http.get( url, this.commOptions ).map(( res ) => res.json() );
     }
 
     public makeAppointment( appointment: Appointment ) {
@@ -141,97 +157,52 @@ export class DoctorService {
         return this.http.post( url, doctor, this.commOptions );
     }
 
-    /********************************************************
-     * CHECK THIS METHOD AND IMPROVE IT IF POSSIBLE  
-     ********************************************************
-     * getDoctorWorkingDays return the list working days from the database the data we get from the database is 
-     *  different then the day object hours object have two string parameter but from database we get two string 
-     *  array so we use fromLocalTimeToString method to convert it into hour object */
-
-    getDoctorWorkingDays(): Day[] {
-        let workingDays: Day[] = new Array();
-        this.getDoctorPublicInfo().subscribe(( data ) => {
-
-            if ( data != undefined ) {
-
-                if ( data.json().workingDays != null ) {
-                    for ( let i = 0; i < data.json().workingDays.length; i++ ) {
-                        let day: Day = new Day();
-                        day.dayId = data.json().workingDays[i].dayId;
-                        day.dayName = data.json().workingDays[i].dayName;
-                        day.dayStatus = data.json().workingDays[i].dayStatus;
-                        day.checked = data.json().workingDays[i].checked;
-
-                        for ( let j = 0; j < data.json().workingDays[i].hours.length; j++ ) {
-                            let hour: Hours = new Hours();
-                            hour.startAt = this.fromLocalTimeToString( data.json().workingDays[i].hours[j].startAt );
-                            hour.closeAt = this.fromLocalTimeToString( data.json().workingDays[i].hours[j].closeAt );
-
-                            day.hours.push( hour );
-
-                        }
 
 
-                        workingDays.push( day );
-                    }
-
-
-                }
-
-                return workingDays;
-
-            }
-        } );
-
-        // this will never get executed because value is returned before this statement 
-
-        return workingDays;
-    }
-
-    /** fromLocalTimeToString method takes array of string which contain two string value one is for hour 
-     *  and another is for minute and resturn the combined string value of time where hour and minute are 
-     *  seperated by :*/
-    fromLocalTimeToString( time: string[] ) {
-
-        let result: string;
-
-        // if its less than 10 its single digit so we add 0 before it 
-        if ( parseInt( time[0] ) < 10 ) {
-
-
-
-            if ( parseInt( time[1] ) == 0 ) {
-                result = "0" + time[0] + ":" + "0" + time[1];
-
-            }
-            else {
-                result = "0" + time[0] + ":" + time[1];
-
-            }
-
-        }
-        else {
-            // if its 0 its single digit 0 so we add 0 so it become 00
-            if ( parseInt( time[1] ) == 0 ) {
-                result = time[0] + ":" + "0" + time[1];
-            }
-
-            else {
-                result = time[0] + ":" + time[1];
-            }
-
-        }
-
-        return result;
-    }
+    //    /** fromLocalTimeToString method takes array of string which contain two string value one is for hour 
+    //     *  and another is for minute and resturn the combined string value of time where hour and minute are 
+    //     *  seperated by :*/
+    //    fromLocalTimeToString( time: string[] ) {
+    //
+    //        let result: string;
+    //
+    //        // if its less than 10 its single digit so we add 0 before it 
+    //        if ( parseInt( time[0] ) < 10 ) {
+    //
+    //
+    //
+    //            if ( parseInt( time[1] ) == 0 ) {
+    //                result = "0" + time[0] + ":" + "0" + time[1];
+    //
+    //            }
+    //            else {
+    //                result = "0" + time[0] + ":" + time[1];
+    //
+    //            }
+    //
+    //        }
+    //        else {
+    //            // if its 0 its single digit 0 so we add 0 so it become 00
+    //            if ( parseInt( time[1] ) == 0 ) {
+    //                result = time[0] + ":" + "0" + time[1];
+    //            }
+    //
+    //            else {
+    //                result = time[0] + ":" + time[1];
+    //            }
+    //
+    //        }
+    //
+    //        return result;
+    //    }
 
 
     /** getTimeLabel method takes the array of string which is got from database and convert it to 
      *  time lable according to hourListOptions file */
 
-    getTimeLabel( hour: string[] ) {
-        return this.commonService.getTimeLabel( this.fromLocalTimeToString( hour ) );
-    }
+    //    getTimeLabel( hour: string[] ) {
+    //        return this.commonService.getTimeLabel( this.fromLocalTimeToString( hour ) );
+    //    }
 
 
     /** patient exist method takes patient id as parameter and checks if the patient exist in 
@@ -267,6 +238,72 @@ export class DoctorService {
 
 
     }
+
+    /* deleteHoliday delete the holiday from the list of holidays it takes date as parameter 
+     *@param Date (date to be deleted)*/
+    deleteHoliday( date: Date ) {
+        let url = "/api/private/dr/delete/holiday";
+
+
+        return this.http.post( url, date, this.commOptions );
+
+
+    }
+
+    /** deserializeWorkingDays method takes the array of days object and return the 
+     *  deserialize array of the days */
+
+    deseralizeWorkingDays( days: Day[] ): Day[] {
+        let workingDays: Day[] = new Array();
+        for ( let i = 0; i < days.length; i++ ) {
+            let day: Day = new Day();
+            day = day.deserialize( days[i] );
+            workingDays.push( day );
+        }
+
+        return workingDays;
+    }
+
+
+    deseralizeHoursArray( hours: Hours[] ): Hours[] {
+        let hoursArr: Hours[] = new Array();
+        for ( let i = 0; i < hours.length; i++ ) {
+            let hour: Hours = new Hours();
+            hour = hour.deserialize( hours[i] );
+            hoursArr.push( hour );
+
+        }
+        return hoursArr;
+    }
+
+
+    deseralizeAppointmentArray( appointment: Appointment[] ): Appointment[] {
+        let appointmentArr: Appointment[] = new Array();
+
+        for ( let i = 0; i < appointment.length; i++ ) {
+
+            let appoint: Appointment = new Appointment();
+
+            appoint = appoint.deserialization( appointment[i] );
+
+            appointmentArr.push( appoint );
+
+
+        }
+
+        return appointmentArr;
+
+    }
+
+    /**saveDoctorProfileImage method takes the UserFile object and 
+     * save the image as profile image for the user */
+
+    saveDoctorProfileImage( image: UserFile ) {
+        let url = "/api/private/dr/change/profileimg";
+
+        return this.http.post( url, image, this.commOptions );
+    }
+
 
 
 }

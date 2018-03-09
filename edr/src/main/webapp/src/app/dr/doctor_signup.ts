@@ -12,7 +12,8 @@ import { FormResult } from "../model/formresult";
 
 @Component( {
     selector: "doc-signup",
-    templateUrl: "./html/doctor_signup.html"
+    templateUrl: "./html/doctor_signup.html",
+    styleUrls: ["./css/doctor_signup.css"]
 } )
 export class DoctorSignup {
 

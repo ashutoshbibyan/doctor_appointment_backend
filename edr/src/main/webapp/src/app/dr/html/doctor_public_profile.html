@@ -1,62 +1,161 @@
+
+
+<mat-toolbar color="primary">
+
+<!-- <button mat-icon-button (click)="sidenav.open()"> -->
+<!--   <mat-icon>more_vert</mat-icon> -->
+<!-- </button> -->
+
+<button mat-button routerLink="/dr/home"><span>Edr</span>
+</button>
+
+
+<button mat-button routerLink="">SignOut</button>
+
+
+</mat-toolbar>
+
+
 <div id="container">
 
+<div id="left-content">
 
-<h3>Doctor Public Profile</h3>
+<div id="img-container">
 
-
-
-	<h3>Name : {{doctor.name}}</h3>
-	<h4>About:</h4>
-	<p>{{doctor.about}}</p>
+	<img src={{doctor.profileImage.path}} alt="profile image" height=150px width=150px>
 	
-	<h4>Qualification</h4>
+	<div class="flex-row">
 	
-	<mat-list>
+		<button mat-raised-button color="primary">Add Doctor</button>
 	
-	
-			<div *ngFor="let degree of doctor.degrees">
-				<mat-list-item><h5>{{degree.degreeName}}</h5></mat-list-item>
-			</div>
-			
-			
-    </mat-list>
-    
-    
-    
-	<h4>Speciality:</h4>
-	
-	<mat-list>
-	
-	<div *ngFor="let speciality of doctor.specialities">
-	
-		<mat-list-item><h5>{{speciality.specialityName}}</h5></mat-list-item>
+	    <button mat-raised-button color="primary">Make Appointment</button>
 	
 	</div>
 	
-	</mat-list>
-	<h4>Working Days </h4>
+</div>
+	
+	<div class="flex-row">
+	
+	<h4>AppointmentFee:</h4>
+			<div>
+			     <p>{{doctor.appointmentFee}}</p>
+			</div>
+	</div>
+	
+	<div class="flex-row">
+	
+	<h4>PhoneNo:</h4>
+			<div>
+			     <p>{{doctor.phoneno}}</p>
+			</div>
+	</div>
+	
+	<div class="flex-row">
+	
+		
+	<h4>Address:</h4>
+	<div>
+	
+		<p>{{doctor.addrLineOne}}  {{doctor.city}}</p>
+	
+	</div>
+	
+	
+	</div>
+	
+	
+	
+
+</div>
+
+
+
+
+<div id="right-content">
+
+
+	
+		
+		
+	
+	
+	<h3>Name : {{doctor.name}}</h3>
+	
+	<h4>About:</h4>
+	<p>{{doctor.about}}</p>
+	
+	<div class="flex-row">
+	
+			<h4>Qualification</h4>
+	
+	<ul>
+	
+	
+			<div *ngFor="let degree of doctor.degrees">
+				<li><h5>{{degree.degreeName}} </h5></li>
+			</div>
+			
+			
+    </ul>
+	
+	
+	
+	</div>
+    
+    
+    
+    <div class="flex-row">
+    
+    
+    <h4>Speciality:</h4>
+	
+	<ul>
+	
+	<div *ngFor="let speciality of doctor.specialities">
+	
+		<li><h5>{{speciality.specialityName}} </h5></li>
+	
+	</div>
+	
+	</ul>
+    
+    
+    
+    </div>
+    
+    
+	
+	<div id="workingday-container">
+	
+	<h4>Working Days:</h4>
 	<div *ngFor="let workingday of doctor.workingDays">
 	
 		
 		
 		<mat-list>
 		
-        <div class="col-md-4">
+        <div class="workingday">
 		
 		<mat-list-item><h5>{{workingday.dayName}}</h5></mat-list-item>
 		
+		
+		
+		<div class="time" >
+					<div *ngFor="let hour of workingday.hours" >
+					
+					
+								<p>
+								{{commonService.getTimeLabel(hour.startAt)}}
+								To		
+								{{commonService.getTimeLabel(hour.closeAt)}}
+								</p>
+								
+								
+					</div>
+					
+	    </div>
+		
 		</div>
-		
-		
-		<div *ngFor="let hour of workingday.hours" >
-		<p>
-		{{commonService.getTimeLabel(commonService.fromLocalTimeToString(hour.startAt))}}
-		 To
-		{{commonService.getTimeLabel(commonService.fromLocalTimeToString(hour.closeAt))}}
-		</p>
-		</div>
-		
-		
 		
 		
 		
@@ -69,12 +168,12 @@
 		
 	</div>
 	
-	<h4>Address</h4>
-	<div>
-		<p>{{doctor.addrLineOne}}</p>
-		<p>{{doctor.city}}</p>
 	
 	</div>
+	
+	
+		
 
+</div>
 
 </div>

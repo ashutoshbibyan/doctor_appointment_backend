@@ -7,7 +7,7 @@ import { PatientService } from "./patient_service";
 import { City } from "../model/city";
 import { Doctor } from "../dr/doctor";
 import { DoctorInPatient } from "../model/doctorInPatient";
-
+import { FormResult } from "../model/formresult";
 
 @Component( {
     selector: "search-doc-using-speciality",
@@ -15,6 +15,7 @@ import { DoctorInPatient } from "../model/doctorInPatient";
 } )
 export class SearchDocUsingSpeciality {
 
+    result: FormResult = new FormResult();
 
     searchDocUsingSpecialityForm: FormGroup;
 
@@ -119,7 +120,9 @@ export class SearchDocUsingSpeciality {
         doctorInPatient.appointmentFee = doctor.appointmentFee;
 
         this.patientService.addDoctor( doctorInPatient ).subscribe(( data ) => {
-            console.log( data.json() );
+            if ( data != undefined ) {
+                this.result = data.json();
+            }
         } );
 
     }

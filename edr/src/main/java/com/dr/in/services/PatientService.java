@@ -1,5 +1,6 @@
 package com.dr.in.services;
 
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.dr.in.model.Doctor;
 import com.dr.in.model.DoctorInPatient;
 import com.dr.in.model.FormResult;
+import com.dr.in.model.Hours;
 import com.dr.in.model.Patient;
 import com.dr.in.model.Speciality;
 import com.dr.in.repository.PatientRepository;
@@ -24,6 +26,9 @@ public class PatientService {
 	
 	@Autowired 
 	private DoctorService doctorService;
+	
+	@Autowired 
+	private AppointmentService appointmentService;
 	
 	@Autowired
 	private Patient patient ;
@@ -96,12 +101,12 @@ public class PatientService {
 	}
 
 
-	public List<Doctor> getDoctorForPatient(String patientId) {
+	public Page<Doctor> getDoctorForPatient(String patientId, int pageNo, int pageSize) {
 		// TODO Auto-generated method stub
 		this.patient=this.getPatient(patientId);
 		String state=this.patient.getAddress().getState();
 		String city=this.patient.getAddress().getCity();
-		return this.doctorService.getDoctorForPatient(state,city);
+		return this.doctorService.getDoctorForPatient(state,city,pageNo,pageSize);
 	}
 	
 
@@ -285,6 +290,18 @@ public class PatientService {
 		
 		return this.formResult;
 		
+	}
+
+	/** getAppointmentBooked method  get the appointment booked for that doctor on that perticular day 
+	 *  and at that perticular time slot 
+	 *  @param String (doctor id )
+	 *  @param Instant (date value in Instant type )
+	 *  @param Hours (time slot object of hours class)
+	 *  @return long (no of appointment made) */
+
+	public long getAppointmentBooked(String docId, Instant date, Hours hour) {
+		// TODO Auto-generated method stub
+		return this.appointmentService.getAppointmentBooked(docId, date, hour);
 	}
 	
 	
