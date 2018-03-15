@@ -10,6 +10,7 @@ import { SearchDocUsingSpeciality } from "./search_doc_using_speciality";
 import { ShowDoctorAdded } from "./show_doctors_added";
 import { AddDoctor } from "./add_doctor";
 import { AppointmentWithAddedDoctor } from "./appointment_with_added_doctor";
+import { MakeAppointment } from "./make_appointment";
 
 
 const patientSignup: Route = { path: 'patient/signup', component: PatientSignup };
@@ -32,6 +33,9 @@ const appointmentWithAddedDoctor: Route = { path: "appointment/with/added/doctor
 
 const patientMakeAppointment: Route = { path: "patient/make/appointment", component: PatientMakeAppointment };
 
+const makeAppointment: Route = { path: "make/appointment/:docId", component: MakeAppointment }
+
+
 const patientHome: Route = {
     path: "patient/home", component: PatientHome, children: [
 
@@ -44,7 +48,8 @@ const patientHome: Route = {
         searchDocUsingSpeciality,
         showDoctorAdded,
         addDoctor,
-        appointmentWithAddedDoctor
+        appointmentWithAddedDoctor,
+        makeAppointment
 
     ]
 };

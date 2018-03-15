@@ -35,13 +35,10 @@ export class CommonService {
     }
 
     /** getTimeLabel get the label value for a time the label value is for display only */
-    getTimeLabel( value: LocalTime ): string {
+    getTimeLabel( value: string ): string {
         for ( let i = 0; i < this.hourListOption.length; i++ ) {
 
-
-            let timeFormater: DateTimeFormatter = DateTimeFormatter.ofPattern( "HH:mm" );
-
-            if ( this.hourListOption[i].value == value.format( timeFormater ) ) {
+            if ( this.hourListOption[i].value == value ) {
                 return this.hourListOption[i].label;
             }
         }

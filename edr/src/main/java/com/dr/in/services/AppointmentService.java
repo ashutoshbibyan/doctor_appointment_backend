@@ -157,8 +157,10 @@ public class AppointmentService {
 
 	public long getAppointmentBooked(String docId, Instant date, Hours hour) {
 		// TODO Auto-generated method stub
+				
 		
 		QAppointment qappointment = new QAppointment("appointment");
+		
 		
 		Predicate predicate = qappointment.doctorId.eq(docId).and(qappointment.date.eq(date))
 				              .and(qappointment.hours.eq(hour));

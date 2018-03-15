@@ -1,7 +1,8 @@
-import { Component } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { Component, Inject } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { DoctorService } from "./doctor_service";
 import { Doctor } from "./doctor";
+import { MAT_DIALOG_DATA } from "@angular/material";
 import { CommonService } from "../common/common_service";
 
 @Component( {
@@ -17,16 +18,14 @@ export class DoctorPublicProfile {
     doctor: Doctor = new Doctor();
 
     constructor( private acroute: ActivatedRoute, private doctorService: DoctorService
-        , private commonService: CommonService ) {
+        , private commonService: CommonService, @Inject( MAT_DIALOG_DATA ) public data: any,
+        private router: Router ) {
 
     }
 
     ngOnInit() {
 
-        this.acroute.params.subscribe(( data ) => {
-            this.docId = data["docId"];
-
-        } );
+        this.docId = this.data.docId;
 
         this.getDoctor();
 
@@ -43,6 +42,8 @@ export class DoctorPublicProfile {
         } );
 
     }
+
+
 
 
 }

@@ -250,50 +250,6 @@ export class DoctorService {
 
     }
 
-    /** deserializeWorkingDays method takes the array of days object and return the 
-     *  deserialize array of the days */
-
-    deseralizeWorkingDays( days: Day[] ): Day[] {
-        let workingDays: Day[] = new Array();
-        for ( let i = 0; i < days.length; i++ ) {
-            let day: Day = new Day();
-            day = day.deserialize( days[i] );
-            workingDays.push( day );
-        }
-
-        return workingDays;
-    }
-
-
-    deseralizeHoursArray( hours: Hours[] ): Hours[] {
-        let hoursArr: Hours[] = new Array();
-        for ( let i = 0; i < hours.length; i++ ) {
-            let hour: Hours = new Hours();
-            hour = hour.deserialize( hours[i] );
-            hoursArr.push( hour );
-
-        }
-        return hoursArr;
-    }
-
-
-    deseralizeAppointmentArray( appointment: Appointment[] ): Appointment[] {
-        let appointmentArr: Appointment[] = new Array();
-
-        for ( let i = 0; i < appointment.length; i++ ) {
-
-            let appoint: Appointment = new Appointment();
-
-            appoint = appoint.deserialization( appointment[i] );
-
-            appointmentArr.push( appoint );
-
-
-        }
-
-        return appointmentArr;
-
-    }
 
     /**saveDoctorProfileImage method takes the UserFile object and 
      * save the image as profile image for the user */

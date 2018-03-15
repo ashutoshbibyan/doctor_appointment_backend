@@ -47,7 +47,7 @@ export class DoctorPanel {
 
             if ( data != undefined ) {
                 console.log( data.json().content );
-                this.appointments = this.doctorService.deseralizeAppointmentArray( data.json().content );
+                this.appointments = data.json().content;
                 this.totalElements = data.json().totalElements;
                 console.log( this.appointments );
                 if ( this.appointments.length != 0 ) {

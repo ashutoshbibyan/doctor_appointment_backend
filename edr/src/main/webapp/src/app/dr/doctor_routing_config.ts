@@ -12,7 +12,7 @@ import { DoctorPublicProfile } from "./doctor_public_profile";
 import { DoctorProfileEdit } from "./doctor_profile_edit";
 
 const doctorAppointment: Route = { path: "dr/appointment", component: DoctorAppointmentSetup };
-const doctorProfileEdit: Route = { path: "dr/profile/edit", component: DoctorProfileEdit };
+const doctorProfileEdit: Route = { path: "profile/edit", component: DoctorProfileEdit };
 const doctorHoliday: Route = { path: "dr/holiday", component: DoctorHoliday };
 const doctorSignUp: Route = { path: "dr/signup", component: DoctorSignup };
 const doctorPanel: Route = { path: "dr/panel", component: DoctorPanel };

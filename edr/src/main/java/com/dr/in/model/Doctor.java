@@ -3,6 +3,7 @@ package com.dr.in.model;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import com.dr.in.model.Degree;
@@ -33,7 +34,7 @@ public class Doctor {
 	private String addrLineTwo;
 	private String state;
 	private String city;
-	private int maxAppointments;
+	
 	private UserFile profileImage;
 	
 	
@@ -45,12 +46,40 @@ public class Doctor {
 	public void setProfileImage(UserFile profileImage) {
 		this.profileImage = profileImage;
 	}
-	public int getMaxAppointments() {
+	
+	
+	/** getMaxAppointments method takes dayid and hours as  parameter and return the no of maximum 
+	 *  appointment on that day at that hours else return -1 */
+	
+	public int getMaxAppointments(int dayId,Hours hours) {
+		
+		int maxAppointments=0;
+		
+		Iterator<Day> iter= this.workingDays.iterator();
+		
+		while(iter.hasNext()){
+			Day day=  iter.next();
+			
+			if(day.getDayId()==dayId){
+				Hours hourValue=day.getHourUsingHour(hours);
+				
+				if(hourValue!=null){
+					maxAppointments=hourValue.getMaxPatientNo();
+				}
+				else{
+					maxAppointments=-1;
+				}
+				
+			}
+			
+		}
+	
 		return maxAppointments;
 	}
-	public void setMaxAppointments(int maxAppointments) {
-		this.maxAppointments = maxAppointments;
-	}
+	
+	
+	
+	
 	private String phoneno;
 	
 	private AppointmentInDoctor appointments;

@@ -17,6 +17,7 @@ import { ShowDoctorAdded } from "./show_doctors_added";
 import { AddDoctor } from "./add_doctor";
 import { AppointmentWithAddedDoctor } from "./appointment_with_added_doctor";
 import { ScrollDispatchModule } from '@angular/cdk/scrolling';
+import { MakeAppointment } from "./make_appointment";
 
 
 
@@ -25,7 +26,7 @@ import { ScrollDispatchModule } from '@angular/cdk/scrolling';
         , ScrollDispatchModule],
     declarations: [PatientSignup, PatientHome, PatientProfile, PatientMakeAppointment
         , PatientAddAddress, SearchDocUsingDocid, SearchDocUsingDocName, SearchDocUsingSpeciality,
-        ShowDoctorAdded, AddDoctor, AppointmentWithAddedDoctor],
+        ShowDoctorAdded, AddDoctor, AppointmentWithAddedDoctor, MakeAppointment],
     providers: [PatientService],
     exports: []
 } )

@@ -108,7 +108,7 @@ export class DoctorMakeAppointment {
 
         for ( let i = 0; i < this.doctor.workingDays.length; i++ ) {
             if ( this.doctor.workingDays[i].dayId == date.getDay() ) {
-                this.hours = this.doctorService.deseralizeHoursArray( this.doctor.workingDays[i].hours );
+                this.hours = this.doctor.workingDays[i].hours;
             }
         }
 
@@ -186,6 +186,7 @@ export class DoctorMakeAppointment {
         let appointment: Appointment = new Appointment();
         appointment.patientId = this.appointmentForm.value.patientId;
         appointment.date = new Date( this.appointmentForm.value.date );
+        appointment.dayId = appointment.date.getDay();
         appointment.hours = this.appointmentForm.value.timeSlot;
         console.log( appointment );
 
@@ -212,6 +213,7 @@ export class DoctorMakeAppointment {
         appointment.patientName = this.appointmentWithoutPatientId.value.patientName;
         appointment.patientPhoneNo = this.appointmentWithoutPatientId.value.patientPhoneNo;
         appointment.date = this.appointmentWithoutPatientId.value.appointmentDate;
+        appointment.dayId = appointment.date.getDay();
         appointment.hours = this.appointmentWithoutPatientId.value.appointmentTimeSlot;
 
         this.doctorService.makeAppointment( appointment ).subscribe(( data ) => {

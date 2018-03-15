@@ -166,11 +166,17 @@ export class DoctorAddWorkingHours {
         this.doctorService.getDoctorPublicInfo().subscribe(( data ) => {
             if ( data != undefined ) {
 
-                let doctor: Doctor = data;
+                if ( data.workingDays != null ) {
+                    this.workingDays = data.workingDays;
 
-                this.workingDays = this.doctorService.deseralizeWorkingDays( doctor.workingDays );
+                    this.progress = false;
+                }
 
-                this.progress = false;
+                else {
+                    this.progress = false;
+                }
+
+
 
 
             }
@@ -264,8 +270,8 @@ export class DoctorAddWorkingHours {
                 let hours: Hours = new Hours();
 
 
-                hours.startAt = LocalTime.parse( startAt );
-                hours.closeAt = LocalTime.parse( closeAt );
+                hours.startAt = startAt;
+                hours.closeAt = closeAt;
 
 
                 hours.maxPatientNo = maxPatientNo;
@@ -321,8 +327,8 @@ export class DoctorAddWorkingHours {
                 let hours: Hours = new Hours();
 
                 if ( startAt == "24" || closeAt == "24" ) {
-                    hours.startAt = LocalTime.parse( '00:00' );
-                    hours.closeAt = LocalTime.parse( '23:59' );
+                    hours.startAt = '00:00';
+                    hours.closeAt = '23:59';
                     hours.maxPatientNo = maxPatientNo;
                     let hourArr: Hours[] = new Array();
                     hourArr.push( hours );
@@ -398,8 +404,8 @@ export class DoctorAddWorkingHours {
     hourSelected( value: string, dayid: number ) {
 
         let hour: Hours = new Hours();
-        hour.startAt = LocalTime.parse( "00:00" );
-        hour.closeAt = LocalTime.parse( "23:59" );
+        hour.startAt = "00:00";
+        hour.closeAt = "23:59";
 
 
 
@@ -407,7 +413,7 @@ export class DoctorAddWorkingHours {
 
             let oldHours: Hours[] = new Array();
             oldHours = this.getADay( dayid ).hours;
-            oldHours = this.doctorService.deseralizeHoursArray( oldHours );
+
             for ( let i = 0; i < oldHours.length; i++ ) {
 
                 if ( hour.equal( oldHours[i] ) ) {

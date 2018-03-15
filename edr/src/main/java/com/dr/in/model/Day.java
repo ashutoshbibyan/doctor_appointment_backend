@@ -1,5 +1,6 @@
 package com.dr.in.model;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class Day implements Comparable<Day> {
@@ -11,6 +12,23 @@ public class Day implements Comparable<Day> {
 	private String dayStatus;
 	
 	private List<Hours> hours;
+	
+	
+/** getHourUsingHour method take Hours as a parameter and return the Hours value from the list 
+ *  of hours in the currrent object which is equal to the parameter else return null*/	
+	
+ public  Hours	getHourUsingHour(Hours hour){
+	    Hours hourValue = null;
+		Iterator<Hours> iter= this.hours.iterator();
+		while(iter.hasNext()){
+			Hours currentValue=iter.next();
+			if(currentValue.equals(hour)){
+				hourValue=currentValue;
+			}
+		}
+		
+		return hourValue;
+	}
 
 	
 	

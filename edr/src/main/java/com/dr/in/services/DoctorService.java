@@ -107,7 +107,7 @@ public class DoctorService {
 		if(this.doctor!=null){
 			// if there is an object then add the appoinetment setup information and save it to db
 			this.doctor.setAppointmentFee(doctor.getAppointmentFee());
-			this.doctor.setMaxAppointments(doctor.getMaxAppointments());
+			
 			this.saveDoctor(this.doctor);
 		}
 		// else send the appropriate error
@@ -265,22 +265,30 @@ public class DoctorService {
 						
 		int noOfAppointments=this.getNoOfAppointments(appointment.getDate(), appointment.getDoctorId());
 		
-		int maxNoOfAppointment=this.doctor.getMaxAppointments();
+		int maxNoOfAppointment= this.doctor.getMaxAppointments(appointment.getDayId(), appointment.getHours());
 		
 		
-		
-		if(noOfAppointments<maxNoOfAppointment){
-			
+		if(maxNoOfAppointment!=-1){
 
-			this.formResult=this.appointmentService.addAppointment(appointment);
+			if(noOfAppointments<maxNoOfAppointment){
+				
+
+				this.formResult=this.appointmentService.addAppointment(appointment);
+				
+				
+			}
 			
-			
+			else{
+				this.formResult.setError(true);
+				this.formResult.setResult(false);
+				this.formResult.setMessage(" Appointments Are Full For This Date ");
+			}
 		}
 		
 		else{
 			this.formResult.setError(true);
 			this.formResult.setResult(false);
-			this.formResult.setMessage(" Appointments Are Full For This Date ");
+			this.formResult.setMessage("Date and Hours are not correct");
 		}
 		
 		

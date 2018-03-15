@@ -6,7 +6,7 @@ import { Doctor } from "../dr/doctor";
 import { Day } from "../model/day";
 import { CommonService } from "../common/common_service";
 import { Hours } from "../model/hours";
-import { MatDatepickerInputEvent, MatSelect, MatSelectTrigger } from "@angular/material";
+import { MatDatepickerInputEvent, MatSelect, MatSelectTrigger, MatSnackBar } from "@angular/material";
 import { PatientService } from "./patient_service";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
@@ -83,7 +83,7 @@ export class PatientMakeAppointment {
     holidayFilter;
 
     constructor( private formBuilder: FormBuilder, private patientService: PatientService, private commonService: CommonService
-        , private doctorService: DoctorService ) {
+        , private doctorService: DoctorService, private matSnackBar: MatSnackBar ) {
 
     }
 
@@ -220,11 +220,27 @@ export class PatientMakeAppointment {
 
 
     getAppointmentLeft() {
-        this.patientService.getAppointmentBooked( this.selectedDoc.value.docId,
+        this.patientService.getAppointmentBooked( this.selectedDoc.value,
             this.appointmentDate.value, this.appointmentTime.value )
             .subscribe(( data ) => {
                 if ( data != undefined ) {
-                    console.log( data.json() );
+                   
+                    let appointment = data.json();
+                    let appointmentLeft = this.appointmentTime.value.maxPatientNo - appointment;
+                    
+                   
+
+                    if ( appointmentLeft > 0 ) {
+                        this.matSnackBar.open( "Appointment Left " + appointmentLeft, "Hurry", {
+                            duration: 3000
+                        } );
+                    }
+
+                    else {
+                        this.matSnackBar.open( "Appointment Full Choose Another Time", "Sorry", {
+                            duration: 3000
+                        } );
+                    }
 
                 }
             } );

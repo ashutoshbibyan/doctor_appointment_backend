@@ -76,9 +76,11 @@
 	
 	<mat-card-actions>
 	
-	<a mat-button href="/dr/public/profile/{{doctor.docId}}">Check Profile</a>
+	<button mat-button (click)="showDoctor(doctor.docId)">Check Profile</button>
 
 	<button mat-button color="accent" (click)="addDoctor(doctor)">Add Into List</button>
+	
+	<button mat-button (click)="makeAppointment(doctor.docId)">Make Appointment</button>
 	
 	</mat-card-actions>
 	

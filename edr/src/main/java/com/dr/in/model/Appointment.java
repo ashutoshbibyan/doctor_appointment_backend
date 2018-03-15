@@ -27,9 +27,19 @@ public class Appointment {
 	private String status;
 	private boolean refund;
 	private Hours hours;
+	private int dayId;
 	
 	
 	
+	
+	
+	
+	public int getDayId() {
+		return dayId;
+	}
+	public void setDayId(int dayId) {
+		this.dayId = dayId;
+	}
 	public Hours getHours() {
 		return hours;
 	}

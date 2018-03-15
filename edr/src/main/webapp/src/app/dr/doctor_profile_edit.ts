@@ -82,8 +82,6 @@ export class DoctorProfileEdit {
 
         this.getAllSpeciality();
 
-        // hide the progres bar 
-        this.progress = false;
 
 
         // after upload dailog closed we get new doctor object
@@ -99,6 +97,8 @@ export class DoctorProfileEdit {
             if ( data.status != 204 ) {
                 this.doctor = data;
                 this.doctor.workingDays = this.doctorService.deseralizeWorkingDays( this.doctor.workingDays );
+                // hide the progres bar 
+                this.progress = false;
 
             }
         } );

@@ -8,7 +8,9 @@ import { City } from "../model/city";
 import { Doctor } from "../dr/doctor";
 import { DoctorInPatient } from "../model/doctorInPatient";
 import { FormResult } from "../model/formresult";
-
+import { MatDialog } from "@angular/material";
+import { DoctorPublicProfile } from "../dr/doctor_public_profile";
+import { Router } from "@angular/router";
 @Component( {
     selector: "search-doc-using-speciality",
     templateUrl: "./html/search_doc_using_speciality.html"
@@ -42,7 +44,8 @@ export class SearchDocUsingSpeciality {
 
 
     constructor( private formBuilder: FormBuilder, private commonService: CommonService,
-        private patientService: PatientService ) {
+        private patientService: PatientService, private matDialog: MatDialog,
+        private router: Router ) {
 
     }
 
@@ -153,6 +156,23 @@ export class SearchDocUsingSpeciality {
 
 
     }
+
+
+    showDoctor( docId ) {
+        this.matDialog.open( DoctorPublicProfile, {
+            data: { docId: docId },
+            height: '700px',
+            width: '900px'
+
+        } );
+    }
+
+
+    makeAppointment( docId ) {
+        let url = "/patient/home/make/appointment/" + docId;
+        this.router.navigateByUrl( url );
+    }
+
 
 
 }

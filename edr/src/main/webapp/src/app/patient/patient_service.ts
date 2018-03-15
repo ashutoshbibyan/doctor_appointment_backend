@@ -13,7 +13,10 @@ export class PatientService {
     commOptions: RequestOptions = new RequestOptions( { headers: this.headers } );
 
 
+
+
     constructor( private http: Http ) {
+
 
     }
 
