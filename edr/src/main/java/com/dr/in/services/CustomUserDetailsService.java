@@ -18,7 +18,10 @@ public class CustomUserDetailsService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
+		System.out.println(userName);
+		userName= "+91"+userName;
 		User user =this.userService.getUser(userName);
+		
 		
 		if(user==null){
 			throw new  UsernameNotFoundException("No User present with this username");

@@ -3,6 +3,7 @@ package com.dr.in.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,4 +74,60 @@ public class SiteAdminController {
 	public FormResult addSpeciality(@RequestBody Speciality speciality){
 		return this.commonServices.saveSpeciality(speciality);
 	}
+	
+	/** removeState method  remove the state from the database it takes sateid as 
+	 *  parameter and remove it from the database 
+	 *  @param String (stateId of the  state )
+	 *  */
+	@DeleteMapping(path="/api/private/admin/delete/state")
+	public void removeState(@RequestParam String stateId){
+		 this.commonServices.removeState(stateId);
+	}
+	
+	/** removeDisease method remove the disease from the database it takes 
+	 *  diseaseid as parameter and remove it from database
+	 *  @param String (disease id of the disease)*/
+	
+	@DeleteMapping(path="/api/private/admin/delete/disease")
+	public void removeDisease(@RequestParam String diseaseId){
+		
+		this.commonServices.removeDisease(diseaseId);		
+	}
+	
+	
+	/** removeDegree method remove the degree from the database it takes one 
+	 *  parameter degreeId and remove it from database
+	 *  @param String (degreeId of the degree)*/
+	
+	@DeleteMapping(path="/api/private/admin/delete/degree")
+	public void removeDegree(@RequestParam String degreeId){
+	
+		this.commonServices.removeDegree(degreeId);
+	}
+	
+	
+	/** removeCity method remove the city from database it takes stateid and list of 
+	 *  newCityList as parameter and change the old list with new list */
+	
+	@PostMapping(path="/api/private/admin/delete/city")
+	public FormResult removeCity(@RequestBody List<City> newCityList , @RequestParam String stateId){
+		return this.commonServices.removeCity(newCityList, stateId);
+	}
+	
+	
+	/** removeSpeciality method remove the speciality from the database it takes specialityName 
+	 *  as the parameter 
+	 *  @param string (specialityName of the speciality)*/
+	
+	@DeleteMapping(path="/api/private/admin/delete/speciality")
+	
+	public  void removeSpeciality(@RequestParam String specialityName){
+		
+		this.commonServices.removeSpeciality(specialityName);
+		
+	}
+	
+	
+	
+	
 }

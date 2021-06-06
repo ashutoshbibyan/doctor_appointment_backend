@@ -1,6 +1,6 @@
 package com.dr.in.controller;
 
-import com.dr.in.model.Principal;
+
 
 
 import java.time.Instant;
@@ -33,7 +33,7 @@ import com.dr.in.model.Day;
 import com.dr.in.model.Degree;
 import com.dr.in.model.Doctor;
 import com.dr.in.model.FormResult;
-
+import com.dr.in.model.Principal;
 import com.dr.in.model.Speciality;
 import com.dr.in.model.State;
 import com.dr.in.model.User;
@@ -348,6 +348,49 @@ public class DoctorController {
 	public FormResult changeProfileImage(@RequestBody UserFile image , Principal currentUser){
 		
 		return this.doctorService.saveProfileImage(image,currentUser.getName());
+	}
+	
+	
+	/** getAppointment method takes appointmentId as a parameter and return the object 
+	 *  of the appointment if the doctor is authorized to get the information else 
+	 *  return the null 
+	 *  @param String (appointment id of the appointment )
+	 *  @return Appointment (object of the appointment class)*/
+	@GetMapping(path="/api/private/dr/get/appointment/id")
+	public Appointment getAppointment(@RequestParam String appointmentId , Principal currrentUser){
+		Appointment appointment=null;
+		
+		appointment=this.doctorService.getAppointmentUsingId(appointmentId);
+		
+		if(!appointment.getDoctorId().equals(currrentUser.getName())){
+			appointment=null;
+		}
+				
+		return appointment;
+	}
+	
+	
+	/** savePrescription method takes appointment object with prescription and save it into the 
+	 *  database and return the formResult object 
+	 *  @param Appointment (object of appointment)
+	 *  @return FormResult (Object of the formResult)
+	 *  
+	 *  */
+	@PostMapping(path="/api/private/dr/save/prescription")
+	public FormResult savePrescription(@RequestBody Appointment appointment , Principal currentUser){
+		
+		if(appointment.getDoctorId().equals(currentUser.getName())){
+			this.result=this.doctorService.savePrescription(appointment);
+		}
+		
+		else{
+			this.result.setError(true);
+			this.result.setResult(false);
+			this.result.setMessage("You are not authorized to add prescription ");
+		}
+			
+			
+	  return this.result;
 	}
 	
 	

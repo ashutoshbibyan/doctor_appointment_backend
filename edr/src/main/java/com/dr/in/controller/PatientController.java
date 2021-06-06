@@ -1,5 +1,6 @@
 package com.dr.in.controller;
 
+import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -50,8 +51,8 @@ public class PatientController {
 	/** patientSignup method  takes patient object as parameter and insert it into 
 	 *  the database it  compleate the patient signup process */
 	@PostMapping(path="/api/private/patient/signup")
-	public FormResult patientSignup(@RequestBody Patient patient){
-		patient.setPatientId("patient@gmail.com");
+	public FormResult patientSignup(@RequestBody Patient patient , Principal currentUser){
+		patient.setPatientId(currentUser.getName());
 		return this.patientService.patientSignup(patient);
 	}
 	
@@ -64,19 +65,20 @@ public class PatientController {
 	
 	/** getPatient method get the loged in  patient object from the database */
 	@GetMapping(path="/api/private/get/patient")
-	public Patient getPatient(){
+	public Patient getPatient(Principal currentUser){
 		// this is hardcoded right now it will be replaced by current user
-		String patientId="patient@gmail.com";
-		return this.patientService.getPatient(patientId);
+		
+		return this.patientService.getPatient(currentUser.getName());
 	}
 	
 	/** getDoctorForPatient method get the list of doctor which are in the same city 
 	 *  of the patient */
 	@GetMapping(path="/api/private/patient/get/doctor")
-	public Page<Doctor> getDoctorForPatient(@RequestParam int pageNo , @RequestParam int pageSize){
+	public Page<Doctor> getDoctorForPatient(@RequestParam int pageNo , @RequestParam int pageSize ,
+			Principal currentUser){
 		// this is hardcoded right now it will be replaced by current user
-		String patientId="patient@gmail.com";
-		return this.patientService.getDoctorForPatient(patientId,pageNo,pageSize);
+		
+		return this.patientService.getDoctorForPatient(currentUser.getName(),pageNo,pageSize);
 	}
 	
 	/** getPublicPatient method takes the patientId as parameter and return the patient object 
@@ -121,6 +123,21 @@ public class PatientController {
 			,@RequestParam String cityName , @RequestParam int page , @RequestParam int pageSize){
 		return this.patientService.getDoctorUsingDocName(docName,stateId,cityName,page,pageSize);
 	}
+	
+	/** getDoctorUsingCityAndSpeciality method takes city and speciality and return the list of the doctor 
+	 * @param String city
+	 * @param String speciality 
+	 * @param int pageNo
+	 * @param int pageSize
+	 * @return Page<Doctor> (page object with list of objects of doctors)
+	 * */
+	
+	@GetMapping(path="/api/public/patient/search/doctor/cityandspeciality")
+	public Page<Doctor> getDoctorUsingCityAndSpeciality(@RequestParam String city , @RequestParam String speciality 
+			,@RequestParam int pageNo , @RequestParam int pageSize){
+		return this.patientService.getDoctorUsingCityAndSpeciality(city,speciality,pageNo,pageSize);
+		
+	}
 
 	/** getDoctorUsingDocSpeciality method take the doctor speciality the state and city and return the 
 	 *  list of doctor with that speciality 
@@ -142,11 +159,11 @@ public class PatientController {
 	 *  @param DoctorInPatient (object of the doctorinpatient class)
 	 *  @return FormResult (object of the formresult class)*/
 	@PostMapping(path="/api/private/patient/add/doctor")
-	public FormResult addPatientDoctor(@RequestBody DoctorInPatient doctorInPatient){
+	public FormResult addPatientDoctor(@RequestBody DoctorInPatient doctorInPatient , Principal currentUser){
 		
-		String currentUser="patient@gmail.com";
 		
-		return this.patientService.addPatientDoctor(doctorInPatient,currentUser);
+		
+		return this.patientService.addPatientDoctor(doctorInPatient,currentUser.getName());
 	}
 	
 	
@@ -154,10 +171,9 @@ public class PatientController {
 	 *  patient 
 	 *  @return List<DoctorInPatient> (list of doctorinpatient objects )*/
 	@GetMapping(path="/api/private/patient/get/doctors")
-	public List<DoctorInPatient> getPatientDoctors(){
-		String currentUser="patient@gmail.com";
+	public List<DoctorInPatient> getPatientDoctors(Principal currentUser){
 		
-		return this.patientService.getPatientDoctors(currentUser);
+		return this.patientService.getPatientDoctors(currentUser.getName());
 	}
 	
 	
@@ -165,9 +181,9 @@ public class PatientController {
 	 * @param DoctorInPatient (object of the doctorinpatient class)
 	 * @return FormResult (object of the formresult class )*/
 	@PostMapping(path="/api/private/patient/delete/doctor")
-	public FormResult deleteDoctorFromList(@RequestBody DoctorInPatient doctorInPatient){
-		String patientId="patient@gmail.com";
-		return this.patientService.deleteDoctorFromList(doctorInPatient, patientId);
+	public FormResult deleteDoctorFromList(@RequestBody DoctorInPatient doctorInPatient,Principal currentUser){
+		
+		return this.patientService.deleteDoctorFromList(doctorInPatient, currentUser.getName());
 	}
 	
 	
@@ -178,8 +194,8 @@ public class PatientController {
 	 *  @param Hours (object of hour class it is the time slot )
 	 *  @return long (no of appointment left for that time )  */
 	@PostMapping(path="/api/public/patient/appointment/booked")
-	public long getAppointmentLeft(@RequestBody Hours hours,@RequestParam String dateInLong,@RequestParam String docId){
-	
+	public long getAppointmentLeft(@RequestBody Hours hours,@RequestParam("dateInLong") String dateInLong,@RequestParam("docId") String docId){
+		
 		Instant date= Instant.ofEpochMilli(Long.parseLong(dateInLong));
 		return  this.patientService.getAppointmentBooked(docId,date,hours);
 		

@@ -150,8 +150,9 @@ public class CommonServices {
 		List<City> cities=this.state.getCities();
 		
 		
+		
 		// if list null create new one and add it 
-		if(cities==null){
+		if(cities==null|| cities.isEmpty()){
 			List<City> newcities = new ArrayList<>();
 			newcities.add(city);
 			this.state.setCities(newcities);
@@ -259,6 +260,59 @@ public class CommonServices {
 	
 	public List<Speciality> getSpecialiyList(){
 		return this.specialityRepository.findAll();
+	}
+	
+	
+
+	/** removeState method takes one parameter stateId and remove the  state with 
+	 *  that stateid from the database 
+	 *  @param String (stateId of the state) */
+	
+     public void removeState(String stateId) {
+		
+	      this.stateRepository.delete(stateId);
+	      
+	}
+     
+   /** removeDisease method takes one parameter diseaseid and remove it from the 
+    *  database 
+    *  @param String (Disease id of the Disease)*/
+
+	public void removeDisease(String diseaseId) {
+		 
+		this.diseaseRepository.delete(diseaseId);
+		
+	}
+
+	/** removeDegree method takes degreeId as parameter and remove that degree from 
+	 *  the database 
+	 *  @param String(degreeId of the degree)*/
+	
+	public void removeDegree(String degreeId) {
+		
+		this.degreeRepository.delete(degreeId);
+		
+	}
+
+	/** removeCity remove the city from database it takes stateId and newCityList as 
+	 * parameter  and change it in database*/
+	
+	public FormResult removeCity(List<City> newCityList, String stateId) {
+		this.state=this.getState(stateId);
+		this.state.setCities(newCityList);
+		
+		
+		return this.saveState(this.state);
+	}
+	
+	/** removeSpeciality method remove the speciality from the database it takes 
+	 *  one parameter specialityName and remove that speciality from database 
+	 *  @param String (specialityName of the speciality)*/
+
+	public void removeSpeciality(String specialityName) {
+		
+		this.specialityRepository.delete(specialityName);
+		
 	}
 
 	

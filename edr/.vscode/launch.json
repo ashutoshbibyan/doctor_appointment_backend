@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-EdrApplication<edr>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.dr.in.EdrApplication",
+            "projectName": "edr",
+            "args": ""
+        }
+    ]
+}

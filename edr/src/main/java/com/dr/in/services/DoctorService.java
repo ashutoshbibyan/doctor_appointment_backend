@@ -210,6 +210,7 @@ public class DoctorService {
 		this.doctor=this.doctorRepository.findOnePublicDoctorBydocId(docId);
 		
 		
+		
 		if(this.doctor!=null){
 
 			List<Instant> holidays=this.doctor.getHolidays();
@@ -573,6 +574,36 @@ public class DoctorService {
 		
 		
 		return this.formResult;
+	}
+
+	/** savePrescription method takes appointment object as a parameter and save 
+	 *  it into the database 
+	 *  @param Appointment (object of appointment)
+	 *  @return FormResult (object of the formresult class )*/
+
+	public FormResult savePrescription(Appointment appointment) {
+		
+		return this.appointmentService.savePrescription(appointment);
+	}
+
+	/** getDoctorUsingCityAndSpeciality method get the list of doctor using city and speciality 
+	 *  @param String city name 
+	 *  @param String speciality 
+	 *  @param int page no 
+	 *  @param int page size 
+	 *  @return Page<Doctor> (Page object with list of doctors )*/
+
+	public Page<Doctor> getDoctorUsingCityAndSpeciality(String city, Speciality speciality, int pageNo, int pageSize) {
+		// TODO Auto-generated method stub
+        QDoctor qdoctor=new QDoctor("doctor");
+		
+		Predicate predicate = qdoctor.specialities.contains(speciality).and(qdoctor.city.eq(city));
+		
+		
+		Pageable pageable = new PageRequest(pageNo, pageSize);
+		
+		return this.doctorRepository.findAll(predicate, pageable);
+
 	}
 
 	

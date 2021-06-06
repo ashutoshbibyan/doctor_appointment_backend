@@ -28,12 +28,20 @@ public class Appointment {
 	private boolean refund;
 	private Hours hours;
 	private int dayId;
+	private Prescription prescription;
 	
 	
 	
 	
 	
 	
+	
+	public Prescription getPrescription() {
+		return prescription;
+	}
+	public void setPrescription(Prescription prescription) {
+		this.prescription = prescription;
+	}
 	public int getDayId() {
 		return dayId;
 	}

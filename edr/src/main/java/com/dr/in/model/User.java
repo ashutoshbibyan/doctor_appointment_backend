@@ -3,24 +3,44 @@ package com.dr.in.model;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.stereotype.Component;
 
 @Component
 public class User {
 	
 	@Id
-	private String email;
+	private String userId;
+	
+	
+	private String mobileNo;
+	
+	
+	
 	private String password;
 	private String role;
 	
 	private boolean isAccountNonExpired=true;
 	private boolean isAccountNonLocked=true;
 	private boolean isCredentialsNonExpired=true;
-	private boolean isEnabled=true;
+	private boolean isEnabled=false;
 	private List<String> roles;
+	
+	private boolean mobileNoVarified=false;
 	
 	private List<String> images;
 	
+	
+	
+	
+	
+	public boolean isMobileNoVarified() {
+		return mobileNoVarified;
+	}
+	
+	public void setMobileNoVarified(boolean mobileNoVarified) {
+		this.mobileNoVarified = mobileNoVarified;
+	}
 	
 	public List<String> getImages() {
 		return images;
@@ -28,11 +48,12 @@ public class User {
 	public void setImages(List<String> images) {
 		this.images = images;
 	}
-	public String getEmail() {
-		return email;
+	
+	public String getUserId() {
+		return userId;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public String getPassword() {
 		return password;
@@ -75,6 +96,14 @@ public class User {
 	}
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
+	}
+
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
 	}
 	
 	

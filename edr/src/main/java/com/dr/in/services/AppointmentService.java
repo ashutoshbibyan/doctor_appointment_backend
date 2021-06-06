@@ -155,18 +155,42 @@ public class AppointmentService {
 
 
 
-	public long getAppointmentBooked(String docId, Instant date, Hours hour) {
+	public long getAppointmentBooked(String docId, Instant date, Hours hours) {
 		// TODO Auto-generated method stub
-				
 		
 		QAppointment qappointment = new QAppointment("appointment");
 		
 		
 		Predicate predicate = qappointment.doctorId.eq(docId).and(qappointment.date.eq(date))
-				              .and(qappointment.hours.eq(hour));
+							  .and(qappointment.hours.eq(hours));
+				              
 		
 		return this.appointmentRepository.count(predicate);
 		
+	}
+
+
+	/** savePrescription method takes appointment with prescription and save it into the database
+	 * @param Appointment (object of appointment)
+	 * @return FormResult (object of formresult )*/
+
+	public FormResult savePrescription(Appointment appointment) {
+		
+		this.appointment=this.appointmentRepository.save(appointment);
+		
+		if(this.appointment==null){
+			this.formResult.setError(true);
+			this.formResult.setMessage("Error While Saving Data");
+			this.formResult.setResult(false);
+		}
+		
+		else{
+			this.formResult.setResult(true);
+			this.formResult.setError(false);
+			this.formResult.setMessage("Prescription is saved");
+		}
+		
+		return this.formResult;
 	}
 	
 	

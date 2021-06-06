@@ -89,15 +89,10 @@ public class PatientService {
 	}
 
 
-	public Patient getPatient(String patientId) throws NullPointerException {
+	public Patient getPatient(String patientId)  {
 		this.patient= this.patientRepository.findOne(patientId);	
 		
-		if(this.patient==null){
-			throw new NullPointerException();
-		}
-		
-		
-		return this.patientRepository.findOne(patientId);
+		return this.patient;
 	}
 
 
@@ -189,6 +184,15 @@ public class PatientService {
 		return this.doctorService.getDoctorUsingDocSpeciality(docSpeciality,stateId,cityName,page,pageSize);
 	}
 
+	/** getDoctorUsingCityAndSpeciality method get the list of doctor using city and speciality 
+	 * @param String cityname
+	 * @param String speciality 
+	 * @param int page no 
+	 * @param int page size 
+	 * @return Page<Doctor> (Page object contain list of Doctors )*/
+	public Page<Doctor> getDoctorUsingCityAndSpeciality(String city , String speciality , int pageNo , int pageSize){
+		return this.doctorService.getDoctorUsingCityAndSpeciality(city,new Speciality(speciality),pageNo,pageSize);
+	}
 	
 	/** addPatientDoctor method add the new doctor to the list of doctors exist in the patient object 
 	 *  @param DoctorInPatient (object of the doctorinpatient class)

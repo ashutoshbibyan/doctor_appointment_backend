@@ -1,13 +1,16 @@
 package com.dr.in.services;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,19 +18,37 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.dr.in.model.FormResult;
+import com.dr.in.model.MsgResponse;
 import com.dr.in.model.QUserFile;
+
 import com.dr.in.model.User;
 import com.dr.in.model.UserFile;
 import com.dr.in.repository.UserFileRepository;
 import com.dr.in.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
 
+
+
 @Service
 public class UserService {
+	
+	@Autowired
+	AmazonS3Service amazonS3Service;
+	
+    
+	@Autowired
+	CommunicationService communicationService;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -43,6 +64,22 @@ public class UserService {
 	
 	@Autowired
 	private FormResult formResult;
+	
+	
+	
+	/** convertMultiPartToFile method takes a multipartfile file and convert it into 
+	 * a file object and return it 
+	 * @param MultipartFile (multipartfile object)
+	 * @return File (File object)
+	 * @throws IOException */
+	
+	private File convertMultiPartToFile(MultipartFile file) throws IOException {
+	    File convFile = new File(file.getOriginalFilename());
+	    FileOutputStream fos = new FileOutputStream(convFile);
+	    fos.write(file.getBytes());
+	    fos.close();
+	    return convFile;
+	}
 	
 	
 	
@@ -77,32 +114,43 @@ public class UserService {
 	/** insertUser enter the use in the database */
 	public FormResult insertUser(User user){
 		
-		
-		this.user=this.getUser(user.getEmail());
+		this.user=this.getUser(user.getMobileNo());
 		
 		// if user is null that means its not in the database
 		if(this.user==null){
 			
 			List<String> roles = new ArrayList<>();
 			
+			BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
+			
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+			
 			roles.add(user.getRole());
 			
 			user.setRoles(roles);
+
+			user.setEnabled(true);
 			
 			this.user=this.userRepository.insert(user);
 			
 			if(this.user!=null){
+				
+			   // this.sendOtp(this.user.getMobileNo());
+								
 				this.formResult.setResult(true);
+				this.formResult.setError(false);
 				this.formResult.setMessage("User is inserted");
 			}
 			else{
 				this.formResult.setResult(false);
+				this.formResult.setError(true);
 				this.formResult.setMessage("User is not inserted");
 			}
 		}
 		
 		else{
 			this.formResult.setResult(false);
+			this.formResult.setError(true);
 			this.formResult.setMessage("User Already Exist");
 		}
 		
@@ -112,9 +160,9 @@ public class UserService {
 		
 	}
 	
-	public User getUser(String userId){
+	public User getUser(String mobileNo){
 		
-		return this.userRepository.findOne(userId);
+		return this.userRepository.findOneBymobileNo(mobileNo);
 		
 	}
 
@@ -123,43 +171,32 @@ public class UserService {
 	 *  @return FormResult (object of the form result )
 	 * @throws IOException */
 	
-	public FormResult uploadImage(MultipartFile img, String userId)  {
+	public FormResult uploadImage(MultipartFile img, String userId){
 		
-		String UPLOADED_FOLDER="/home/ashu/git/edr/edr/src/main/webapp/assets/upload/";
 		
-          
-                
-            	byte[] bytes;
-            	
-            	
-				try {
-					
-					bytes = img.getBytes();
-					Path path = Paths.get(UPLOADED_FOLDER + img.getOriginalFilename());
-					
-	                Files.write(path, bytes);
-	                
-	                UserFile userFile= new UserFile();
-	                
-	                userFile.setCreatedAt(Instant.now());
-	                userFile.setFileName(img.getOriginalFilename());
-	                userFile.setFileSize(img.getSize());
-	                userFile.setFileType(img.getContentType());
-	                userFile.setPath("../assets/upload/"+img.getOriginalFilename());
-	                userFile.setUserId(userId);
-	                this.formResult=this.saveUserFile(userFile);                
-	                
-	               	} 
-				
-				
-				catch (IOException e) {
-					
-					this.formResult.setError(true);
-					this.formResult.setMessage("something went wrong while saving file try again");
-					this.formResult.setResult(false);
-				}
-            
-            
+		
+		String fileUrl=this.amazonS3Service.uploadFile(img);
+		
+		if(fileUrl.isEmpty()){
+			
+			this.formResult.setError(true);
+			this.formResult.setResult(false);
+			this.formResult.setMessage("Something Went Wrong While Saving File");
+			
+		}
+		else{
+			UserFile userFile= new UserFile();
+		      
+	        userFile.setCreatedAt(Instant.now());
+	        userFile.setFileName(img.getOriginalFilename());
+	        userFile.setFileSize(img.getSize());
+	        userFile.setFileType(img.getContentType());
+	        userFile.setPath(fileUrl);
+	        userFile.setUserId(userId);
+	        this.formResult=this.saveUserFile(userFile);    
+		}
+		
+		
             return this.formResult;
         }
 
@@ -181,5 +218,95 @@ public class UserService {
 		return this.userFileRepository.findAll(predicate,page);
 	}
 
+	
+	
+	/** sendOtp method takes only one parameter which is the mobileno of the 
+	 *  user and send an otp to that no it return the msgResponse object 
+	 *  as the reponse 
+	 *  @param String (mobile no in string )
+	 *  @return MsgResponse (object of the MsgResponse)*/
+	
+	public MsgResponse sendOtp(String mobileNo){
+		MsgResponse msgResponse = this.communicationService.sendOtp(mobileNo);
+		System.out.println(msgResponse.getMessage());
+		return msgResponse;
+	}
    
+	
+	/**sendOtpAgain method take two parameter one is the mobile no and another is the 
+	 * retryType it could be voice or text and it send MsgResponse object as response
+	 * @param String (mobile no in string format )
+	 * @return FormResult(object of the FormResult)*/
+	public FormResult sendOtpAgain(String mobileNo , String retryType){
+		
+		MsgResponse response= this.communicationService.sendOtpAgain(mobileNo, retryType);
+		System.out.println(response.getMessage());
+		
+		if(response.getType().equals("success")){
+			this.formResult.setError(false);
+			this.formResult.setResult(true);
+			this.formResult.setMessage("Otp is Resend to Your No ");
+		}
+		
+		else {
+			this.formResult.setError(true);
+			this.formResult.setResult(false);
+			this.formResult.setMessage("Error while trying to resend otp try again");
+		}
+		
+		return this.formResult;
+		
+	}
+	
+	
+	/**varifyMobileNo method takes three  parameter one is userid , the mobile no and other is the 
+	 * otp and return the MsgResponse object in return 
+	 * @param String (mobile no to be varified )
+	 * @param Strign (otp entered by user )
+	 * @return FormResult (object of FormResult class )*/
+	
+	public FormResult varifyMobileNo( String mobileNo ,String otp){
+		
+		MsgResponse response=this.communicationService.varifyOtp(mobileNo, otp);
+		
+		if(response!=null){
+			System.out.println(response.getMessage());
+			System.out.println(otp);
+			if(response.getType().equals("success")){
+				
+				this.user= this.getUser(mobileNo);
+				
+				this.user.setEnabled(true);
+				this.user.setMobileNoVarified(true);
+				
+				this.userRepository.save(this.user);
+				
+				this.formResult.setResult(true);
+				this.formResult.setError(false);
+				this.formResult.setMessage("Phone no is varified and Account is Enabled");
+				
+			}
+			
+			else {
+				
+				this.formResult.setError(true);
+				this.formResult.setResult(false);
+				this.formResult.setMessage("Error while varifying Mobile No");
+				
+			}
+		}
+		else{
+			this.formResult.setError(true);
+			this.formResult.setResult(false);
+			this.formResult.setMessage("Error while varifying Mobile No (null)");
+		}
+		
+		
+		
+		
+		return this.formResult;
+	}
+	
+	
+	
 }

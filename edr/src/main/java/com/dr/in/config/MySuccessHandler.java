@@ -24,12 +24,14 @@ public class MySuccessHandler implements AuthenticationSuccessHandler {
 			throws IOException, ServletException {
 		// TODO Auto-generated method stub
 		
+
 		
 
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		authorities.forEach(authority -> {
 			if(authority.getAuthority().equals("ROLE_DOCTOR")) {
 				try {
+					
 					
 					redirectStrategy.sendRedirect(arg0, arg1, "/dr/home");
 				} catch (Exception e) {
@@ -38,6 +40,7 @@ public class MySuccessHandler implements AuthenticationSuccessHandler {
 				}
 			} else if(authority.getAuthority().equals("ROLE_PATIENT")) {
 				try {
+					
 					redirectStrategy.sendRedirect(arg0, arg1, "/patient/home");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

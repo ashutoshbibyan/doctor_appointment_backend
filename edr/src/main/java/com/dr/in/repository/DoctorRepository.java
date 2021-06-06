@@ -17,4 +17,6 @@ public interface DoctorRepository extends MongoRepository<Doctor, String> ,Query
 
 	@Query(value="{state:?0,city:?1}",fields="{appointments:0}")
 	public List<Doctor> findAllByStateAndCity(String state,String city);
+	
+	
 }
